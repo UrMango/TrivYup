@@ -1,13 +1,14 @@
+from websocket import create_connection
 import socket
 ip = "127.0.0.1"
 
-def receive(): #msg from server
-    msg = client.recv(1024)
+def receive(ws): #msg from server
+    msg = ws.recv(1024)
     print(msg.decode())
 
-def sendMsg(): #msg to server
+def sendMsg(ws): #msg to server
     snd = str(input("Enter msg: "))
-    client.send(snd.encode())
+    ws.send(snd.encode())
 
 def getPort(): #get port from the user
     port = int(input("Enter port: "))
@@ -17,14 +18,17 @@ def getPort(): #get port from the user
 
 def main():
     try:
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("searching for server")
-        client.connect((ip, getPort()))
-
-        sendMsg()
-        receive()
+        url = "wss://localhost:" + str(getPort())
+        ws = create_connection("wss://localhost:")
+        sendMsg(ws)
+        receive(ws)
+        ws.close()
     except Exception as e:
         print(str(e))
 
 if __name__=="__main__":
     main()
+
+
+
