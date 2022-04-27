@@ -17,18 +17,28 @@ void WSServer::serve()
 	while (true)
 	{
 		// wait for new socket connection
-
 		tcp::socket socket(this->ioc);
 		acceptor.accept();
 		std::cout << "socket accepted" << std::endl;
 
 		// the function that handle the conversation with the client
-		std::thread clientThread(&WSServer::clientHandler);
+		std::thread clientThread(&WSServer::clientHandler, this, std::move(socket));
 		clientThread.detach();
 	}
 }
 
 void WSServer::clientHandler(tcp::socket socket)
 {
+	boost::beast::websocket::stream<tcp::socket> ws(std::move(socket));
 
+	ws.accept();
+
+	while (true)
+	{
+		boost::beast::flat_buffer buffer;
+		ws.read(buffer);
+
+		auto out = boost::beast::buffers_to_string(buffer.cdata());
+		std::cout << "Client sent: " << out << std::endl;
+	}
 }
