@@ -2,9 +2,11 @@
 //
 
 #include <iostream>
-#include <boost/beast/core.hpp>
+#include "WSServer.h"
 
 int main()
 {
-    
+	WSServer server;
+
+	return 0;
 }

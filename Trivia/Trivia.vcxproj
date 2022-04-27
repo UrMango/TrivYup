@@ -140,7 +140,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="WSServer.cpp" />
     <ClCompile Include="Trivia.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WSServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
