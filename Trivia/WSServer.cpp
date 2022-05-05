@@ -1,5 +1,5 @@
 #include "WSServer.h"
-
+#include <boost/beast.hpp>
 WSServer::WSServer() : ioc(1), acceptor(this->ioc, *(new tcp::endpoint(address, port))) // 1 is how many threads it should run together
 {
 	std::cout << "Server Started!" << std::endl;
