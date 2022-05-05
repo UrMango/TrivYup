@@ -20,7 +20,7 @@ def main():
     try:
         print("searching for server")
         url = "wss://localhost:" + str(getPort())
-        ws = create_connection("wss://localhost:")
+        ws = create_connection(url)
         sendMsg(ws)
         receive(ws)
         ws.close()
@@ -29,6 +29,5 @@ def main():
 
 if __name__=="__main__":
     main()
-
 
 
