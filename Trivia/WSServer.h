@@ -1,3 +1,4 @@
+
 #pragma once
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
@@ -28,4 +29,3 @@ private:
 	//tcp::acceptor acceptor;
 
 };
-
