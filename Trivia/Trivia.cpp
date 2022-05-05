@@ -1,12 +1,8 @@
-﻿// Trivia.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+﻿#include "WSServer.h"
 
-#include <iostream>
-#include "WSServer.h"
-
-int main()
+int main(int argc, char* argv[])
 {
-	WSServer server;
+    WSServer server;
 
-	return 0;
+    return 0;
 }

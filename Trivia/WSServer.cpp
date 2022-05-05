@@ -1,6 +1,9 @@
 #include "WSServer.h"
 #include <boost/beast.hpp>
-WSServer::WSServer() : ioc(1), acceptor(this->ioc, *(new tcp::endpoint(address, port))) // 1 is how many threads it should run together
+
+//WSServer::WSServer()
+//WSServer::WSServer() : ioc(1), acceptor(this->ioc, *(new tcp::endpoint(address, port))) // 1 is how many threads it should run together
+WSServer::WSServer()
 {
 	std::cout << "Server Started!" << std::endl;
 	this->serve();
@@ -12,33 +15,50 @@ WSServer::~WSServer()
 
 void WSServer::serve()
 {
-	std::cout << "Waiting for a socket connection..." << std::endl;
+	auto const address = net::ip::make_address("127.0.0.1");
+	auto const port = static_cast<unsigned short>(std::atoi("8083"));
+
+	net::io_context ioc{ 1 };
+
+	tcp::acceptor acceptor{ ioc, {address, port} };
 
 	while (true)
 	{
-		// wait for new socket connection
-		tcp::socket socket(this->ioc);
-		acceptor.accept();
-		std::cout << "socket accepted" << std::endl;
+		tcp::socket socket{ ioc };
 
-		// the function that handle the conversation with the client
-		std::thread clientThread(&WSServer::clientHandler, this, std::move(socket));
-		clientThread.detach();
-	}
-}
+		acceptor.accept(socket);
 
-void WSServer::clientHandler(tcp::socket socket)
-{
-	boost::beast::websocket::stream<tcp::socket> ws(std::move(socket));
+		std::thread{ std::bind([q{std::move(socket)}]()
+		{
+			// socket will be const - mutable should be used
+			websocket::stream<tcp::socket> ws{ std::move(const_cast<tcp::socket&>(q)) };
 
-	ws.accept();
+			// Accept the websocket handshake
+			ws.accept();
 
-	while (true)
-	{
-		boost::beast::flat_buffer buffer;
-		ws.read(buffer);
+			while (true)
+			{
+				try
+				{
+					beast::flat_buffer buffer;
 
-		auto out = boost::beast::buffers_to_string(buffer.cdata());
-		std::cout << "Client sent: " << out << std::endl;
+					// Read a message
+					ws.read(buffer);
+
+					auto out = beast::buffers_to_string(buffer.cdata());
+					std::cout << out << std::endl;
+
+					ws.write(buffer.data());
+				}
+				catch (beast::system_error const& se)
+				{
+					if (se.code() != websocket::error::closed)
+					{
+						std::cerr << "Error: " << se.code().message() << std::endl;
+						break;
+					}
+				}
+			}
+		})}.detach();
 	}
 }
