@@ -18,6 +18,7 @@ public:
 	WSServer();
 	~WSServer();
 	void serve();
+	void getCommands();
 
 	/*const boost::asio::ip::address address = boost::asio::ip::make_address("127.0.0.1");
 	const unsigned short port = 8080;*/

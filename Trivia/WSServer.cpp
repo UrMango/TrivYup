@@ -20,19 +20,24 @@ void WSServer::serve()
 
 	tcp::acceptor acceptor{ ioc, {address, port} };
 
+	std::thread commands(&WSServer::getCommands, this);
+
 	while (true)
 	{
 		tcp::socket socket{ ioc };
 
 		acceptor.accept(socket);
 
-		std::thread{ std::bind([q{std::move(socket)}]()
+
+		std::thread(std::bind([q(std::move(socket))]()
 		{
 			// socket will be const - mutable should be used
 			websocket::stream<tcp::socket> ws{ std::move(const_cast<tcp::socket&>(q)) };
 
 			// Accept the websocket handshake
 			ws.accept();
+
+			std::cout << "Connection made!" << std::endl;
 
 			while (true)
 			{
@@ -57,6 +62,15 @@ void WSServer::serve()
 					}
 				}
 			}
-		}) }.detach();
+		})).detach();
+	}
+}
+
+void WSServer::getCommands()
+{
+	std::string command = "";
+	while (command != "EXIT") {
+		std::cin >> command;
+		_exit(1);
 	}
 }
