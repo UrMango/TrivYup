@@ -4,6 +4,7 @@
 WSServer::WSServer()
 {
 	std::cout << "Server Started!" << std::endl;
+
 	this->serve();
 }
 
@@ -40,15 +41,17 @@ void WSServer::clientHandle(tcp::socket socket) {
 	// Accept the websocket handshake
 	ws.accept();
 
-	std::cout << "Connection made!" << std::endl;
+	std::cout << "Connection succesfuly made!" << std::endl;
 
 	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, IRequestHandler*>(&ws, (IRequestHandler*)new LoginRequestHandler()));
-
+	
 	while (true)
 	{
 		try
 		{
 			beast::flat_buffer buffer;
+
+			ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
 
 			// Read a message
 			ws.read(buffer);
