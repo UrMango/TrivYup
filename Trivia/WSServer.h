@@ -9,6 +9,7 @@
 
 #include "IRequestHandler.h"
 #include "LoginRequestHandler.h"
+#include "JsonResponsePacketSerializer.h"
 
 namespace beast = boost::beast;
 namespace http = beast::http;
