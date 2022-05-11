@@ -141,10 +141,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="WSServer.cpp" />
     <ClCompile Include="Trivia.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="WSServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

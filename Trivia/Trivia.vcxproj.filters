@@ -21,9 +21,15 @@
     <ClCompile Include="WSServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="JsonResponsePacketSerializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WSServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonResponsePacketSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
