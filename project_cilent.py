@@ -1,10 +1,11 @@
+
 from websocket import create_connection
 import socket
 ip = "127.0.0.1"
 
 def receive(ws): #msg from server
-    msg = ws.recv(1024)
-    print(msg.decode())
+    msg = ws.recv()
+    print(msg)
 
 def sendMsg(ws): #msg to server
     snd = str(input("Enter msg: "))
@@ -19,15 +20,13 @@ def getPort(): #get port from the user
 def main():
     try:
         print("searching for server")
-        url = "wss://localhost:" + str(getPort())
+        url = "ws://localhost:" + str(getPort())
         ws = create_connection(url)
-        sendMsg(ws)
         receive(ws)
+        sendMsg(ws)
         ws.close()
     except Exception as e:
         print(str(e))
 
 if __name__=="__main__":
     main()
-
-
