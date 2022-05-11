@@ -1,5 +1,5 @@
 ﻿#include "WSServer.h"
-//#include <boost/beast.hpp>
+#include <boost/beast.hpp>
 
 WSServer::WSServer()
 {
@@ -17,18 +17,16 @@ void WSServer::serve()
 	auto const port = static_cast<unsigned short>(std::atoi("8083"));
 
 	net::io_context ioc{ 1 };
-
 	tcp::acceptor acceptor{ ioc, {address, port} };
 
+	///if the user enter exit </summary>
 	std::thread commands(&WSServer::getCommands, this);
 
+	//accept clients
 	while (true)
 	{
 		tcp::socket socket{ ioc };
-
 		acceptor.accept(socket);
-
-
 		std::thread(&WSServer::clientHandle, this, std::move(socket)).detach();
 	}
 }
@@ -36,12 +34,12 @@ void WSServer::serve()
 void WSServer::clientHandle(tcp::socket socket) {
 	// socket will be const - mutable should be used
 	websocket::stream<tcp::socket> ws{ std::move(const_cast<tcp::socket&>(socket)) };
-
 	// Accept the websocket handshake
 	ws.accept();
 
 	std::cout << "Connection made!" << std::endl;
 
+	//add socket to map
 	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, IRequestHandler*>(&ws, (IRequestHandler*)new LoginRequestHandler()));
 
 	while (true)
