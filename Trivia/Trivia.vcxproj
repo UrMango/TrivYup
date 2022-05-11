@@ -148,10 +148,12 @@
     <ClCompile Include="Trivia.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ErrorResponse.h" />
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="LoginResponse.h" />
+    <ClInclude Include="SignupResponse.h" />
     <ClInclude Include="WSServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

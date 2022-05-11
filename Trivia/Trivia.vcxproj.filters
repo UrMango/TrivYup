@@ -47,5 +47,11 @@
     <ClInclude Include="LoginResponse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ErrorResponse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SignupResponse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

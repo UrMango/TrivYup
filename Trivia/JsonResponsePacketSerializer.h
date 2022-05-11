@@ -8,17 +8,32 @@
 
 #include "LoginResponse.h"
 #include "ErrorResponse.h"
+#include "SignupResponse.h"
 
 enum ResponseCode
 {
-	loginSuccess = 1,
-	error
+	error = 0,
+	login,
+	signup,
+};
+
+enum LoginCode
+{
+	loginSuccess = 0,
+	loginError
+};
+
+enum SignupCode
+{
+	signupSuccess = 0,
+	signupError
 };
 
 class JsonResponsePacketSerializer
 {	
 public:
 	static std::string serializeLoginResponse(LoginResponse response);
+	static std::string serializeSignupResponse(SignupResponse response);
 	static std::string serializeErrorResponse(ErrorResponse response);
 };
 
