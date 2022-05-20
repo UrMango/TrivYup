@@ -6,6 +6,7 @@
 #include <boost/beast.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
+
 using tcp = boost::asio::ip::tcp;
 using std::string;
 
@@ -18,7 +19,6 @@ enum MessageType
 	MT_CLIENT_EXIT = 208,
 	MT_SERVER_UPDATE = 101,
 };
-
 struct RequestInfo {
 	int msgCode = 0;
 	string msgTime = "";

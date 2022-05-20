@@ -15,7 +15,6 @@ struct SignupRequest {
 	string passward = "";
 	string email = "";
 };
-
 struct JoinRoomRequest {
 	unsigned int roomid = 0;
 };
@@ -33,16 +32,6 @@ private:
 public:
 	static LoginRequest deserializeLoginRequest(string userMsg);
 	static SignupRequest deserializeSignupRequest(string userMsg);
-
-	/*
-	JsonRequestPacketDeserializer(const string text, const string dictionaryFileName);
-	static string encrypt(const string text, const string dictionaryFileName);
-	static string decrypt(const string text, const string dictionaryFileName);
-	string encrypt();
-	string decrypt();
-	friend ostream& operator<<(ostream& os, const SubstitutionText& dt);
-	string getText() const;
-	*/
 };
 
 
