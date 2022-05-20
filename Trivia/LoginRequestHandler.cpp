@@ -1,23 +1,21 @@
 #include "LoginRequestHandler.h"
-bool LoginRequestHandler::isRequestRelevant(RequestInfo reuest)
+bool LoginRequestHandler::isRequestRelevant(RequestInfo request)
 {
-	return reuest.msgCode == MT_CLIENT_LOG_IN || reuest.msgCode == MT_CLIENT_SIGN_UP;
+	return request.msgCode == MT_CLIENT_LOG_IN || request.msgCode == MT_CLIENT_SIGN_UP;
 }
 
-/*
-RequestResult LoginRequestHandler::handleRequest(RequestInfo reuest)
+std::string LoginRequestHandler::handleRequest(RequestInfo request)
 {
-	if (msg_code == MT_CLIENT_LOG_IN)
+	std::string msg;
+
+	if (request.msgCode == MT_CLIENT_LOG_IN)
 	{
-
-
+		msg = JsonResponsePacketSerializer::serializeLoginResponse(LoginResponse(LoginCode::loginSuccess));
 	}
-	else if (msg_code == MT_CLIENT_SIGN_UP)
+	else if (request.msgCode == MT_CLIENT_SIGN_UP)
 	{
-
+		msg = JsonResponsePacketSerializer::serializeLoginResponse(LoginResponse(SignupCode::signupSuccess));
 	}
 
-	msg = new RecvMessage(client_socket, msg_code, values);
 	return msg;
 }
-*/

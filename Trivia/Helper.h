@@ -19,6 +19,7 @@ enum MessageType
 	MT_CLIENT_EXIT = 208,
 	MT_SERVER_UPDATE = 101,
 };
+
 struct RequestInfo {
 	int msgCode = 0;
 	string msgTime = "";

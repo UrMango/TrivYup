@@ -41,7 +41,7 @@ void WSServer::clientHandle(tcp::socket socket) {
 
 	std::cout << "Connection succesfuly made!" << std::endl;
 
-	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, IRequestHandler*>(&ws, (IRequestHandler*)new LoginRequestHandler()));
+	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, LoginRequestHandler*>(&ws, (LoginRequestHandler*)new LoginRequestHandler()));
 	
 	while (true)
 	{

@@ -1,12 +1,13 @@
 #pragma once
 #include "IRequestHandler.h"
+#include "JsonResponsePacketSerializer.h"
 #include "Helper.h"
 
 class LoginRequestHandler : IRequestHandler
 {
 public:
-	bool isRequestRelevant(RequestInfo reuest);
-	//RequestResult handleRequest(RequestInfo reuest);
+	bool isRequestRelevant(RequestInfo request);
+	std::string handleRequest(RequestInfo request);
 
 private:
 };
