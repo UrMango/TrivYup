@@ -1,5 +1,5 @@
 ﻿#include "WSServer.h"
-
+#include "JsonRequestPacketDeserializer.h"
 
 WSServer::WSServer()
 {
@@ -41,7 +41,7 @@ void WSServer::clientHandle(tcp::socket socket) {
 
 	std::cout << "Connection succesfuly made!" << std::endl;
 
-	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, IRequestHandler*>(&ws, (IRequestHandler*)new LoginRequestHandler()));
+	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, LoginRequestHandler*>(&ws, (LoginRequestHandler*)new LoginRequestHandler()));
 	
 	while (true)
 	{
@@ -69,6 +69,16 @@ void WSServer::clientHandle(tcp::socket socket) {
 			LoginRequestHandler* login_Request_Handler = m_clients[&ws];
 			if ((!has_logged_in) && login_Request_Handler->isRequestRelevant(request))
 			{
+				if (request.msgCode == MT_CLIENT_LOG_IN)
+				{
+					JsonRequestPacketDeserializer::deserializeLoginRequest(request.msg); //LoginRequest
+
+				}
+				else if (request.msgCode == MT_CLIENT_SIGN_UP)
+				{
+					JsonRequestPacketDeserializer::deserializeSignupRequest(request.msg); //SignupRequest
+				}
+				
 				//if login succeeded, the user logen in (not sign up), (using handleRequest func) do : has_logged_in=true
 				continue;
 			}
