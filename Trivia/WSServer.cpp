@@ -1,9 +1,10 @@
 ﻿#include "WSServer.h"
-#include <boost/beast.hpp>
+
 
 WSServer::WSServer()
 {
 	std::cout << "Server Started!" << std::endl;
+	_time = time(0);
 	this->serve();
 }
 
@@ -32,6 +33,7 @@ void WSServer::serve()
 }
 
 void WSServer::clientHandle(tcp::socket socket) {
+	bool has_logged_in = false;
 	// socket will be const - mutable should be used
 	websocket::stream<tcp::socket> ws{ std::move(const_cast<tcp::socket&>(socket)) };
 	// Accept the websocket handshake
@@ -40,7 +42,9 @@ void WSServer::clientHandle(tcp::socket socket) {
 	std::cout << "Connection made!" << std::endl;
 
 	//add socket to map
-	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, IRequestHandler*>(&ws, (IRequestHandler*)new LoginRequestHandler()));
+	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, LoginRequestHandler*>(&ws, new LoginRequestHandler()));
+
+
 
 	while (true)
 	{
@@ -50,23 +54,50 @@ void WSServer::clientHandle(tcp::socket socket) {
 
 			// Read a message
 			ws.read(buffer);
-
 			auto out = beast::buffers_to_string(buffer.cdata());
-			std::cout << out << std::endl;
 
-			ws.write(buffer.data());
-		}
-		catch (beast::system_error const& se)
-		{
-			if (se.code() != websocket::error::closed)
+			// get the message code
+			std::string str2 = out.substr(0, 2);
+			int msgCode = atoi(str2.c_str());
+
+			//insert field to RequestInfo struct
+			struct RequestInfo request;
+			request.msgCode = msgCode;
+			request.msgTime = ctime(&_time);
+			request.msg = out.substr(3);
+
+			//first, the client need to connect to his user
+			LoginRequestHandler* login_Request_Handler = m_clients[&ws];
+			if ((!has_logged_in) && login_Request_Handler->isRequestRelevant(request))
 			{
-				std::cerr << "Error: " << se.code().message() << std::endl;
+				//if login succeeded, the user logen in (not sign up), (using handleRequest func) do : has_logged_in=true
+				continue;
+			}
+
+
+			//std::cout << out << std::endl;
+			//sent data
+			//ws.write(buffer.data());
+
+		}
+		catch (beast::system_error const& e)
+		{
+			if (e.code() != websocket::error::closed)
+			{
+				std::cout << "Exception was catch in function clientHandler , what=" << e.what() << std::endl;
 				break;
 			}
 		}
+		//ws.close();
 	}
 }
 
+
+void WSServer::build_receive_message(const RequestInfo request, websocket::stream<tcp::socket> ws)
+{
+
+	
+} 
 void WSServer::getCommands()
 {
 	std::string command = "";
