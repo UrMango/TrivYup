@@ -82,6 +82,10 @@ void WSServer::clientHandle(tcp::socket socket) {
 				//if login succeeded, the user logen in (not sign up), (using handleRequest func) do : has_logged_in=true
 				continue;
 			}
+			else
+			{
+				//add message that says you need to login or sign up first
+			}
 
 
 			//std::cout << out << std::endl;
