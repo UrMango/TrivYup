@@ -44,8 +44,6 @@ void WSServer::clientHandle(tcp::socket socket) {
 	//add socket to map
 	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, LoginRequestHandler*>(&ws, new LoginRequestHandler()));
 
-
-
 	while (true)
 	{
 		try
@@ -92,12 +90,11 @@ void WSServer::clientHandle(tcp::socket socket) {
 	}
 }
 
-
 void WSServer::build_receive_message(const RequestInfo request, websocket::stream<tcp::socket> ws)
 {
-
 	
 } 
+
 void WSServer::getCommands()
 {
 	std::string command = "";
