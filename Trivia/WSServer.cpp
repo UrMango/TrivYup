@@ -1,5 +1,4 @@
 ﻿#include "WSServer.h"
-#include "JsonRequestPacketDeserializer.h"
 
 WSServer::WSServer()
 {
@@ -56,7 +55,7 @@ void WSServer::clientHandle(tcp::socket socket) {
 			auto out = beast::buffers_to_string(buffer.cdata());
 
 			// get the message code
-			std::string str2 = out.substr(0, 2);
+			std::string str2 = out.substr(0, 3);
 			int msgCode = atoi(str2.c_str());
 
 			//insert field to RequestInfo struct
@@ -69,16 +68,15 @@ void WSServer::clientHandle(tcp::socket socket) {
 			LoginRequestHandler* login_Request_Handler = m_clients[&ws];
 			if ((!has_logged_in) && login_Request_Handler->isRequestRelevant(request))
 			{
-				if (request.msgCode == MT_CLIENT_LOG_IN)
+				string result = login_Request_Handler->handleRequest(request);
+				ws.write(net::buffer(result));
+				nlohmann::json j = nlohmann::json::parse(result);
+				if (request.msgCode == MT_CLIENT_LOG_IN && j["status"] == LoginCode::loginSuccess)
 				{
-					JsonRequestPacketDeserializer::deserializeLoginRequest(request.msg); //LoginRequest
-
-				}
-				else if (request.msgCode == MT_CLIENT_SIGN_UP)
-				{
-					JsonRequestPacketDeserializer::deserializeSignupRequest(request.msg); //SignupRequest
+					has_logged_in = true;
 				}
 				
+				//add check
 				//if login succeeded, the user logen in (not sign up), (using handleRequest func) do : has_logged_in=true
 				continue;
 			}
@@ -86,7 +84,6 @@ void WSServer::clientHandle(tcp::socket socket) {
 			{
 				//add message that says you need to login or sign up first
 			}
-
 
 			//std::cout << out << std::endl;
 			//sent data

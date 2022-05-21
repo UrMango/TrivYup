@@ -6,11 +6,12 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(string userM
 {
 	// create fason object from string 
 	nlohmann::json j = nlohmann::json::parse(userMsg);
-
 	//insert field to struct
+	//struct LoginRequest login;
+	string pp = j["passward"];
+	//login.passward = j["passward"];
+	//login.username = j["username"];
 	struct LoginRequest login;
-	login.passward = j["passward"];
-	login.username = j["username"];
 	return login;
 }
 
