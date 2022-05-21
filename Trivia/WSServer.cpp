@@ -42,13 +42,14 @@ void WSServer::clientHandle(tcp::socket socket) {
 
 	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, LoginRequestHandler*>(&ws, (LoginRequestHandler*)new LoginRequestHandler()));
 	
+	beast::flat_buffer buffer;
+	ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
+
 	while (true)
 	{
 		try
 		{
 			beast::flat_buffer buffer;
-
-			ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
 
 			// Read a message
 			ws.read(buffer);
@@ -66,8 +67,13 @@ void WSServer::clientHandle(tcp::socket socket) {
 
 			//first, the client need to connect to his user
 			LoginRequestHandler* login_Request_Handler = m_clients[&ws];
-			if ((!has_logged_in) && login_Request_Handler->isRequestRelevant(request))
+			if ((!has_logged_in))
 			{
+				if (!(login_Request_Handler->isRequestRelevant(request)))
+				{
+					ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("You must first log in or sign up"))));
+					continue;
+				}
 				string result = login_Request_Handler->handleRequest(request);
 				ws.write(net::buffer(result));
 				nlohmann::json j = nlohmann::json::parse(result);
@@ -75,20 +81,14 @@ void WSServer::clientHandle(tcp::socket socket) {
 				{
 					has_logged_in = true;
 				}
-				
 				//add check
 				//if login succeeded, the user logen in (not sign up), (using handleRequest func) do : has_logged_in=true
 				continue;
 			}
-			else
-			{
-				//add message that says you need to login or sign up first
-			}
-
+		
 			//std::cout << out << std::endl;
 			//sent data
 			//ws.write(buffer.data());
-
 		}
 		catch (beast::system_error const& e)
 		{
