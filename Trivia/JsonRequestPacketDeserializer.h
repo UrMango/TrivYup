@@ -4,25 +4,26 @@
 #include <iostream>
 
 using std::string;
+#include <string>
 
 //**************************************structures***************************************
 struct LoginRequest {
-	string username = "";
-	string passward = "";
+	string username;
+	string passward;
 };
 struct SignupRequest {
-	string username = "";
-	string passward = "";
-	string email = "";
+	string username;
+	string passward;
+	string email;
 };
 struct JoinRoomRequest {
-	unsigned int roomid = 0;
+	unsigned int roomid;
 };
 struct GetPlayersInRoomRequest {
-	unsigned int roomid = 0;
+	unsigned int roomid;
 };
 struct SubmitAnswerRequest {
-	unsigned int answerid = 0;
+	unsigned int answerid;
 };
 //******************************************************************************************
 

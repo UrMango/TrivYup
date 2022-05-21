@@ -9,6 +9,9 @@
 #include <ctime>
 #include "LoginRequestHandler.h"
 #include "JsonResponsePacketSerializer.h"
+#include "ErrorResponse.h"
+#include "IRequestHandler.h"
+
 
 namespace beast = boost::beast;
 namespace http = beast::http;

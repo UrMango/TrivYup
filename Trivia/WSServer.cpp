@@ -1,5 +1,4 @@
 ﻿#include "WSServer.h"
-#include "JsonRequestPacketDeserializer.h"
 
 WSServer::WSServer()
 {
@@ -43,20 +42,21 @@ void WSServer::clientHandle(tcp::socket socket) {
 
 	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, LoginRequestHandler*>(&ws, (LoginRequestHandler*)new LoginRequestHandler()));
 	
+	beast::flat_buffer buffer;
+	ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
+
 	while (true)
 	{
 		try
 		{
 			beast::flat_buffer buffer;
 
-			ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
-
 			// Read a message
 			ws.read(buffer);
 			auto out = beast::buffers_to_string(buffer.cdata());
 
 			// get the message code
-			std::string str2 = out.substr(0, 2);
+			std::string str2 = out.substr(0, 3);
 			int msgCode = atoi(str2.c_str());
 
 			//insert field to RequestInfo struct
@@ -67,31 +67,25 @@ void WSServer::clientHandle(tcp::socket socket) {
 
 			//first, the client need to connect to his user
 			LoginRequestHandler* login_Request_Handler = m_clients[&ws];
-			if ((!has_logged_in) && login_Request_Handler->isRequestRelevant(request))
+			if ((!has_logged_in))
 			{
-				if (request.msgCode == MT_CLIENT_LOG_IN)
+				if (!(login_Request_Handler->isRequestRelevant(request)))
 				{
-					JsonRequestPacketDeserializer::deserializeLoginRequest(request.msg); //LoginRequest
-
+					ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("You must first log in or sign up"))));
+					continue;
 				}
-				else if (request.msgCode == MT_CLIENT_SIGN_UP)
+				string result = login_Request_Handler->handleRequest(request);
+				ws.write(net::buffer(result));
+				nlohmann::json j = nlohmann::json::parse(result);
+				if (request.msgCode == MT_CLIENT_LOG_IN && j["status"] == LoginCode::loginSuccess)
 				{
-					JsonRequestPacketDeserializer::deserializeSignupRequest(request.msg); //SignupRequest
+					has_logged_in = true;
 				}
-				
-				//if login succeeded, the user logen in (not sign up), (using handleRequest func) do : has_logged_in=true
 				continue;
 			}
-			else
-			{
-				//add message that says you need to login or sign up first
-			}
-
-
 			//std::cout << out << std::endl;
 			//sent data
 			//ws.write(buffer.data());
-
 		}
 		catch (beast::system_error const& e)
 		{

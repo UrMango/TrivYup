@@ -6,10 +6,9 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(string userM
 {
 	// create fason object from string 
 	nlohmann::json j = nlohmann::json::parse(userMsg);
-
 	//insert field to struct
 	struct LoginRequest login;
-	login.passward = j["passward"];
+	login.passward = j["password"];
 	login.username = j["username"];
 	return login;
 }
@@ -21,7 +20,7 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(string use
 
 	//insert field to struct
 	struct SignupRequest signUp;
-	signUp.passward = j["passward"];
+	signUp.passward = j["password"];
 	signUp.username = j["username"];
 	signUp.email = j["email"];
 	return signUp;
