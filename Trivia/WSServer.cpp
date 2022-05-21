@@ -81,11 +81,8 @@ void WSServer::clientHandle(tcp::socket socket) {
 				{
 					has_logged_in = true;
 				}
-				//add check
-				//if login succeeded, the user logen in (not sign up), (using handleRequest func) do : has_logged_in=true
 				continue;
 			}
-		
 			//std::cout << out << std::endl;
 			//sent data
 			//ws.write(buffer.data());
