@@ -7,9 +7,14 @@ IDatabase::IDatabase() : db(nullptr)
 	if (res != SQLITE_OK) {
 		this->db = nullptr;
 		std::cout << "Failed to open DB" << std::endl;
-		return;
+		_exit(0);
 	}
 
+	res = sqlite3_exec(db, "CREATE TABLE USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, USERNAME TEXT NOT NULL, PASSWORD TEXT NOT NULL, EMAIL TEXT NOT NULL);", nullptr, nullptr, &errMessage);
+	if (res != SQLITE_OK)
+	{
+		std::cout << errMessage << std::endl;
+	}
 }
 
 IDatabase::~IDatabase()
