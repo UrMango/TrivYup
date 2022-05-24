@@ -10,9 +10,10 @@ public:
 	~IDatabase();
 
 	bool doesUserExist(std::string username);
-	bool doesPasswordMatch(std::string pword, std::string pword2);
+	bool doesPasswordMatch(std::string username, std::string pword);
 	void addNewUser(std::string username, std::string pword, std::string email);
 private:
 	sqlite3* db;
+	char* errMessage;
 };
 

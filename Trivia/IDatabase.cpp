@@ -14,6 +14,10 @@ IDatabase::IDatabase() : db(nullptr)
 
 IDatabase::~IDatabase()
 {
+	sqlite3_close(this->db);
+	db = nullptr;
+
+	delete this->errMessage;
 }
 
 bool IDatabase::doesUserExist(std::string username)
