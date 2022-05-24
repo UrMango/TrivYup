@@ -40,7 +40,8 @@ void WSServer::clientHandle(tcp::socket socket) {
 
 	std::cout << "Connection succesfuly made!" << std::endl;
 
-	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, LoginRequestHandler*>(&ws, (LoginRequestHandler*)new LoginRequestHandler()));
+	RequestHandlerFactory* handlerFactory = new RequestHandlerFactory();
+	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, LoginRequestHandler*>(&ws, (LoginRequestHandler*)new LoginRequestHandler(*handlerFactory)));
 	
 	beast::flat_buffer buffer;
 	ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));

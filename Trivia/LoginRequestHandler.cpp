@@ -1,11 +1,16 @@
 #include "LoginRequestHandler.h"
 
-bool LoginRequestHandler::isRequestRelevant(RequestInfo request)
+
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerRequest(handlerFactory){}
+
+LoginRequestHandler::~LoginRequestHandler(){}
+
+bool LoginRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
 	return request.msgCode == MT_CLIENT_LOG_IN || request.msgCode == MT_CLIENT_SIGN_UP;
 }
 
-std::string LoginRequestHandler::handleRequest(RequestInfo request)
+std::string LoginRequestHandler::handleRequest(const RequestInfo& request) const
 {
 	std::string msg;
 

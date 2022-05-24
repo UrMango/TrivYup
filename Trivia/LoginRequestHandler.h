@@ -1,15 +1,27 @@
 #pragma once
 #include "IRequestHandler.h"
 #include "JsonResponsePacketSerializer.h"
-#include "Helper.h"
 #include "JsonRequestPacketDeserializer.h"
+#include "RequestHandlerFactory.h"
+#include "Helper.h"
 
-class LoginRequestHandler : IRequestHandler
+class RequestHandlerFactory;
+
+class LoginRequestHandler : public IRequestHandler
 {
 public:
-	bool isRequestRelevant(RequestInfo request);
-	std::string handleRequest(RequestInfo request);
+	//LoginRequestHandler(LoginManager& loginManager, RequestHandlerFactory& handlerFactory);
+	LoginRequestHandler(RequestHandlerFactory& handlerFactory);
+	~LoginRequestHandler();
+
+	virtual bool isRequestRelevant(const RequestInfo& request) const override;
+	virtual std::string handleRequest(const RequestInfo& request) const override;
+
 
 private:
+	//LoginManager& m_loginManager;
+	RequestHandlerFactory& m_handlerRequest;
+	//RequestResult signUp(RequestInfo request);
+	//RequestResult login(RequestInfo request);
 };
 

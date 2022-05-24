@@ -149,6 +149,7 @@
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
+    <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="WSServer.cpp" />
     <ClCompile Include="Trivia.cpp" />
   </ItemGroup>
@@ -160,6 +161,7 @@
     <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="LoginResponse.h" />
+    <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="SignupResponse.h" />
     <ClInclude Include="WSServer.h" />
   </ItemGroup>
