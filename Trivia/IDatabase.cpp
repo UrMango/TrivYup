@@ -1,6 +1,5 @@
 #include "IDatabase.h"
 
-
 #define BOOL_CB_NORES 0
 #define BOOL_CB_FALSE 1
 #define BOOL_CB_TRUE 2
@@ -28,11 +27,14 @@ IDatabase::IDatabase() : db(nullptr), errMessage(nullptr)
 		_exit(0);
 	}
 
+	std::cout << "Connected to DB Successfuly" << std::endl;
+
 	res = sqlite3_exec(db, "CREATE TABLE USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, USERNAME TEXT NOT NULL, PASSWORD TEXT NOT NULL, EMAIL TEXT NOT NULL);", nullptr, nullptr, &errMessage);
 	if (res != SQLITE_OK)
-	{
 		std::cout << errMessage << std::endl;
-	}
+	else	
+		std::cout << "Created tables :)" << std::endl;
+
 }
 
 IDatabase::~IDatabase()

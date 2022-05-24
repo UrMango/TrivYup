@@ -4,6 +4,9 @@ WSServer::WSServer()
 {
 	std::cout << "Server Started!" << std::endl;
 	_time = time(0);
+
+	m_database = new IDatabase();
+
 	this->serve();
 }
 

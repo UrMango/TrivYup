@@ -7,6 +7,7 @@
 #include <map>
 #include "Helper.h"
 #include <ctime>
+#include "IDatabase.h"
 #include "LoginRequestHandler.h"
 #include "JsonResponsePacketSerializer.h"
 #include "ErrorResponse.h"
@@ -31,6 +32,7 @@ private:
 	void serve();
 	void clientHandle(tcp::socket socket);
 	std::map<websocket::stream<tcp::socket>*, LoginRequestHandler*> m_clients;
+	IDatabase* m_database;
 	time_t _time; 
 
 };
