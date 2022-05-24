@@ -65,7 +65,22 @@ bool IDatabase::doesUserExist(std::string username)
 
 bool IDatabase::doesPasswordMatch(std::string username, std::string pword)
 {
-	return false;
+	int res;
+
+	std::string query = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + pword + "';";
+	res = sqlite3_exec(db, query.c_str(), countSelectCallback, nullptr, &errMessage);
+	if (res != SQLITE_OK)
+	{
+		std::cout << errMessage << std::endl;
+		return true;
+	}
+	else
+	{
+		bool res = boolCallbackRes == BOOL_CB_TRUE;
+		boolCallbackRes = BOOL_CB_NORES;
+
+		return res;
+	}
 }
 
 void IDatabase::addNewUser(std::string username, std::string pword, std::string email)
