@@ -144,15 +144,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="Header.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
+    <ClCompile Include="sqlite3.c" />
     <ClCompile Include="WSServer.cpp" />
     <ClCompile Include="Trivia.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IDatabase.h" />
     <ClInclude Include="ErrorResponse.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="IRequestHandler.h" />
@@ -161,6 +164,7 @@
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="LoginResponse.h" />
     <ClInclude Include="SignupResponse.h" />
+    <ClInclude Include="sqlite3.h" />
     <ClInclude Include="WSServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
