@@ -85,4 +85,12 @@ bool IDatabase::doesPasswordMatch(std::string username, std::string pword)
 
 void IDatabase::addNewUser(std::string username, std::string pword, std::string email)
 {
+	int res;
+
+	std::string query = "INSERT INTO USERS (username, password, email) VALUES ('" + username + "', '" + pword + "', '" + email + "');";
+	res = sqlite3_exec(db, query.c_str(), nullptr, nullptr, &errMessage);
+	if (res != SQLITE_OK)
+	{
+		std::cout << errMessage << std::endl;
+	}
 }
