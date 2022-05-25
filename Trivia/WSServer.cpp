@@ -32,7 +32,6 @@ void WSServer::serve()
 }
 
 void WSServer::clientHandle(tcp::socket socket) {
-	bool has_logged_in = false;
 	// socket will be const - mutable should be used
 	websocket::stream<tcp::socket> ws{ std::move(const_cast<tcp::socket&>(socket)) };
 	// Accept the websocket handshake
@@ -68,24 +67,8 @@ void WSServer::clientHandle(tcp::socket socket) {
 
 			//first, the client need to connect to his user
 			LoginRequestHandler* login_Request_Handler = m_clients[&ws];
-			if ((!has_logged_in))
-			{
-				if (!(login_Request_Handler->isRequestRelevant(request)))
-				{
-					ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("You must first log in or sign up"))));
-					continue;
-				}
-				/*
-				string result = login_Request_Handler->handleRequest(request);
-				ws.write(net::buffer(result));
-				nlohmann::json j = nlohmann::json::parse(result);
-				if (request.msgCode == MT_CLIENT_LOG_IN && j["status"] == LoginCode::loginSuccess)
-				{
-					has_logged_in = true;
-				}
-				*/
-				continue;
-			}
+			RequestResult res = login_Request_Handler->handleRequest(request);
+			ws.write(net::buffer(res.msg));
 			//std::cout << out << std::endl;
 			//sent data
 			//ws.write(buffer.data());
