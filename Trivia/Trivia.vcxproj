@@ -152,6 +152,7 @@
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDataBase.cpp" />
+    <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="WSServer.cpp" />
     <ClCompile Include="Trivia.cpp" />
   </ItemGroup>
@@ -164,6 +165,7 @@
     <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="LoginResponse.h" />
+    <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="SignupResponse.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDataBase.h" />
