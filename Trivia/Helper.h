@@ -1,14 +1,14 @@
 #pragma once
 
-#include <vector>
 #include <string>
 #include <WinSock2.h>
 #include <boost/beast.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
 
+#include "IRequestHandler.h"
 using tcp = boost::asio::ip::tcp;
-using std::string;
+class IRequestHandler;
 
 enum MessageType 
 {
@@ -22,22 +22,11 @@ enum MessageType
 
 struct RequestInfo {
 	int msgCode = 0;
-	string msgTime = "";
-	string msg = "";
+	std::string msgTime = "";
+	std::string msg = "";
 };
 
-class Helper
-{
-public:
-
-
-	//static int getMessageTypeCode(const tcp::socket sc);
-	//static int getIntPartFromSocket(const tcp::socket sc, const int bytesNum);
-	//static std::string getStringPartFromSocket(tcp::socket sc, const int bytesNum);
-	//static void sendData(const tcp::socket sc, const std::string message);
-
-private:
-	//static std::string getPartFromSocket(const tcp::socket sc, const int bytesNum);
-	//static std::string getPartFromSocket(const tcp::socket sc, const int bytesNum, const int flags);
-
+struct RequestResult {
+	std::string msg;
+	IRequestHandler* newHandler;
 };

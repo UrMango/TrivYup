@@ -7,6 +7,7 @@
 
 class RequestHandlerFactory;
 
+
 class LoginRequestHandler : public IRequestHandler
 {
 public:
@@ -15,7 +16,7 @@ public:
 	~LoginRequestHandler();
 
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
-	virtual std::string handleRequest(const RequestInfo& request) const override;
+	virtual std::string handleRequest(const RequestInfo& request)const override;
 
 
 private:
@@ -24,4 +25,5 @@ private:
 	//RequestResult signUp(RequestInfo request);
 	//RequestResult login(RequestInfo request);
 };
+
 
