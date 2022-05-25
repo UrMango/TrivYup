@@ -1,10 +1,10 @@
 #include "LoginManager.h"
 
-void LoginManager::signup(std::string username, std::string password, std::string email)
+bool LoginManager::signup(std::string username, std::string password, std::string email)
 {
 }
 
-void LoginManager::login(std::string username, std::string password)
+bool LoginManager::login(std::string username, std::string password)
 {
 }
 
