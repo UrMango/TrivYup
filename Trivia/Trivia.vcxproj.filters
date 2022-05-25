@@ -1,19 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="Header.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
-    <ClCompile Include="WSServer.cpp" />
-    <ClCompile Include="Trivia.cpp" />
     <ClCompile Include="sqlite3.c" />
-    <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="SqliteDataBase.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="WSServer.cpp" />
+    <ClCompile Include="Trivia.cpp" />
+    <ClCompile Include="LoginManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IDatabase.h" />
     <ClInclude Include="ErrorResponse.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="IRequestHandler.h" />
@@ -21,9 +23,11 @@
     <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="LoginResponse.h" />
-    <ClInclude Include="SignupResponse.h" />
-    <ClInclude Include="WSServer.h" />
-    <ClInclude Include="IDatabase.h" />
-    <ClInclude Include="SqliteDataBase.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
+    <ClInclude Include="SignupResponse.h" />
+    <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="SqliteDataBase.h" />
+    <ClInclude Include="WSServer.h" />
+    <ClInclude Include="LoginManager.h" />
+  </ItemGroup>
 </Project>
