@@ -4,6 +4,7 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "RequestHandlerFactory.h"
 #include "Helper.h"
+#include "LoginManager.h"
 
 class RequestHandlerFactory;
 
@@ -20,7 +21,7 @@ public:
 
 
 private:
-	//LoginManager& m_loginManager;
+	LoginManager& m_loginManager;
 	RequestHandlerFactory& m_handlerRequest;
 	//RequestResult signUp(RequestInfo request);
 	//RequestResult login(RequestInfo request);
