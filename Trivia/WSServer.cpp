@@ -75,6 +75,7 @@ void WSServer::clientHandle(tcp::socket socket) {
 					ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("You must first log in or sign up"))));
 					continue;
 				}
+				/*
 				string result = login_Request_Handler->handleRequest(request);
 				ws.write(net::buffer(result));
 				nlohmann::json j = nlohmann::json::parse(result);
@@ -82,6 +83,7 @@ void WSServer::clientHandle(tcp::socket socket) {
 				{
 					has_logged_in = true;
 				}
+				*/
 				continue;
 			}
 			//std::cout << out << std::endl;

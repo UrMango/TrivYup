@@ -16,7 +16,7 @@ public:
 	~LoginRequestHandler();
 
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
-	virtual std::string handleRequest(const RequestInfo& request)const override;
+	virtual RequestResult handleRequest(const RequestInfo& request)const override;
 
 
 private:

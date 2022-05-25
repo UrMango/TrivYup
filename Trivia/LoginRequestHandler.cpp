@@ -10,7 +10,7 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo& request) const
 	return (request.msgCode == MT_CLIENT_LOG_IN || request.msgCode == MT_CLIENT_SIGN_UP);
 }
 
-std::string LoginRequestHandler::handleRequest(const RequestInfo& request) const
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) const
 {
 	std::string msg;
 	struct RequestResult result;
@@ -43,5 +43,5 @@ std::string LoginRequestHandler::handleRequest(const RequestInfo& request) const
 		//result.msg = JsonResponsePacketSerializer::serializeSignupResponse(SignupResponse(SignupCode::signupError));
 		//result.newHandler = nullptr; 
 	}
-	return msg;
+	return result;
 }
