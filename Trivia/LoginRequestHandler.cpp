@@ -71,3 +71,21 @@ RequestResult LoginRequestHandler::signUp(RequestInfo request)
 	}
 	return result;
 }
+
+RequestResult LoginRequestHandler::login(RequestInfo request)
+{
+	struct RequestResult result;
+	LoginRequest user = JsonRequestPacketDeserializer::deserializeLoginRequest(request.msg); //LoginRequest
+	if (m_loginManager.login(user.username, user.passward))
+	{
+		//insert field to RequestInfo struct
+		result.msg = JsonResponsePacketSerializer::serializeLoginResponse(LoginResponse(LoginCode::loginSuccess));
+		result.newHandler = (IRequestHandler*)this; //change to menu handle
+	}
+	else
+	{
+		result.msg = JsonResponsePacketSerializer::serializeLoginResponse(LoginResponse(LoginCode::loginError));
+		result.newHandler = nullptr;
+	}
+	return result;
+}
