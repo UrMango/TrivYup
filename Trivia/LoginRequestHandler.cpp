@@ -34,15 +34,18 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) con
 RequestResult LoginRequestHandler::signUp(const RequestInfo request)const
 {
 	struct RequestResult result;
-	SignupRequest newUser = JsonRequestPacketDeserializer::deserializeSignupRequest(request.msg); //SignupRequest
+	//do deserialize for sign up request
+	SignupRequest newUser = JsonRequestPacketDeserializer::deserializeSignupRequest(request.msg); 
 
 	if (m_loginManager.signup(newUser.username, newUser.passward, newUser.email))
 	{
+		//insert field to RequestInfo struct
 		result.msg = JsonResponsePacketSerializer::serializeSignupResponse(SignupResponse(SignupCode::signupSuccess));
 		result.newHandler = (IRequestHandler*)this; //change to menu handle
 	}
 	else
 	{
+		//insert field to RequestInfo struct
 		result.msg = JsonResponsePacketSerializer::serializeSignupResponse(SignupResponse(SignupCode::signupError));
 		result.newHandler = nullptr;
 	}
@@ -52,7 +55,9 @@ RequestResult LoginRequestHandler::signUp(const RequestInfo request)const
 RequestResult LoginRequestHandler::login(const RequestInfo request)const
 {
 	struct RequestResult result;
-	LoginRequest user = JsonRequestPacketDeserializer::deserializeLoginRequest(request.msg); //LoginRequest
+	//do deserialize for login request
+	LoginRequest user = JsonRequestPacketDeserializer::deserializeLoginRequest(request.msg); 
+
 	if (m_loginManager.login(user.username, user.passward))
 	{
 		//insert field to RequestInfo struct
@@ -61,6 +66,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo request)const
 	}
 	else
 	{
+		//insert field to RequestInfo struct
 		result.msg = JsonResponsePacketSerializer::serializeLoginResponse(LoginResponse(LoginCode::loginError));
 		result.newHandler = nullptr;
 	}
