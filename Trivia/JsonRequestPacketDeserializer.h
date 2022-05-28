@@ -44,6 +44,9 @@ public:
 	GetPlayersInRoomRequest deserializeGetPlayersRequest(const string userMsg);
 	JoinRoomRequest deserializeJoinRoomRequest(const string userMsg);
 	CreateRoomRequest deserializeCreateRoomRequest(const string userMsg);
+	int HighScoreRequest(const string userMsg);
+	int LogoutRequest(const string userMsg);
+	int GetRoomRequest(const string userMsg);
 };
 
 
