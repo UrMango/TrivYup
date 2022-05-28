@@ -20,21 +20,11 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) con
 		//insert field to RequestInfo struct
 		result.msg = JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("You must first log in or sign up"));
 		result.newHandler = nullptr; 
+
 	}
 	if (request.msgCode == MT_CLIENT_LOG_IN)
 	{
-		LoginRequest user= JsonRequestPacketDeserializer::deserializeLoginRequest(request.msg); //LoginRequest
-		if (m_loginManager.login(user.username, user.passward)) 
-		{
-			//insert field to RequestInfo struct
-			result.msg = JsonResponsePacketSerializer::serializeLoginResponse(LoginResponse(LoginCode::loginSuccess));
-			result.newHandler = (IRequestHandler*)this; //change to menu handle
-		}
-		else 
-		{
-			result.msg = JsonResponsePacketSerializer::serializeLoginResponse(LoginResponse(LoginCode::loginError));
-			result.newHandler = nullptr;
-		}
+		return login(request);
 	}
 	else if (request.msgCode == MT_CLIENT_SIGN_UP)
 	{
@@ -54,7 +44,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) con
 	return result;
 }
 
-RequestResult LoginRequestHandler::signUp(RequestInfo request)
+RequestResult LoginRequestHandler::signUp(const RequestInfo request)const
 {
 	struct RequestResult result;
 	SignupRequest newUser = JsonRequestPacketDeserializer::deserializeSignupRequest(request.msg); //SignupRequest
@@ -72,7 +62,7 @@ RequestResult LoginRequestHandler::signUp(RequestInfo request)
 	return result;
 }
 
-RequestResult LoginRequestHandler::login(RequestInfo request)
+RequestResult LoginRequestHandler::login(const RequestInfo request)const
 {
 	struct RequestResult result;
 	LoginRequest user = JsonRequestPacketDeserializer::deserializeLoginRequest(request.msg); //LoginRequest

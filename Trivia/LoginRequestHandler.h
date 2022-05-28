@@ -23,8 +23,8 @@ public:
 private:
 	LoginManager& m_loginManager;
 	RequestHandlerFactory& m_handlerRequest;
-	RequestResult signUp(RequestInfo request);
-	RequestResult login(RequestInfo request);
+	RequestResult signUp(const RequestInfo request)const;
+	RequestResult login(const RequestInfo request)const;
 };
 
 
