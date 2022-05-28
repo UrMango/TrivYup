@@ -172,6 +172,7 @@
     <ClInclude Include="LoginResponse.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomManager.h" />
     <ClInclude Include="SignupResponse.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDataBase.h" />
