@@ -27,7 +27,7 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const stri
 	return signUp;
 }
 
-GetPlayersInRoomRequest deserializeGetPlayersRequest(const string userMsg)
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequest(const string userMsg)
 {
 	// create fason object from string 
 	nlohmann::json j = nlohmann::json::parse(userMsg);
@@ -38,3 +38,13 @@ GetPlayersInRoomRequest deserializeGetPlayersRequest(const string userMsg)
 	return getPlayersInRoom;
 }
 
+JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const string userMsg)
+{
+	// create fason object from string 
+	nlohmann::json j = nlohmann::json::parse(userMsg);
+
+	//insert field to struct
+	struct JoinRoomRequest joinRoomRequest;
+	joinRoomRequest.roomid = j["roomid"];
+	return joinRoomRequest;
+}
