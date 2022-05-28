@@ -1,24 +1,17 @@
 #pragma once
 #include <string>
-
-
-struct RoomData
-{
-	unsigned int id = 0;
-	std::string name = "";
-	unsigned int maxPlayers = 0;
-	unsigned int numOfQuestionsInGame = 0;
-	unsigned int timePerQuestion = 0;
-	unsigned int isActive = 0;
-};
+#include "Helper.h"
+#include <vector>
+#include "LoggedUser.h"
 
 class Room
 {
 
 public:
-
-
+	void addUser(LoggedUser);
+	void removeUser(LoggedUser);
+	std::vector<string> getAllUsers();
 private:
-	
-
+	RoomData m_metadata;
+	std::vector<LoggedUser> m_users;
 };
