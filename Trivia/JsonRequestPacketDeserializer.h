@@ -22,8 +22,15 @@ struct JoinRoomRequest {
 struct GetPlayersInRoomRequest {
 	unsigned int roomid;
 };
+/*
 struct SubmitAnswerRequest {
 	unsigned int answerid;
+};*/
+struct CreateRoomRequest{
+	std::string roomName;
+	unsigned int maxUsers;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
 };
 //******************************************************************************************
 
