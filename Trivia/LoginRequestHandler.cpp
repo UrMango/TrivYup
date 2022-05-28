@@ -53,3 +53,21 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) con
 	}
 	return result;
 }
+
+RequestResult LoginRequestHandler::signUp(RequestInfo request)
+{
+	struct RequestResult result;
+	SignupRequest newUser = JsonRequestPacketDeserializer::deserializeSignupRequest(request.msg); //SignupRequest
+
+	if (m_loginManager.signup(newUser.username, newUser.passward, newUser.email))
+	{
+		result.msg = JsonResponsePacketSerializer::serializeSignupResponse(SignupResponse(SignupCode::signupSuccess));
+		result.newHandler = (IRequestHandler*)this; //change to menu handle
+	}
+	else
+	{
+		result.msg = JsonResponsePacketSerializer::serializeSignupResponse(SignupResponse(SignupCode::signupError));
+		result.newHandler = nullptr;
+	}
+	return result;
+}

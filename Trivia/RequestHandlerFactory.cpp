@@ -2,7 +2,6 @@
 
 RequestHandlerFactory::RequestHandlerFactory(){}
 
-
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
 	RequestHandlerFactory* rr = (RequestHandlerFactory*)this;

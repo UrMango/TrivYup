@@ -23,7 +23,7 @@ public:
 private:
 	LoginManager& m_loginManager;
 	RequestHandlerFactory& m_handlerRequest;
-	//RequestResult signUp(RequestInfo request);
+	RequestResult signUp(RequestInfo request);
 	//RequestResult login(RequestInfo request);
 };
 
