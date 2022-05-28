@@ -28,18 +28,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) con
 	}
 	else if (request.msgCode == MT_CLIENT_SIGN_UP)
 	{
-		SignupRequest newUser = JsonRequestPacketDeserializer::deserializeSignupRequest(request.msg); //SignupRequest
-		
-		if (m_loginManager.signup(newUser.username, newUser.passward, newUser.email))
-		{
-			result.msg = JsonResponsePacketSerializer::serializeSignupResponse(SignupResponse(SignupCode::signupSuccess));
-			result.newHandler = (IRequestHandler*)this; //change to menu handle
-		}
-		else
-		{
-			result.msg = JsonResponsePacketSerializer::serializeSignupResponse(SignupResponse(SignupCode::signupError));
-			result.newHandler = nullptr; 
-		}
+		return signUp(request);
 	}
 	return result;
 }
