@@ -152,6 +152,7 @@
     <ClCompile Include="LoggedUser.cpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
+    <ClCompile Include="MenuRequestHandler.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDataBase.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
