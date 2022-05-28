@@ -7,9 +7,8 @@ MenuRequestHandler::~MenuRequestHandler() {}
 
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
-	return (request.msgCode == MT_CLIENT_LOG_IN || request.msgCode == MT_CLIENT_SIGN_UP);
+	return (request.msgCode == CREATE_ROOM || request.msgCode == GET_ROOMS || request.msgCode == GET_PLAYERS_IN_ROOM || request.msgCode == JOIN_ROOM || request.msgCode == GET_STATISTICS || request.msgCode == LOG_OUT);
 }
-
 
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request) const
 {
