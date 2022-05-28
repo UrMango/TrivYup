@@ -48,3 +48,17 @@ JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const 
 	joinRoomRequest.roomid = j["roomid"];
 	return joinRoomRequest;
 }
+
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const string userMsg)
+{
+	// create fason object from string 
+	nlohmann::json j = nlohmann::json::parse(userMsg);
+
+	//insert field to struct
+	struct CreateRoomRequest createRoomRequest;
+	createRoomRequest.answerTimeout = j["answerTimeout"];
+	createRoomRequest.maxUsers = j["maxUsers"];
+	createRoomRequest.questionCount = j["questionCount"];
+	createRoomRequest.roomName = j["roomName"];
+	return createRoomRequest;
+}
