@@ -14,7 +14,7 @@ public:
 	void createRoom(const LoggedUser user,const  RoomData roomData);
 	void deleteRoom(const int ID);
 	unsigned int getRoomState(const int ID)const;
-	std::vector<RoomData>getRooms()const;
+	std::vector<RoomData> getRooms()const;
 private:
 	std::map<unsigned int, Room&> m_rooms;
 	unsigned int _roomID;

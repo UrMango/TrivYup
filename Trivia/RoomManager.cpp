@@ -20,3 +20,15 @@ unsigned int RoomManager::getRoomState(const int ID)const
         }
     }
 }
+
+std::vector<RoomData> RoomManager::getRooms()const
+{
+    std::vector<RoomData> rooms;
+    for (auto& it : m_rooms) {
+        if ((it.second.getAllUsers().size() > 0) || (it.second.getRoomState() != 0))
+        {
+            rooms.push_back(it.second.getRoomData());
+        }
+    }
+    return rooms;
+}
