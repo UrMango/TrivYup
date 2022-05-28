@@ -63,11 +63,11 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 	return createRoomRequest;
 }
 
-int JsonRequestPacketDeserializer::HighScoreRequest(const string userMsg)
+int JsonRequestPacketDeserializer::getRequestWithoutData(const string userMsg)
 {
 	// create fason object from string 
 	nlohmann::json j = nlohmann::json::parse(userMsg);
 
 	return j["id"];
-
 }
+
