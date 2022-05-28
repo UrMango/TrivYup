@@ -4,14 +4,18 @@
 //#include <vector>
 #include "Room.h"
 #include <map>
+//#include <map>
 
 class RoomManager
 {
 public:
-	void createRoom(LoggedUser, RoomData);
-	void deleteRoom(int ID);
-	unsigned int getRoomState(int ID);
-	std::vector<RoomData>getRooms();
+	RoomManager(): _roomID(1){};
+	~RoomManager() {};
+	void createRoom(const LoggedUser user,const  RoomData roomData);
+	void deleteRoom(const int ID);
+	unsigned int getRoomState(const int ID)const;
+	std::vector<RoomData>getRooms()const;
 private:
-	std::map<unsigned int, Room> m_rooms;
+	std::map<unsigned int, Room&> m_rooms;
+	unsigned int _roomID;
 };
