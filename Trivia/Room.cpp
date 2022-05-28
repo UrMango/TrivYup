@@ -31,3 +31,8 @@ std::vector<string> Room::getAllUsers()
 	}
 	return allUsers;
 }
+
+unsigned int Room::getRoomState()const
+{
+	return this->m_metadata.isActive;
+}
