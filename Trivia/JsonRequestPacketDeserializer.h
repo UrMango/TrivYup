@@ -38,8 +38,12 @@ class JsonRequestPacketDeserializer
 {
 private:
 public:
-	static LoginRequest deserializeLoginRequest(string userMsg);
-	static SignupRequest deserializeSignupRequest(string userMsg);
+	static LoginRequest deserializeLoginRequest(const string userMsg);
+	static SignupRequest deserializeSignupRequest(const string userMsg);
+
+	GetPlayersInRoomRequest deserializeGetPlayersRequest(const string userMsg);
+	JoinRoomRequest deserializeJoinRoomRequest(const string userMsg);
+	CreateRoomRequest deserializeCreateRoomRequest(const string userMsg);
 };
 
 

@@ -2,10 +2,11 @@
 using std::string;
 #include <json.hpp>
 
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(string userMsg)
+LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const string userMsg)
 {
-	// create fason object from string 
+	// create jason object from string 
 	nlohmann::json j = nlohmann::json::parse(userMsg);
+
 	//insert field to struct
 	struct LoginRequest login;
 	login.passward = j["password"];
@@ -13,9 +14,9 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(string userM
 	return login;
 }
 
-SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(string userMsg)
+SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const string userMsg)
 {
-	// create fason object from string 
+	// create jason object from string 
 	nlohmann::json j = nlohmann::json::parse(userMsg);
 
 	//insert field to struct
@@ -25,3 +26,15 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(string use
 	signUp.email = j["email"];
 	return signUp;
 }
+
+GetPlayersInRoomRequest deserializeGetPlayersRequest(const string userMsg)
+{
+	// create fason object from string 
+	nlohmann::json j = nlohmann::json::parse(userMsg);
+
+	//insert field to struct
+	struct GetPlayersInRoomRequest getPlayersInRoom;
+	getPlayersInRoom.roomid = j["roomid"];
+	return getPlayersInRoom;
+}
+
