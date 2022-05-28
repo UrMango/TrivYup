@@ -13,14 +13,13 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo& request) const
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) const
 {
 	std::string msg;
-	struct RequestResult result;
 
 	if (!(this->isRequestRelevant(request)))
 	{
 		//insert field to RequestInfo struct
+		struct RequestResult result;
 		result.msg = JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("You must first log in or sign up"));
 		result.newHandler = nullptr; 
-
 	}
 	if (request.msgCode == MT_CLIENT_LOG_IN)
 	{
@@ -30,7 +29,6 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) con
 	{
 		return signUp(request);
 	}
-	return result;
 }
 
 RequestResult LoginRequestHandler::signUp(const RequestInfo request)const
