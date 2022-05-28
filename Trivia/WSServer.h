@@ -1,4 +1,6 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
 #include <iostream>

@@ -1,5 +1,4 @@
 ﻿#include "WSServer.h"
-
 WSServer::WSServer()
 {
 	std::cout << "Server Started!" << std::endl;
