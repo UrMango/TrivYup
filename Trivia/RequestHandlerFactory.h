@@ -1,18 +1,21 @@
 #pragma once
 #include "LoginRequestHandler.h"
+#include "LoginManager.h"
+#include "StatisticsManager.h"
 
 class LoginRequestHandler;
 
 class RequestHandlerFactory
-{
+{	
 public:
-	//RequestHandlerFactory(IDatabase* dataBase);
-	RequestHandlerFactory();
-	~RequestHandlerFactory();
+	RequestHandlerFactory(IDatabase* database);
+	~RequestHandlerFactory() {};
+
 	LoginRequestHandler* createLoginRequestHandler();
-	//LoginManager& getLoginManager();
+	LoginManager getLoginManager();
 private:
-	//LoginManager& m_loginManager;
-	//IDatabase* m_database;
+	LoginManager* m_loginManager;
+	StatisticsManager* m_statisticsManager;
+	IDatabase* m_database;
 
 };

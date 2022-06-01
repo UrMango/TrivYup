@@ -154,9 +154,11 @@
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomManager.cpp" />
+    <ClCompile Include="Question.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDataBase.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="StatisticsManager.cpp" />
     <ClCompile Include="WSServer.cpp" />
     <ClCompile Include="Trivia.cpp" />
   </ItemGroup>
@@ -171,12 +173,14 @@
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="LoginResponse.h" />
+    <ClInclude Include="Question.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="SignupResponse.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDataBase.h" />
+    <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="WSServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
