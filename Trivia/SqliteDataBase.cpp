@@ -61,7 +61,31 @@ int getQuestionCallback(void* data, int argc, char** argv, char** azColName)
 	return SQLITE_OK;
 }
 
-SqliteDataBase::SqliteDataBase() : db(nullptr), errMessage(nullptr)
+int getID(void* data, int argc, char** argv, char** azColName)
+{
+	int* numReturn = ((int*)data);
+
+	if (std::string(azColName[0]) == "ID")
+	{
+		*numReturn = atoi(argv[0]);
+	}
+
+	return SQLITE_OK;
+}
+
+int getAverageAnswerTime(void* data, int argc, char** argv, char** azColName)
+{
+	float* floatReturn = ((float*)data);
+
+	if (std::string(azColName[0]) == "AVERAGEANSWERTIME")
+	{
+		*floatReturn = std::stof(argv[0]);
+	}
+
+	return SQLITE_OK;
+}
+
+SqliteDataBase::SqliteDataBase() : db(nullptr), errMessage(nullptr), floatReturn(0.f), numReturn(0)
 {
 	std::string dbFileName = "trivia.sqlite";
 	int res = sqlite3_open(dbFileName.c_str(), &(this->db));
@@ -84,7 +108,7 @@ SqliteDataBase::SqliteDataBase() : db(nullptr), errMessage(nullptr)
 	if (res != SQLITE_OK)
 		std::cout << errMessage << std::endl;
 	
-	query = "CREATE TABLE STATISTICS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, USERID INTEGER NOT NULL, HIGHSCORE INTEGER NOT NULL, SUMOFALLGAMESTIME INTEGER NOT NULL, NUMBEROFGAMESPLAYED INTEGER NOT NULL, SUMOFCORRECTANSWERS INTEGER NOT NULL, SUMOFANSWERS INTEGER NOT NULL, NUMOFCORRECTANSWERSINLASTGAME INTEGER NOT NULL, SUMOFTIMELASTGAMETOOK INTEGER NOT NULL, FOREIGN KEY (USERID) REFERENCES USERS(ID));";
+	query = "CREATE TABLE STATISTICS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, USERID INTEGER NOT NULL, HIGHSCORE INTEGER NOT NULL, AVERAGEANSWERTIME INTEGER NOT NULL, NUMBEROFGAMESPLAYED INTEGER NOT NULL, NUMOFCORRECTANSWERS INTEGER NOT NULL, NUMOFANSWERS INTEGER NOT NULL, FOREIGN KEY (USERID) REFERENCES USERS(ID));";
 	res = sqlite3_exec(db, query.c_str(), nullptr, nullptr, &errMessage);
 	if (res != SQLITE_OK)
 		std::cout << errMessage << std::endl;
@@ -170,5 +194,26 @@ std::list<Question> SqliteDataBase::getQuestions()
 
 float SqliteDataBase::getPlayerAverageAnswerTime(std::string username)
 {
-	return 0.0f;
+	int res;
+	int id;
+
+	std::string query = "SELECT id from USERS WHERE username == '" + username + "';";
+	res = sqlite3_exec(db, query.c_str(), getID, &this->numReturn, &errMessage);
+	if (res != SQLITE_OK)
+	{
+		std::cout << errMessage << std::endl;
+		return -1.f;
+	}
+	id = this->numReturn;
+
+	query = "SELECT AVERAGEANSWERTIME from STATISTICS WHERE userid = ";
+	query += id + ";";
+	res = sqlite3_exec(db, query.c_str(), getAverageAnswerTime, &this->floatReturn, &errMessage);
+	if (res != SQLITE_OK)
+	{
+		std::cout << errMessage << std::endl;
+		return -1.f;
+	}
+
+	return this->floatReturn;
 }

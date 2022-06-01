@@ -20,5 +20,6 @@ private:
 	char* errMessage;
 
 	std::list<Question> questionList;
+	int numReturn;
+	float floatReturn;
 };
-
