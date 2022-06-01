@@ -10,7 +10,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* database) : m_database(d
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
 	RequestHandlerFactory* rr = (RequestHandlerFactory*)this;
-	return (LoginRequestHandler*)new LoginRequestHandler(*rr);
+	return (LoginRequestHandler*)new LoginRequestHandler(*rr, *this->m_loginManager);
 }
 
 LoginManager RequestHandlerFactory::getLoginManager()

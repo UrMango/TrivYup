@@ -13,7 +13,7 @@ class LoginRequestHandler : public IRequestHandler
 {
 public:
 	//LoginRequestHandler(LoginManager& loginManager, RequestHandlerFactory& handlerFactory);
-	LoginRequestHandler(RequestHandlerFactory& handlerFactory);
+	LoginRequestHandler(RequestHandlerFactory& handlerFactory, LoginManager& loginManager);
 	~LoginRequestHandler();
 
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;

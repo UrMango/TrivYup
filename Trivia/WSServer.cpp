@@ -42,7 +42,7 @@ void WSServer::clientHandle(tcp::socket socket) {
 
 	std::cout << "Connection succesfuly made!" << std::endl;
 
-	RequestHandlerFactory* handlerFactory = new RequestHandlerFactory();
+	RequestHandlerFactory* handlerFactory = new RequestHandlerFactory(this->m_database);
 	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, LoginRequestHandler*>(&ws, (LoginRequestHandler *)handlerFactory->createLoginRequestHandler()));
 	
 	beast::flat_buffer buffer;

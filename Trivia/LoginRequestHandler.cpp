@@ -1,7 +1,7 @@
 #include "LoginRequestHandler.h"
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerRequest(handlerFactory) ]
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory, LoginManager& loginManager) : m_handlerRequest(handlerFactory), m_loginManager(loginManager)
 {
 	
 }
