@@ -18,12 +18,14 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request) cons
 	if (!(this->isRequestRelevant(request)))
 	{
 		//insert field to RequestInfo struct
-		result.msg = JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("You must first log in or sign up"));
+		result.msg = JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse(""));
 		result.newHandler = nullptr;
 		return result;
 	}
-	//do deserialize for sign up request
-	//SignupRequest newUser = JsonRequestPacketDeserializer::deserializeSignupRequest(request.msg);
+	else
+	{
 
+
+	}
 	return result;
 }
