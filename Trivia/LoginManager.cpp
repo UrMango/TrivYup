@@ -4,7 +4,10 @@ bool LoginManager::signup(std::string username, std::string password, std::strin
 {
 	if (!this->m_database->doesUserExist(username)) {
 		this->m_database->addNewUser(username, password, email);
-	}
+		return true;
+	} else
+		return false;
+		
 }
 
 bool LoginManager::login(std::string username, std::string password)

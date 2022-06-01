@@ -12,9 +12,13 @@ public:
 	void addNewUser(std::string username, std::string pword, std::string email) override;
 
 	/* V2*/
-	void addNewUser(std::string username, std::string pword, std::string email) override;
+	//Question getQuestion(int id) override;
+	std::list<Question> getQuestions() override;
+	float getPlayerAverageAnswerTime(std::string username) override;
 private:
 	sqlite3* db;
 	char* errMessage;
+
+	std::list<Question> questionList;
 };
 
