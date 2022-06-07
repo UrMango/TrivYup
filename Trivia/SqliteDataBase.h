@@ -1,5 +1,6 @@
 #pragma once
 #include "IDatabase.h"
+
 class SqliteDataBase : public IDatabase
 {
 public:
@@ -18,6 +19,7 @@ public:
 	int getNumOfCorrectAnswers(std::string username) override;
 	int getNumOfTotalAnswers(std::string username) override;
 	int getNumOfPlayerGames(std::string username) override;
+	std::vector<std::pair<std::string, int>> getHighscores() override;
 private:
 	sqlite3* db;
 	char* errMessage;
