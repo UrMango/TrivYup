@@ -141,6 +141,30 @@ int getNumOfPlayerGamesCallback(void* data, int argc, char** argv, char** azColN
 	return SQLITE_OK;
 }
 
+int getUsersList(void* data, int argc, char** argv, char** azColName)
+{
+	std::vector<std::pair<int, std::string>>* usersList = ((std::vector<std::pair<int, std::string>>*)data);
+
+	int id;
+	std::string username;
+
+	for (int i = 0; i < argc; i++)
+	{
+		if (std::string(azColName[i]) == "ID")
+		{
+			id = atoi(argv[i]);
+		}
+		else if (std::string(azColName[i]) == "USERNAME")
+		{
+			username = argv[i];
+		}
+	}
+
+	usersList->push_back(std::pair<int, std::string>(id, username));
+
+	return SQLITE_OK;
+}
+
 SqliteDataBase::SqliteDataBase() : db(nullptr), errMessage(nullptr), floatReturn(0.f), numReturn(0)
 {
 	std::string dbFileName = "trivia.sqlite";
@@ -164,7 +188,7 @@ SqliteDataBase::SqliteDataBase() : db(nullptr), errMessage(nullptr), floatReturn
 	if (res != SQLITE_OK)
 		std::cout << errMessage << std::endl;
 	
-	query = "CREATE TABLE STATISTICS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, USERID INTEGER NOT NULL, HIGHSCORE INTEGER NOT NULL, AVERAGEANSWERTIME INTEGER NOT NULL, NUMBEROFGAMESPLAYED INTEGER NOT NULL, NUMOFCORRECTANSWERS INTEGER NOT NULL, NUMOFANSWERS INTEGER NOT NULL, FOREIGN KEY (USERID) REFERENCES USERS(ID));";
+	query = "CREATE TABLE STATISTICS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, USERID INTEGER NOT NULL, AVERAGEANSWERTIME INTEGER NOT NULL, NUMBEROFGAMESPLAYED INTEGER NOT NULL, NUMOFCORRECTANSWERS INTEGER NOT NULL, NUMOFANSWERS INTEGER NOT NULL, FOREIGN KEY (USERID) REFERENCES USERS(ID));";
 	res = sqlite3_exec(db, query.c_str(), nullptr, nullptr, &errMessage);
 	if (res != SQLITE_OK)
 		std::cout << errMessage << std::endl;
@@ -350,4 +374,55 @@ int SqliteDataBase::getNumOfPlayerGames(std::string username)
 	}
 
 	return this->numReturn;
+}
+
+std::vector<std::pair<std::string, int>> SqliteDataBase::getHighscores()
+{
+
+	std::vector<std::pair<int, std::string>> usersList;
+
+	std::vector<std::pair<std::string, int>> highscoreList;
+
+	/*std::pair<std::string, int> first;
+	std::pair<std::string, int> second;
+	std::pair<std::string, int> third;*/
+
+	std::string query = "SELECT * from USERS;";
+	int res = sqlite3_exec(db, query.c_str(), getUsersList, &usersList, &errMessage);
+	if (res != SQLITE_OK)
+	{
+		std::cout << errMessage << std::endl;
+		return std::vector<std::pair<std::string, int>>();
+	}
+
+	for (int i = 0; i < usersList.size(); i++)
+	{
+		int total = SqliteDataBase::getNumOfTotalAnswers(usersList[i].second);
+		int correct = SqliteDataBase::getNumOfCorrectAnswers(usersList[i].second);
+		int all = SqliteDataBase::getNumOfPlayerGames(usersList[i].second);
+		float averageTime = SqliteDataBase::getPlayerAverageAnswerTime(usersList[i].second);
+
+		// function: Total / (Wrong * average answer time)
+		int score = total / ((all - correct) * averageTime);
+
+		highscoreList.push_back(std::pair<std::string, int>(usersList[i].second, score));
+
+		/*if (score > first.second) {
+			third = second;
+			second = first;
+			first = std::pair<std::string, int>(usersList[i].second, score);
+		}
+		else if (score > second.second) {
+			third = second;
+			second = std::pair<std::string, int>(usersList[i].second, score);
+		} else if (score > third.second) {
+			third = second;
+		}*/
+	}
+
+	std::sort(highscoreList.begin(), highscoreList.end(), [](auto& left, auto& right) {
+		return left.second < right.second;
+	});
+
+	return highscoreList;
 }

@@ -2,7 +2,17 @@
 
 std::vector<std::string> StatisticsManager::getHighScore()
 {
-    return std::vector<std::string>();
+    const int LENGTH_TO_RET = 3;
+
+    std::vector<std::pair<std::string, int>> highscoresList = this->m_database->getHighscores();
+    std::vector<std::string> highscores;
+
+    for (int i = 0; i < LENGTH_TO_RET; i++)
+    {
+        highscores.push_back(highscoresList[i].first);
+    }    
+
+    return highscores;
 }
 
 std::vector<std::string> StatisticsManager::getUserStatistics(std::string username)
