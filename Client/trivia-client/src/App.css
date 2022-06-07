@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Work Sans', sans-serif;
+}
+
+body {
+    background-color: rgb(255, 255, 255);
+}
+
+.App {
+    width: 100vw;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
