@@ -1,7 +1,10 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+#include <vector>
 #include <list>
+#include <algorithm>
 #include "sqlite3.h"
 #include "Question.h"
 
@@ -17,5 +20,6 @@ public:
 	virtual int getNumOfCorrectAnswers(std::string username) = 0;
 	virtual int getNumOfTotalAnswers(std::string username) = 0;
 	virtual int getNumOfPlayerGames(std::string username) = 0;
+	virtual std::vector<std::pair<std::string, int>> getHighscores() = 0;
 };
 
