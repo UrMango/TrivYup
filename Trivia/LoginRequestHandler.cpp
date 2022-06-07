@@ -1,7 +1,10 @@
 #include "LoginRequestHandler.h"
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerRequest(handlerFactory), m_loginManager(*(new LoginManager(new SqliteDataBase()))) {}
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory, LoginManager& loginManager) : m_handlerRequest(handlerFactory), m_loginManager(loginManager)
+{
+	
+}
 
 LoginRequestHandler::~LoginRequestHandler(){}
 
