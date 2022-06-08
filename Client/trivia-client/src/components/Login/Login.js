@@ -31,16 +31,16 @@ const Login = () => {
 	}, [isLogged]);
 
 	return (
-		<div>
-			<form className="login">
-				<h2>Log in</h2>
-				<label>Username: </label>
-				<input type="text" onChange={e => setUsername(e.target.value)} id="username" name="username"/>
+		<div className="login">
+			<h2>Log in</h2>
+			<form className="form">
+				<label className="username">Username</label>
+				<input className="usernameInput" type="text" onChange={e => setUsername(e.target.value)} id="username" name="username"/>
 				<br/>
-				<label>Password: </label>
-				<input type="password" onChange={e => setPassword(e.target.value)} id="pwd" name="pwd"/>
+				<label className="password">Password</label>
+				<input className="passwordInput" type="password" onChange={e => setPassword(e.target.value)} id="pwd" name="pwd"/>
 				<br/>
-				<button onClick={handleLogin} type="submit">Login</button>
+				<button className="submitBtn" onClick={handleLogin} type="submit">Log in</button>
 			</form>
 		</div>
 	)
