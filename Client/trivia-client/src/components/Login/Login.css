@@ -1,0 +1,11 @@
+.login {
+	display: flex;
+	flex-direction:column;
+	justify-content: center;
+	padding: 1.5rem;
+	width: 100%;
+	max-width: 26rem;
+	box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px 0px;
+	background-color: white;
+	border-radius: 4px;
+}

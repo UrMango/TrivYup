@@ -32,8 +32,8 @@ const Login = () => {
 
 	return (
 		<div>
-			<p>Login</p>
-			<form>
+			<form className="login">
+				<h2>Log in</h2>
 				<label>Username: </label>
 				<input type="text" onChange={e => setUsername(e.target.value)} id="username" name="username"/>
 				<br/>
