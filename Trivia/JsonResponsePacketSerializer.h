@@ -64,11 +64,10 @@ struct getPersonalStatsResponse {
 	unsigned int status;
 	std::vector<string> statistics;
 };
+
 struct GetStatisticsResponse {
 	std::vector<std::string> userStats;
 };
-
-
 class JsonResponsePacketSerializer
 {	
 public:

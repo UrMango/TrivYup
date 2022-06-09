@@ -22,8 +22,21 @@ struct JoinRoomRequest {
 struct GetPlayersInRoomRequest {
 	unsigned int roomid;
 };
+/*
 struct SubmitAnswerRequest {
 	unsigned int answerid;
+};*/
+struct CreateRoomRequest {
+	std::string roomName;
+	unsigned int maxUsers;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
+};
+struct GetStatisticsRequest {
+	unsigned int userid;
+};
+struct LogOutRoomRequest {
+	unsigned int roomid;
 };
 //******************************************************************************************
 
@@ -31,8 +44,15 @@ class JsonRequestPacketDeserializer
 {
 private:
 public:
-	static LoginRequest deserializeLoginRequest(string userMsg);
-	static SignupRequest deserializeSignupRequest(string userMsg);
-};
+	static LoginRequest deserializeLoginRequest(const string userMsg);
+	static SignupRequest deserializeSignupRequest(const string userMsg);
 
+	static GetPlayersInRoomRequest deserializeGetPlayersRequest(const string userMsg);
+	static JoinRoomRequest deserializeJoinRoomRequest(const string userMsg);
+	static CreateRoomRequest deserializeCreateRoomRequest(const string userMsg);
+	static int getRequestWithoutData(const string userMsg);
+	static GetStatisticsRequest getStatisticsOfUser(const string userMsg);
+	static LogOutRoomRequest deserializeLogOutRoomRequest(const string userMsg);
+
+};
 

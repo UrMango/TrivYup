@@ -2,8 +2,7 @@
 
 void RoomManager::createRoom(const LoggedUser user, const  RoomData roomData)
 {
-	m_rooms.insert(std::pair<unsigned int, Room&>(_roomID, *(new Room(user, roomData))));
-	_roomID++;
+	m_rooms.insert(std::pair<unsigned int, Room&>(roomData.id, *(new Room(user, roomData))));
 }
 
 void RoomManager::deleteRoom(const int ID)
@@ -16,6 +15,32 @@ unsigned int RoomManager::getRoomState(const int ID)const
     for (auto& it : m_rooms) {
         if (it.first == ID) {
             return it.second.getRoomState();
+        }
+    }
+}
+
+std::vector<string> RoomManager::getAllUsersInRoom(const int ID)const
+{
+    for (auto& it : m_rooms) {
+        if (it.first == ID) {
+            return it.second.getAllUsers();
+        }
+    }
+}
+void RoomManager::addUserInRoom(const int ID, const LoggedUser user)const
+{
+    for (auto& it : m_rooms) {
+        if (it.first == ID) {
+            return it.second.addUser(user);
+        }
+    }
+}
+
+void RoomManager::removeUserInRoom(const int ID, const LoggedUser user)const
+{
+    for (auto& it : m_rooms) {
+        if (it.first == ID) {
+            return it.second.removeUser(user);
         }
     }
 }

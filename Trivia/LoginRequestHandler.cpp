@@ -13,7 +13,7 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo& request) const
 	return (request.msgCode == MT_CLIENT_LOG_IN || request.msgCode == MT_CLIENT_SIGN_UP);
 }
 
-RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) const
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) 
 {
 	std::string msg;
 
@@ -44,7 +44,8 @@ RequestResult LoginRequestHandler::signUp(const RequestInfo request)const
 	{
 		//insert field to RequestInfo struct
 		result.msg = JsonResponsePacketSerializer::serializeSignupResponse(SignupResponse(SignupCode::signupSuccess));
-		result.newHandler = (IRequestHandler*)this; //change to menu handle
+		LoggedUser* loggedUser = new LoggedUser(newUser.username);
+		result.newHandler = m_handlerRequest.createMenuRequestHandler(*loggedUser); //change to menu handle
 	}
 	else
 	{
@@ -65,13 +66,15 @@ RequestResult LoginRequestHandler::login(const RequestInfo request)const
 	{
 		//insert field to RequestInfo struct
 		result.msg = JsonResponsePacketSerializer::serializeLoginResponse(LoginResponse(LoginCode::loginSuccess));
-		result.newHandler = (IRequestHandler*)this; //change to menu handle
+		LoggedUser* loggedUser = new LoggedUser(user.username);
+		result.newHandler = m_handlerRequest.createMenuRequestHandler(*loggedUser); //change to menu handle
 	}
 	else
 	{
 		//insert field to RequestInfo struct
 		result.msg = JsonResponsePacketSerializer::serializeLoginResponse(LoginResponse(LoginCode::loginError));
 		result.newHandler = nullptr;
+
 	}
 	return result;
 }

@@ -2,10 +2,11 @@
 using std::string;
 #include <json.hpp>
 
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(string userMsg)
+LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const string userMsg)
 {
-	// create fason object from string 
+	// create jason object from string 
 	nlohmann::json j = nlohmann::json::parse(userMsg);
+
 	//insert field to struct
 	struct LoginRequest login;
 	login.passward = j["password"];
@@ -13,9 +14,9 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(string userM
 	return login;
 }
 
-SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(string userMsg)
+SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const string userMsg)
 {
-	// create fason object from string 
+	// create jason object from string 
 	nlohmann::json j = nlohmann::json::parse(userMsg);
 
 	//insert field to struct
@@ -24,4 +25,70 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(string use
 	signUp.username = j["username"];
 	signUp.email = j["email"];
 	return signUp;
+}
+
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequest(const string userMsg)
+{
+	// create fason object from string 
+	nlohmann::json j = nlohmann::json::parse(userMsg);
+
+	//insert field to struct
+	struct GetPlayersInRoomRequest getPlayersInRoom;
+	getPlayersInRoom.roomid = j["roomid"];
+	return getPlayersInRoom;
+}
+
+JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const string userMsg)
+{
+	// create fason object from string 
+	nlohmann::json j = nlohmann::json::parse(userMsg);
+
+	//insert field to struct
+	struct JoinRoomRequest joinRoomRequest;
+	joinRoomRequest.roomid = j["roomid"];
+	return joinRoomRequest;
+}
+
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const string userMsg)
+{
+	// create fason object from string 
+	nlohmann::json j = nlohmann::json::parse(userMsg);
+
+	//insert field to struct
+	struct CreateRoomRequest createRoomRequest;
+	createRoomRequest.answerTimeout = j["answerTimeout"];
+	createRoomRequest.maxUsers = j["maxUsers"];
+	createRoomRequest.questionCount = j["questionCount"];
+	createRoomRequest.roomName = j["roomName"];
+	return createRoomRequest;
+}
+
+int JsonRequestPacketDeserializer::getRequestWithoutData(const string userMsg)
+{
+	// create fason object from string 
+	nlohmann::json j = nlohmann::json::parse(userMsg);
+
+	return j["id"];
+}
+
+GetStatisticsRequest JsonRequestPacketDeserializer::getStatisticsOfUser(const string userMsg)
+{
+	// create fason object from string 
+	nlohmann::json j = nlohmann::json::parse(userMsg);
+
+	//insert field to struct
+	struct GetStatisticsRequest getStatisticsRequest;
+	getStatisticsRequest.userid = j["userid"];
+	return getStatisticsRequest;
+}
+
+LogOutRoomRequest JsonRequestPacketDeserializer::deserializeLogOutRoomRequest(const string userMsg)
+{
+	// create fason object from string 
+	nlohmann::json j = nlohmann::json::parse(userMsg);
+
+	//insert field to struct
+	struct LogOutRoomRequest logOutRoomRequest;
+	logOutRoomRequest.roomid = j["roomid"];
+	return logOutRoomRequest;
 }

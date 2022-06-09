@@ -5,6 +5,7 @@
 #include "RequestHandlerFactory.h"
 #include "Helper.h"
 #include "LoginManager.h"
+#include "LoggedUser.h"
 
 class RequestHandlerFactory;
 
@@ -16,7 +17,7 @@ public:
 	~LoginRequestHandler();
 
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
-	virtual RequestResult handleRequest(const RequestInfo& request)const override;
+	virtual RequestResult handleRequest(const RequestInfo& request) override;
 
 
 private:

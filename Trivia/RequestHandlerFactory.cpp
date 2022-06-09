@@ -13,6 +13,11 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 	return (LoginRequestHandler*)new LoginRequestHandler(*rr, *this->m_loginManager);
 }
 
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser& m_user)
+{
+	RequestHandlerFactory* rr = (RequestHandlerFactory*)this;
+	return (MenuRequestHandler*)new MenuRequestHandler(*rr, m_user);
+}
 LoginManager& RequestHandlerFactory::getLoginManager() const
 {
 	return *(this->m_loginManager);

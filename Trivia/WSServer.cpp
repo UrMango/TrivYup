@@ -42,7 +42,7 @@ void WSServer::clientHandle(tcp::socket socket) {
 	std::cout << "Connection succesfuly made!" << std::endl;
 
 	RequestHandlerFactory* handlerFactory = new RequestHandlerFactory(this->m_database);
-	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, LoginRequestHandler*>(&ws, (LoginRequestHandler *)handlerFactory->createLoginRequestHandler()));
+	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, IRequestHandler*>(&ws, (LoginRequestHandler *)handlerFactory->createLoginRequestHandler()));
 	
 	beast::flat_buffer buffer;
 	ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
@@ -68,8 +68,11 @@ void WSServer::clientHandle(tcp::socket socket) {
 			request.msg = out.substr(3);
 
 			//first, the client need to connect to his user
-			LoginRequestHandler* login_Request_Handler = m_clients[&ws];
-			RequestResult res = login_Request_Handler->handleRequest(request);
+			RequestResult res = m_clients[&ws]->handleRequest(request);
+			if (res.newHandler != nullptr)
+			{
+				m_clients[&ws] = res.newHandler;
+			}
 			ws.write(net::buffer(res.msg));
 			//we need to change the map aaccording the responseresult
 			// 

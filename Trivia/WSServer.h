@@ -33,7 +33,7 @@ private:
 	void getCommands();
 	void serve();
 	void clientHandle(tcp::socket socket);
-	std::map<websocket::stream<tcp::socket>*, LoginRequestHandler*> m_clients;
+	std::map<websocket::stream<tcp::socket>*, IRequestHandler*> m_clients;
 	IDatabase* m_database;
 	time_t _time; 
 
