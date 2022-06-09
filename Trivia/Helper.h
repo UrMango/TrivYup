@@ -5,6 +5,7 @@
 #include <boost/beast.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
+#include <json.hpp>
 
 #include "IRequestHandler.h"
 using tcp = boost::asio::ip::tcp;
@@ -33,12 +34,3 @@ struct RequestResult {
 	IRequestHandler* newHandler;
 };
 
-struct RoomData
-{
-	unsigned int id = 0;
-	std::string name = "";
-	unsigned int maxPlayers = 0;
-	unsigned int numOfQuestionsInGame = 0;
-	unsigned int timePerQuestion = 0;
-	unsigned int isActive = 0; //0-not active, 1-active
-};

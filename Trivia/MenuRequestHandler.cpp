@@ -24,6 +24,25 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request) cons
 	}
 	//do deserialize for sign up request
 	//SignupRequest newUser = JsonRequestPacketDeserializer::deserializeSignupRequest(request.msg);
-
+	switch (request.msgCode) {
+	case CREATE_ROOM:
+		
+		break;
+	case GET_ROOMS:
+		// code block
+		break;
+	case GET_PLAYERS_IN_ROOM:
+		// code block
+		break;
+	case JOIN_ROOM:
+		// code block
+		break;
+	case GET_STATISTICS:
+		// code block
+		break;
+	case LOG_OUT:
+		// code block
+		break;
+	}
 	return result;
 }
