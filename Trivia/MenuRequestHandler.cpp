@@ -1,10 +1,8 @@
 #include "MenuRequestHandler.h"
 
 
-MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory){}
-//LoginManager* m_loginManager;
-//StatisticsManager* m_statisticsManager;
-//IDatabase* m_database;
+MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory), m_loginManager(handlerFactory.getLoginManager()), m_statisticsManager(handlerFactory.getStatisticsManager()), m_database(handlerFactory.getIDatabase()){}
+
 MenuRequestHandler::~MenuRequestHandler() {}
 
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& request) const

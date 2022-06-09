@@ -4,6 +4,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* database) : m_database(d
 {
 	this->m_loginManager = new LoginManager(this->m_database);
 	this->m_statisticsManager = new StatisticsManager(this->m_database);
+	this->m_roomManager = new RoomManager();
 }
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
@@ -25,4 +26,9 @@ StatisticsManager& RequestHandlerFactory::getStatisticsManager() const
 IDatabase& RequestHandlerFactory::getIDatabase() const
 {
 	return *(this->m_database);
+}
+
+RoomManager& RequestHandlerFactory::getRoomManager() const
+{
+	return *(this->m_roomManager);
 }
