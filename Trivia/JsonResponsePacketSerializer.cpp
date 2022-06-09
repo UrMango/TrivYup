@@ -38,7 +38,7 @@ std::string JsonResponsePacketSerializer::serializeGetRoomResponse(GetRoomsRespo
 {
 	nlohmann::json json;
 	json["id"] = (int)ResponseCode::getRooms;
-	//json["rooms"] = GetRoomResponse.rooms;
+	json["rooms"] = GetRoomResponse.rooms;
 	return json.dump();
 }
 
