@@ -50,10 +50,10 @@ struct CreateRoomResponse {
 	unsigned int status;
 };
 struct GetRoomsResponse {
-	unsigned int status;
 	std::vector<RoomData> rooms;
 };
 struct GetPlayersInRoomResponse{
+	unsigned int status;
 	std::vector<string> players;
 };
 struct getHighScoreResponse {
@@ -65,8 +65,7 @@ struct getPersonalStatsResponse {
 	std::vector<string> statistics;
 };
 struct GetStatisticsResponse {
-
-
+	std::vector<std::string> userStats;
 };
 
 

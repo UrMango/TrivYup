@@ -47,6 +47,8 @@ std::string JsonResponsePacketSerializer::serializeGetPlayersInRoomrResponse(Get
 {
 
 	nlohmann::json json;
+	json["id"] = (int)ResponseCode::PlayersInRoom;
+	json["status"] = playersInRoomResponse.status;
 	json["players"] = playersInRoomResponse.players;
 	return json.dump();
 }
@@ -56,6 +58,7 @@ std::string JsonResponsePacketSerializer::serializejoinRoomResponse(JoinRoomResp
 {
 	nlohmann::json json;
 	json["id"] = (int)ResponseCode::JoinRoom;
+	json["status"] = joinRoomResponse.status;
 	return json.dump();
 }
 
@@ -63,13 +66,15 @@ std::string JsonResponsePacketSerializer::serializecreateRoomResponse(CreateRoom
 {
 	nlohmann::json json;
 	json["id"] = (int)ResponseCode::createRoom;
+	json["status"] = createRoomResponse.status;
 	return json.dump();
 }
 
 std::string JsonResponsePacketSerializer::serializeGetStatisticsResponse(GetStatisticsResponse StatisticsResponse)
 {
 	nlohmann::json json;
-	json["id"] = (int)ResponseCode::createRoom;
+	json["id"] = (int)ResponseCode::GetStatistics;
+	json["statistics"] = StatisticsResponse.userStats;
 	return json.dump();
 }
 
