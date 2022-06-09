@@ -2,6 +2,8 @@ import ws from "../../services/websocket";
 import { ClientToServerCode } from "../../helpers/consts";
 import { useState } from "react";
 
+import "./Register.css";
+
 const Register = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -13,19 +15,19 @@ const Register = () => {
 	}
 
 	return (
-		<div>
-			<p>Register</p>
-			<form>
-				<label>Username: </label>
-				<input type="text" onChange={e => setUsername(e.target.value)} id="username" name="username"/>
+		<div className="register">
+			<h2>Register</h2>
+			<form className="form">
+				<label className="username">Username</label>
+				<input className="usernameInput" type="text" onChange={e => setUsername(e.target.value)} id="username" name="username"/>
 				<br/>
-				<label>Password: </label>
-				<input type="password" onChange={e => setPassword(e.target.value)} id="pwd" name="pwd"/>
+				<label className="email">Email</label>
+				<input className="emailInput" type="text" onChange={e => setEmail(e.target.value)} id="email" name="email"/>
 				<br/>
-				<label>Email: </label>
-				<input type="text"  onChange={e => setEmail(e.target.value)} id="email" name="email"/>
+				<label className="password">Password</label>
+				<input className="passwordInput" type="password" onChange={e => setPassword(e.target.value)} id="pwd" name="pwd"/>
 				<br/>
-				<button onClick={handleRegister} type="submit">Register</button>
+				<button className="submitBtn" onClick={handleRegister} type="submit">Sign up</button>
 			</form>
 		</div>
 	)

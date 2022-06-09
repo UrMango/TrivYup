@@ -39,32 +39,15 @@
 	white-space: nowrap;
 }
 
-.login .form .usernameInput {
+.login .form input {
 	margin-bottom: 0.5rem;
 }
 
 .login .form .submitBtn {
-	margin-top: 30px;
+	margin-top: 10px;
 	min-height: 42px;
 	padding-bottom: 0px;
 	background-color: rgb(204, 204, 204);
-	color: white;
-	box-shadow: none;
-	cursor: not-allowed;
-	border: 0;
-	border-radius: 4px;
-	font-size: 0.875rem;
-	font-weight: bold;
-	text-align: center;
-	text-decoration: none;
-    min-width: 102px;
-	padding: 0px 16px 4px;
-	position: relative;
-	width: 100%;
-}
-
-.login .form .submitBtn:--available {
-	background-color: rgb(255, 0, 0);
 	color: white;
 	box-shadow: none;
 	cursor: not-allowed;
