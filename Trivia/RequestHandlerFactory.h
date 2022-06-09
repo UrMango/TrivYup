@@ -12,7 +12,9 @@ public:
 	~RequestHandlerFactory() {};
 
 	LoginRequestHandler* createLoginRequestHandler();
-	LoginManager getLoginManager();
+	LoginManager& getLoginManager() const;
+	StatisticsManager& getStatisticsManager() const;
+	IDatabase& getIDatabase() const;
 private:
 	LoginManager* m_loginManager;
 	StatisticsManager* m_statisticsManager;

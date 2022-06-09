@@ -2,7 +2,9 @@
 
 
 MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory){}
-
+//LoginManager* m_loginManager;
+//StatisticsManager* m_statisticsManager;
+//IDatabase* m_database;
 MenuRequestHandler::~MenuRequestHandler() {}
 
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& request) const

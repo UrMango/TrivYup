@@ -11,6 +11,10 @@ private:
 	//RoomManager& m_roomManager;
 	//StatisticsManager& m_statisticsManager;
 	RequestHandlerFactory& m_handlerFactory;
+	LoginManager* m_loginManager;
+	StatisticsManager* m_statisticsManager;
+	IDatabase* m_database;
+	
 
 public:
 	MenuRequestHandler(RequestHandlerFactory& handlerFactory);

@@ -12,7 +12,17 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 	return (LoginRequestHandler*)new LoginRequestHandler(*rr, *this->m_loginManager);
 }
 
-LoginManager RequestHandlerFactory::getLoginManager()
+LoginManager& RequestHandlerFactory::getLoginManager() const
 {
-	return *this->m_loginManager;
+	return *(this->m_loginManager);
+}
+
+StatisticsManager& RequestHandlerFactory::getStatisticsManager() const
+{
+	return *(this->m_statisticsManager);
+}
+
+IDatabase& RequestHandlerFactory::getIDatabase() const
+{
+	return *(this->m_database);
 }
