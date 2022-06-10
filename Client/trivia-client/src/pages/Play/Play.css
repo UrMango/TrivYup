@@ -24,7 +24,6 @@
     padding: 16px;
     border-radius: 4px;
     box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px;
-	margin-bottom: 25px;
 }
 
 .playPage .form .gamePin{
@@ -76,24 +75,86 @@
 	font-size: 25px;
 }
 
-.playPage .openGames .textupper {
+.openGames .textupper {
 	color: white;
 	text-align: center;
-	margin-bottom: 20px;
+	font-size: 20px;
+	margin-bottom: 10px;
 }
 
-.playPage .openGames .games .game {
+.openGames .games {
+	width: 100vw;
+	height: 25vh;
+	background-color: #240a4e75;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	justify-items: center;
+	bottom: 0;
+}
+
+.openGames .games .game {
+	margin-left: 15px;
+	margin-right: 15px;
+	height: calc(70% * 1vh);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 20px;
+	width: fit-content;
+	padding: 20px 40px 20px 40px;
 	border: 1px rgb(204, 204, 204);
 	box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px 0px;
 	background-color: #ffffff;
 	border-radius: 4px;
+	cursor: pointer;
 }
 
+.openGames {
+	position: fixed;
+	bottom: 0;
+}
 
-.playPage .openGames .games .game .joinBtn {
-	/**/
+.openGames .games .game .gameauthor {
+	color:rgb(134, 134, 134);
+	font-weight: 600;
+}
+
+.openGames .games .game .gamename {
+	font-weight: 800;
+}
+
+.openGames .games .game .gameplayers {
+	font-size: 15px;
+	font-weight: 500;
+}
+
+.openGames .games .game .gamecode{
+	font-weight:700;
+	font-size: 25px;
+	letter-spacing: 5px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+.openGames .games .game .joinBtn {
+	font-size: 1rem;
+	width: 80%;
+    margin: 0px;
+    border: 0px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: bottom;
+    box-shadow: rgb(0 0 0 / 25%) 0px -4px inset;
+    background: rgb(51, 51, 51);
+    color: rgb(255, 255, 255);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    min-width: 48px;
+    min-height: 40px;
+    padding: 0px 16px 4px;
+    position: relative;
 }

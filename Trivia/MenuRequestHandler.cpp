@@ -42,7 +42,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	
 	switch (request.msgCode) {
 		case CREATE_ROOM:
-			createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
+				createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
 
 			(this->_roomID)++;
 
@@ -78,7 +78,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return result;
 			break;
 		case JOIN_ROOM:
-			joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(request.msg);
+			joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest	(request.msg);
 			m_roomManager.addUserInRoom(joinRoomRequest.roomid, this->m_user);
 			JoinRoomResponse.status = 1;
 			result.msg = JsonResponsePacketSerializer::serializejoinRoomResponse(JoinRoomResponse);

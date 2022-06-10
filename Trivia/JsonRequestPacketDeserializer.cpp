@@ -48,7 +48,7 @@ JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const 
 	joinRoomRequest.roomid = j["roomid"];
 	return joinRoomRequest;
 }
-
+	
 CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const string userMsg)
 {
 	// create fason object from string 
