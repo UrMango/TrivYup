@@ -47,10 +47,10 @@
 	margin-top: 10px;
 	min-height: 42px;
 	padding-bottom: 0px;
-	background-color: rgb(204, 204, 204);
+	background-color: rgb(38, 137, 12);;
 	color: white;
 	box-shadow: none;
-	cursor: not-allowed;
+	cursor: pointer;
 	border: 0;
 	border-radius: 4px;
 	font-size: 0.875rem;

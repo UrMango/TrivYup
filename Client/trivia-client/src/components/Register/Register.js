@@ -15,6 +15,8 @@ const Register = () => {
 	}
 
 	return (
+	<>
+	<div className='space'></div>
 		<div className="register">
 			<h2>Register</h2>
 			<form className="form">
@@ -30,6 +32,7 @@ const Register = () => {
 				<button className="submitBtn" onClick={handleRegister} type="submit">Sign up</button>
 			</form>
 		</div>
+	</>
 	)
 }
 

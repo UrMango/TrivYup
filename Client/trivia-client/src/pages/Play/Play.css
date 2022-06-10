@@ -1,0 +1,99 @@
+
+.playPage {
+	background-image: url("../../assets/images/bg-site2.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	width: 100%;
+	height: calc(100vh - 3.5rem); /*3.5rem - height of navbar*/
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.playPage .logo {
+	justify-self:center;
+	width: 210px;
+	margin-bottom: 20px;
+}
+
+.playPage .form {
+	background-color: rgb(255, 255, 255);
+    padding: 16px;
+    border-radius: 4px;
+    box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px;
+	margin-bottom: 25px;
+}
+
+.playPage .form .gamePin{
+	min-height: 2.375rem;
+    max-height: 48px;
+    line-height: 2.375rem;
+    text-align: center;
+    max-width: 20rem;
+    min-width: 6.25rem;
+    color: rgb(51, 51, 51);
+    outline: none;
+    font-size: 1rem;
+    border-radius: 4px;
+    box-sizing: border-box;
+	
+	font-weight: 700;
+    border: 0.125rem solid rgb(204, 204, 204);
+    background-color: rgb(255, 255, 255);
+    padding: 0.25rem 0.375rem;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+	margin-bottom: 10px;
+}
+
+.playPage .form .enterBtn{
+	font-size: 1rem;
+	width: 100%;
+    margin: 0px;
+    border: 0px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: bottom;
+    box-shadow: rgb(0 0 0 / 25%) 0px -4px inset;
+    background: rgb(51, 51, 51);
+    color: rgb(255, 255, 255);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 0px 16px 4px;
+    position: relative;
+}
+
+.playPage .or {
+	color: white;
+	margin-bottom: 25px;
+	font-size: 25px;
+}
+
+.playPage .openGames .textupper {
+	color: white;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.playPage .openGames .games .game {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px;
+	border: 1px rgb(204, 204, 204);
+	box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px 0px;
+	background-color: #ffffff;
+	border-radius: 4px;
+}
+
+
+.playPage .openGames .games .game .joinBtn {
+	/**/
+}

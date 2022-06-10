@@ -33,6 +33,8 @@ const Login = () => {
 	}, [isLogged]);
 
 	return (
+	<>
+	<div className='space'></div>
 		<div className="login">
 			<h2>Log in</h2>
 			<form className="form">
@@ -71,6 +73,7 @@ const Login = () => {
 				<button className="submitBtn" onClick={handleLogin} type="submit" style={{display: "block"}}>Log in</button>
 			</form>
 		</div>
+	</>
 	)
 }
 

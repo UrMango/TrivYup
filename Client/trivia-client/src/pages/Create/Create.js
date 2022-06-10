@@ -1,9 +1,16 @@
+import { Navigate } from "react-router";
+import { useSelector } from "react-redux";
 
 const Create = () => {
+	const username = useSelector(state => state.user?.data?.username);
+
 	return (
-		<div>
-			Create Room
-		</div>
+		<>
+			{!username && <Navigate to="/auth/login"/>}
+			<div>
+				Create Room
+			</div>
+		</>
 	)
 }
 
