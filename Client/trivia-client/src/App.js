@@ -25,7 +25,7 @@ const App = () => {
     socket.onmessage = (e) => {
       
       const msg = JSON.parse(e.data);
-
+      console.log(msg);
       switch (msg.id) {
         case ResponseCode.login:
           if(msg.status == LoginCode.loginSuccess) {
@@ -41,6 +41,9 @@ const App = () => {
           } else if(msg.status == RegisterCode.signupError) {
             console.log("Register failed.");
           }
+          break;
+        case ResponseCode.getRooms:
+          dispatch({type: "ROOM_LIST", payload: msg})
           break;
         
         default:
