@@ -60,10 +60,7 @@ struct getHighScoreResponse {
 	unsigned int status;
 	std::vector<string> statistics;
 };
-struct getPersonalStatsResponse {
-	unsigned int status;
-	std::vector<string> statistics;
-};
+
 struct GetStatisticsResponse {
 	std::vector<std::string> userStats;
 };
@@ -96,5 +93,9 @@ public:
 	static std::string serializejoinRoomResponse(JoinRoomResponse joinRoomResponse);
 	static std::string serializecreateRoomResponse(CreateRoomResponse createRoomResponse);
 	static std::string serializeGetStatisticsResponse(GetStatisticsResponse StatisticsResponse);
+	static std::string serializeCloseRoomResponse(CloseRoomResponse);
+	static std::string serializeStartGameResponse(StartGameResponse);
+	static std::string serializeGetRoomStateResponse(GetRoomStateResponse);
+	static std::string serializeLeaveRoomResponse(LeaveRoomResponse);
 };
 
