@@ -1,0 +1,74 @@
+.register {
+	color: rgb(51, 51, 51);
+	display: flex;
+	flex-direction:column;
+	justify-content: center;
+	padding: 1.5rem;
+	width: 100vw;
+	max-width: 26rem;
+	box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px 0px;
+	background-color: white;
+	border-radius: 4px;
+}
+
+.register .form {
+	margin-top: 1.5rem;
+}
+
+.register .form label {
+	color: rgb(51, 51, 51);
+	font-weight: bold;
+}
+
+.register .form input {
+	box-sizing:border-box;
+	min-height: 2.75rem;
+	width: 100%;
+	border: 1px solid rgb(178, 178, 178);
+	border-radius: 0.25rem;
+	color: rgb(51, 51, 51);
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	letter-spacing: 0.2px;
+	transition: all 0.2s ease 0s;
+	appearance: none;
+	text-overflow: ellipsis;
+	resize: none;
+	overflow: auto;
+	padding: 0px 1rem;
+	white-space: nowrap;
+}
+
+.register .form input {
+	margin-bottom: 0.5rem;
+}
+
+.register .form .submitBtn {
+	margin-top: 10px;
+	min-height: 42px;
+	padding-bottom: 0px;
+	background-color: rgb(38, 137, 12);;
+	color: white;
+	box-shadow: none;
+	cursor: pointer;
+	border: 0;
+	border-radius: 4px;
+	font-size: 0.875rem;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+    min-width: 102px;
+	padding: 0px 16px 4px;
+	position: relative;
+	width: 100%;
+}
+
+.register h2 {
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-align: center;
+	line-height: 140%;
+}
+
+
+

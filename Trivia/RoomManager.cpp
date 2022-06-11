@@ -30,7 +30,7 @@ std::vector<string> RoomManager::getAllUsersInRoom(const int ID)const
 void RoomManager::addUserInRoom(const int ID, const LoggedUser user)const
 {
     for (auto& it : m_rooms) {
-        if (it.first == ID) {
+        if (it.first == ID && it.second.getAllUsers().size() < it.second.getRoomData().maxPlayers) {
             return it.second.addUser(user);
         }
     }
