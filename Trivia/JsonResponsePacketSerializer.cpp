@@ -75,7 +75,50 @@ std::string JsonResponsePacketSerializer::serializeGetStatisticsResponse(GetStat
 {
 	nlohmann::json json;
 	json["id"] = (int)ResponseCode::GetStatistics;
-	json["statistics"] = StatisticsResponse.userStats;
+	json["statistics"] = StatisticsResponse.statistics;
+	return json.dump();
+}
+std::string JsonResponsePacketSerializer::serializeGetPersonalStatsResponse(GetPersonalStatsResponse getPersonalStats)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::PersonalStats;
+	json["statistics"] = getPersonalStats.status;
 	return json.dump();
 }
 
+std::string JsonResponsePacketSerializer::serializeCloseRoomResponse(CloseRoomResponse closeRoomResponse)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::CloseRoom;
+	json["status"] = closeRoomResponse.status;
+	return json.dump();
+}
+
+std::string JsonResponsePacketSerializer::serializeStartGameResponse(StartGameResponse startGameResponse)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::StartGame;
+	json["status"] = startGameResponse.status;
+	return json.dump();
+}
+
+
+std::string JsonResponsePacketSerializer::serializeGetRoomStateResponse(GetRoomStateResponse getRoomStateResponse)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::GetRoomState;
+	json["status"] = getRoomStateResponse.status;
+	json["hasGameBegun"] = getRoomStateResponse.hasGameBegun;
+	json["players"] = getRoomStateResponse.players;
+	json["questionCount"] = getRoomStateResponse.questionCount;
+	json["answerTimeout"] = getRoomStateResponse.answerTimeout;
+	return json.dump();
+}
+
+std::string JsonResponsePacketSerializer::serializeLeaveRoomResponse(LeaveRoomResponse leaveRoomResponse)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::LeaveRoom;
+	json["status"] = leaveRoomResponse.status;
+	return json.dump();
+}

@@ -25,6 +25,10 @@ enum ResponseCode
 	HighScore,
 	PersonalStats,
 	GetStatistics,
+	CloseRoom, 
+	StartGame, 
+	GetRoomState,
+	LeaveRoom,
 };
 
 enum LoginCode
@@ -59,16 +63,30 @@ struct GetPlayersInRoomResponse{
 	std::vector<string> players;
 };
 struct getHighScoreResponse {
-	unsigned int status;
 	std::vector<string> statistics;
 };
-struct getPersonalStatsResponse {
-	unsigned int status;
-	std::vector<string> statistics;
-};
-
 struct GetStatisticsResponse {
-	std::vector<std::string> userStats;
+	std::vector<std::string> statistics;
+};
+struct CloseRoomResponse {
+	unsigned int status;
+};
+struct StartGameResponse {
+	unsigned int status;
+};
+struct GetRoomStateResponse {
+	unsigned int status;
+	bool hasGameBegun;
+	std::vector<string> players;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
+};
+struct LeaveRoomResponse {
+	unsigned int status;
+};
+struct GetPersonalStatsResponse {
+	unsigned int status;
+	std::vector<string> statistics;
 };
 class JsonResponsePacketSerializer
 {	
@@ -82,5 +100,10 @@ public:
 	static std::string serializejoinRoomResponse(JoinRoomResponse joinRoomResponse);
 	static std::string serializecreateRoomResponse(CreateRoomResponse createRoomResponse);
 	static std::string serializeGetStatisticsResponse(GetStatisticsResponse StatisticsResponse);
+	static std::string serializeGetPersonalStatsResponse(GetPersonalStatsResponse getPersonalStats);
+	static std::string serializeCloseRoomResponse(CloseRoomResponse closeRoomResponse);
+	static std::string serializeStartGameResponse(StartGameResponse startGameResponse);
+	static std::string serializeGetRoomStateResponse(GetRoomStateResponse getRoomStateResponse);
+	static std::string serializeLeaveRoomResponse(LeaveRoomResponse leaveRoomResponse);
 };
 
