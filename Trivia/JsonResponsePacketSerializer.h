@@ -25,6 +25,10 @@ enum ResponseCode
 	HighScore,
 	PersonalStats,
 	GetStatistics,
+	CloseRoom, 
+	StartGame, 
+	GetRoomState,
+	LeaveRoom,
 };
 
 enum LoginCode
@@ -93,9 +97,9 @@ public:
 	static std::string serializejoinRoomResponse(JoinRoomResponse joinRoomResponse);
 	static std::string serializecreateRoomResponse(CreateRoomResponse createRoomResponse);
 	static std::string serializeGetStatisticsResponse(GetStatisticsResponse StatisticsResponse);
-	static std::string serializeCloseRoomResponse(CloseRoomResponse);
-	static std::string serializeStartGameResponse(StartGameResponse);
-	static std::string serializeGetRoomStateResponse(GetRoomStateResponse);
-	static std::string serializeLeaveRoomResponse(LeaveRoomResponse);
+	static std::string serializeCloseRoomResponse(CloseRoomResponse closeRoomResponse);
+	static std::string serializeStartGameResponse(StartGameResponse startGameResponse);
+	static std::string serializeGetRoomStateResponse(GetRoomStateResponse getRoomStateResponse);
+	static std::string serializeLeaveRoomResponse(LeaveRoomResponse leaveRoomResponse);
 };
 
