@@ -21,7 +21,11 @@ enum MessageType
 	JOIN_ROOM = 4,
 	HIGH_SCORE = 5,
 	LOG_OUT = 6,
-	GET_PERSONAL_STATS = 7
+	GET_PERSONAL_STATS = 7,
+	CLOSE_ROOM = 8,
+	START_GAME = 9,
+	GET_ROOM_STATE = 10,
+	LEAVE_ROOM = 11
 };
 
 struct RequestInfo {
