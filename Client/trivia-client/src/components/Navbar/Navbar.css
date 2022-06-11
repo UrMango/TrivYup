@@ -2,25 +2,55 @@
 	display: flex;
 	justify-content: center;
 	width: 100%;
-	height: 50px;
-	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.151);
-	z-index: 99999;
+	height: 3.5rem;
+	box-shadow: rgb(0 0 0 / 10%) 0px 2px 4px 0px;
+	background-color: white;
+	z-index: 99998;
 }
+
 .navbar .nav {
+	z-index: 10;
 	display: flex;
-	justify-content: center;
-	height: 50px;
+	align-items: center;
+	height: 55px;
 	position: fixed;
 	background-color: white;
-	
+}
+
+.logo {
+	display: flex;
+	position: fixed;
+	margin: 0px 2.5rem 0px 0px;
+	z-index: 99999;
+	left: 15px;
+	top: 15px;
 }
 
 .navbar .nav .nav-links {
-	width: 40vw;
+	font-weight: 700;
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
 	list-style-type: none;
+}
+
+.navbar .nav .nav-links .register {
+	padding: .5rem 1rem;
+	border-radius: .25rem;
+	color: white;
+	background-color: #26890C;
+	margin: 0;
+	transition: 0.3s;
+	position: relative;
+}
+
+.navbar .nav .nav-links .register:hover {
+	background-color: #60b34c;
+}
+
+.navbar .nav .nav-links li {
+	margin-right: 40px;
+	margin-left: 40px;
 }
 
 .navbar .nav .nav-links a {

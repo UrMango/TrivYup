@@ -31,6 +31,7 @@ const App = () => {
           if(msg.status == LoginCode.loginSuccess) {
             dispatch(login());
           } else if(msg.status == LoginCode.loginError) {
+            dispatch(logout());
             console.log("Login failed.");
           }
           break;
