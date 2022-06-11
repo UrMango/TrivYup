@@ -1,5 +1,6 @@
 import socket from "./services/websocket";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 
 import Home from "./pages/Home/Home";
 import Play from "./pages/Play/Play";
@@ -17,9 +18,19 @@ import { login, logout } from "./actions/userActions";
 
 const App = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   useEffect(() => {
     socket.onopen = (e) => {
+      window.addEventListener("beforeunload", function (e) {
+        var confirmationMessage = 'It looks like you have been editing something. '
+                    + 'If you leave before saving, your changes will be lost.';
+      
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+      });
+      
       console.log("Connected to server successfuly!");
     };
   
@@ -46,7 +57,26 @@ const App = () => {
         case ResponseCode.getRooms:
           dispatch({type: "ROOM_LIST", payload: msg});
           break;
-        
+        case ResponseCode.createRoom:
+          if(msg.status == 1) {
+            dispatch({type: "CURR_ROOM", payload: msg.roomData});
+            navigate("/play/" + msg.roomData.id, { state: { creator: true, data: msg.roomData }});
+          }
+          else {
+            navigate("/create");
+          }
+          break;
+        case ResponseCode.JoinRoom:
+          if(msg.status == 0) {
+            dispatch({type: "CURR_ROOM", payload: msg.roomData});
+          }
+          else {
+            navigate("/play");
+          }
+          break;
+        // case "startgame":
+        //   navigate(location.pathname + "?started");
+        //   break;
         default:
           break;
       }
@@ -59,7 +89,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <Router>
         <Navbar/>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -70,7 +99,6 @@ const App = () => {
           <Route path="/auth/login" element={<Auth type="login"/>} />
           <Route path="/auth/register" element={<Auth type="register"/>} />
         </Routes>
-      </Router>
     </div>
   );
 }

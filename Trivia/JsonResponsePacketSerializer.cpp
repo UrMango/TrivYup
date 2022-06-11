@@ -67,6 +67,7 @@ std::string JsonResponsePacketSerializer::serializecreateRoomResponse(CreateRoom
 	nlohmann::json json;
 	json["id"] = (int)ResponseCode::createRoom;
 	json["status"] = createRoomResponse.status;
+	json["roomData"] = createRoomResponse.data;
 	return json.dump();
 }
 

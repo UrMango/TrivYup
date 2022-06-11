@@ -45,9 +45,11 @@ struct LogoutReponse {
 };
 struct JoinRoomResponse{
 	unsigned int status;
+	RoomData data;
 };
 struct CreateRoomResponse {
 	unsigned int status;
+	RoomData data;
 };
 struct GetRoomsResponse {
 	std::vector<RoomData> rooms;

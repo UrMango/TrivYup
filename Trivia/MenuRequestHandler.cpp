@@ -24,6 +24,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	}
 	CreateRoomRequest createRoom;
 	RoomData roomD;
+	RoomData* roomDP;
 	CreateRoomResponse createroomResponse;
 
 	GetRoomsResponse getRoomsResponse;
@@ -59,6 +60,8 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 
 			//serialize
 			createroomResponse.status = 1;
+			createroomResponse.data = roomD;
+
 			result.msg = JsonResponsePacketSerializer::serializecreateRoomResponse(createroomResponse);
 			result.newHandler = nullptr;
 			return result;
@@ -79,8 +82,16 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			break;
 		case JOIN_ROOM:
 			joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest	(request.msg);
-			m_roomManager.addUserInRoom(joinRoomRequest.roomid, this->m_user);
-			JoinRoomResponse.status = 1;
+			roomDP = m_roomManager.addUserInRoom(joinRoomRequest.roomid, this->m_user);
+			if (roomDP) {
+				JoinRoomResponse.status = 0;
+				JoinRoomResponse.data = *roomDP;
+			}
+			else
+			{
+				JoinRoomResponse.status = 1;
+			}
+
 			result.msg = JsonResponsePacketSerializer::serializejoinRoomResponse(JoinRoomResponse);
 			result.newHandler = nullptr;
 			return result;

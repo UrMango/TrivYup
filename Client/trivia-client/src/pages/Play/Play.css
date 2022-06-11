@@ -115,6 +115,19 @@
 	bottom: 0;
 }
 
+.openGames .nogames {
+	color: white;
+	font-size: 20px;
+	text-align: center;
+	font-weight: 400;
+}
+
+.openGames .nogames a {
+	color: white;
+	font-weight: 700;
+	text-decoration: none;
+}
+
 .openGames .games .game .gameauthor {
 	color:rgb(134, 134, 134);
 	font-weight: 600;

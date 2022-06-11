@@ -23,6 +23,8 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request)
 		struct RequestResult result;
 		result.msg = JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("You must first log in or sign up"));
 		result.newHandler = nullptr; 
+
+		return result;
 	}
 	if (request.msgCode == MT_CLIENT_LOG_IN)
 	{

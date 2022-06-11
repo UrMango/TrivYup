@@ -1,16 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 import "./GameBox.css";
 
 const GameBox = ({username, gamename, playersLen, maxPlayers, gameCode}) => {
-	
+	const navigate = useNavigate();
+
 	const handleJoinGame = e => {
 		e.preventDefault();
 		// console.log(e);
 		if(e.target.id.length > 0) {
 			console.log("Game code is: " + e.target.id);
 
-			//send to server
+			navigate("/play/" + e.target.id);
 			return;
 		}
 	}

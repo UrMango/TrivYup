@@ -5,8 +5,7 @@ import { useSelector } from "react-redux";
 import Logo from "../../assets/images/Logo-1150p-white.png";
 import { useEffect, useState } from "react";
 import GameBox from "../../components/GameBox/GameBox";
-
-
+import { Link } from "react-router-dom";
 import "./Play.css";
 
 const Play = () => {
@@ -14,7 +13,7 @@ const Play = () => {
 
 	const [gamepin, setGamePin] = useState(0);
 
-	const rooms = useSelector(state => state.rooms);
+	const { rooms } = useSelector(state => state.rooms);
 
 	const navigate = useNavigate();
 
@@ -22,6 +21,8 @@ const Play = () => {
 	const roomList = rooms.map(room => {
 		return <GameBox key={room.id} username={username} gamename={room.name} maxPlayers={room.maxPlayers} gameCode={room.id} />
 	})
+
+	console.log(roomList);
 
 	useEffect(() => {
 		ws.send(ClientToServerCode.GET_ROOMS);
@@ -60,7 +61,7 @@ const Play = () => {
 			</div>
 			<div className="openGames">
 				<h4 className="textupper">Games you can join:</h4>
-				<div className="games">{roomList}
+				<div className="games">{roomList.length > 0 ? roomList : <h4 className="nogames" >No games open :(<br/><Link to="/create">Try to make your own!</Link></h4>}
 					{/* <GameBox username="Mango" gamename="Cool game" playersLen={1} maxPlayers={20} gameCode={12023}/>
 					<GameBox username="Shirel" gamename="Hello" playersLen={2} maxPlayers={10} gameCode={40239}/> */}
 				</div>
