@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 
 import Home from "./pages/Home/Home";
 import Play from "./pages/Play/Play";
+import Game from "./pages/Game/Game";
 import Create from "./pages/Create/Create";
 import Auth from "./pages/Auth/Auth";
 import Navbar from "./components/Navbar/Navbar";
@@ -43,7 +44,7 @@ const App = () => {
           }
           break;
         case ResponseCode.getRooms:
-          dispatch({type: "ROOM_LIST", payload: msg})
+          dispatch({type: "ROOM_LIST", payload: msg});
           break;
         
         default:
@@ -63,6 +64,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/play" element={<Play />} />
+          <Route path="/play/:gameId" element={<Game />} />
           <Route path="/create" element={<Create />} />
           <Route path="/auth" element={<Navigate to="/auth/login"/>} />
           <Route path="/auth/login" element={<Auth type="login"/>} />

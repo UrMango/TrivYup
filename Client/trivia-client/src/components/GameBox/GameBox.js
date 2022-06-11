@@ -17,9 +17,9 @@ const GameBox = ({username, gamename, playersLen, maxPlayers, gameCode}) => {
 
 	return (
 		<div className="gamebox">
-			<h4 className="gameauthor">{username}</h4>
+			{/* <h4 className="gameauthor">{username}</h4> */}
+			<h4 className="gameauthor">Max players: {maxPlayers}</h4>
 			<h2 className="gamename">{gamename}</h2>
-			<h5 className="gameplayers">{playersLen}/{maxPlayers}</h5>
 			<h3 className="gamecode">{gameCode}</h3>
 			<button className="joinBtn" id={gameCode} onClick={handleJoinGame}>Join</button>
 		</div>			

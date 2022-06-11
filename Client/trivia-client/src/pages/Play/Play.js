@@ -1,6 +1,6 @@
 import ws from "../../services/websocket";
 import { ClientToServerCode } from "../../helpers/consts";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import Logo from "../../assets/images/Logo-1150p-white.png";
 import { useEffect, useState } from "react";
@@ -16,9 +16,11 @@ const Play = () => {
 
 	const rooms = useSelector(state => state.rooms);
 
+	const navigate = useNavigate();
+
 	// since `todos` is an array, we can loop over it
 	const roomList = rooms.map(room => {
-		return <GameBox username={username} gamename={room.name} maxPlayers={room.maxPlayers} gameCode={room.id} />
+		return <GameBox key={room.id} username={username} gamename={room.name} maxPlayers={room.maxPlayers} gameCode={room.id} />
 	})
 
 	useEffect(() => {
@@ -31,12 +33,14 @@ const Play = () => {
 		if(e.target.id.length > 0) {
 			console.log("Game code is: " + e.target.id);
 
-			//send to server
+			navigate("/play/" + e.target.id);
 			return;
 		}
 		
 		console.log("Game code is: " + gamepin);
-		ws.send(ClientToServerCode.JOIN_ROOM + JSON.stringify({roomid: Number(gamepin)}));
+		navigate("/play/" + gamepin);
+		
+		// ws.send(ClientToServerCode.JOIN_ROOM + JSON.stringify({roomid: Number(gamepin)}));
 
 		//send to server
 	}
