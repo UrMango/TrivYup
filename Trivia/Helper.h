@@ -19,8 +19,9 @@ enum MessageType
 	GET_ROOMS = 2,
 	GET_PLAYERS_IN_ROOM = 3,
 	JOIN_ROOM = 4,
-	GET_STATISTICS = 5,
+	HIGH_SCORE = 5,
 	LOG_OUT = 6,
+	GET_PERSONAL_STATS = 7
 };
 
 struct RequestInfo {

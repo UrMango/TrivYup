@@ -7,7 +7,7 @@ MenuRequestHandler::~MenuRequestHandler() {}
 
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
-	return (request.msgCode == CREATE_ROOM || request.msgCode == GET_ROOMS || request.msgCode == GET_PLAYERS_IN_ROOM || request.msgCode == JOIN_ROOM || request.msgCode == GET_STATISTICS || request.msgCode == LOG_OUT);
+	return (request.msgCode == CREATE_ROOM || request.msgCode == GET_ROOMS || request.msgCode == GET_PLAYERS_IN_ROOM || request.msgCode == JOIN_ROOM || request.msgCode == GET_PERSONAL_STATS || request.msgCode == HIGH_SCORE || request.msgCode == LOG_OUT);
 }
 
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request) 
@@ -34,12 +34,13 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	JoinRoomRequest joinRoomRequest;
 	JoinRoomResponse JoinRoomResponse;
 
-	GetStatisticsRequest getStatisticsRequest;
 	GetStatisticsResponse getStatisticsResponse;
 
 	LogoutReponse logoutReponse;
 	LogOutRoomRequest logOutRoomRequest;
 	
+	GetPersonalStatsResponse getPersonalStatsResponse;
+
 	switch (request.msgCode) {
 		case CREATE_ROOM:
 			createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
@@ -85,10 +86,15 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			result.newHandler = nullptr;
 			return result;
 			break;
-		case GET_STATISTICS:
-			getStatisticsRequest = JsonRequestPacketDeserializer::getStatisticsOfUser(request.msg);
-			getStatisticsResponse.userStats = m_statisticsManager.getUserStatistics(this->m_user.getUsername());
+		case HIGH_SCORE:
+			getStatisticsResponse.statistics = m_statisticsManager.getHighScore();
 			result.msg = JsonResponsePacketSerializer::serializeGetStatisticsResponse(getStatisticsResponse);
+			result.newHandler = nullptr;
+			return result;
+			break;
+		case GET_PERSONAL_STATS:
+			getPersonalStatsResponse.statistics = m_statisticsManager.getUserStatistics(this->m_user.getUsername());
+			result.msg = JsonResponsePacketSerializer::serializeGetPersonalStatsResponse(getPersonalStatsResponse);
 			result.newHandler = nullptr;
 			return result;
 			break;

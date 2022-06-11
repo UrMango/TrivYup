@@ -74,7 +74,14 @@ std::string JsonResponsePacketSerializer::serializeGetStatisticsResponse(GetStat
 {
 	nlohmann::json json;
 	json["id"] = (int)ResponseCode::GetStatistics;
-	json["statistics"] = StatisticsResponse.userStats;
+	json["statistics"] = StatisticsResponse.statistics;
+	return json.dump();
+}
+std::string JsonResponsePacketSerializer::serializeGetPersonalStatsResponse(GetPersonalStatsResponse getPersonalStats)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::PersonalStats;
+	json["statistics"] = getPersonalStats.status;
 	return json.dump();
 }
 
