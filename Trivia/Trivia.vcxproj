@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="Header.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Trivia.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Communicator.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="ErrorResponse.h" />
     <ClInclude Include="Helper.h" />

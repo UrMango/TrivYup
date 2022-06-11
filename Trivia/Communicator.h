@@ -14,7 +14,7 @@
 #include "JsonResponsePacketSerializer.h"
 #include "ErrorResponse.h"
 #include "IRequestHandler.h"
-#include "Communicator.h"
+#include "RequestHandlerFactory.h"
 
 
 namespace beast = boost::beast;
@@ -23,19 +23,18 @@ namespace websocket = beast::websocket;
 namespace net = boost::asio;
 using tcp = boost::asio::ip::tcp;
 
-class WSServer
+class Communicator
 {
 public:
-	WSServer();
-	~WSServer();
+	Communicator(RequestHandlerFactory& handlerFactory, IDatabase& database);
+	void startHandleRequests();
+	~Communicator();
 
 private:
-	void run();
-
-	IDatabase* m_database;
-	Communicator* m_communicator;
-	RequestHandlerFactory* m_handlerFactory;
-	time_t _time; 
-
+	void getCommands();
+	void handleNewClient(tcp::socket socket);
+	std::map<websocket::stream<tcp::socket>*, IRequestHandler*> m_clients;
+	RequestHandlerFactory& m_handlerFactory;
+	IDatabase& m_database;
+	time_t _time;
 };
-

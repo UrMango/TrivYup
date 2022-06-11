@@ -2,106 +2,15 @@
 WSServer::WSServer()
 {
 	std::cout << "Server Started!" << std::endl;
-	_time = time(0);
-
 	m_database = new SqliteDataBase();
-
-	this->serve();
+	m_handlerFactory = new RequestHandlerFactory(m_database);
+	m_communicator = new Communicator(*m_handlerFactory, *m_database);
+	this->run();
 }
 
-WSServer::~WSServer()
+void WSServer::run()
 {
+	m_communicator->startHandleRequests();
 }
 
-void WSServer::serve()
-{
-	auto const address = net::ip::make_address("127.0.0.1");
-	auto const port = static_cast<unsigned short>(std::atoi("8083"));
-
-	net::io_context ioc{ 1 };
-	tcp::acceptor acceptor{ ioc, {address, port} };
-
-	///if the user enter exit </summary>
-	std::thread commands(&WSServer::getCommands, this);
-
-	//accept clients
-	while (true)
-	{
-		tcp::socket socket{ ioc };
-		acceptor.accept(socket);
-		std::thread(&WSServer::clientHandle, this, std::move(socket)).detach();
-	}
-}
-
-void WSServer::clientHandle(tcp::socket socket) {
-	// socket will be const - mutable should be used
-	websocket::stream<tcp::socket> ws{ std::move(const_cast<tcp::socket&>(socket)) };
-	// Accept the websocket handshake
-	ws.accept();
-
-	std::cout << "Connection succesfuly made!" << std::endl;
-
-	RequestHandlerFactory* handlerFactory = new RequestHandlerFactory(this->m_database);
-	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, IRequestHandler*>(&ws, (LoginRequestHandler *)handlerFactory->createLoginRequestHandler()));
-	
-	beast::flat_buffer buffer;
-	ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
-
-	while (true)
-	{
-		try
-		{
-			beast::flat_buffer buffer;
-
-			// Read a message
-			ws.read(buffer);
-			auto out = beast::buffers_to_string(buffer.cdata());
-
-			// get the message code
-			std::string str2 = out.substr(0, 3);
-			int msgCode = atoi(str2.c_str());
-
-			//insert field to RequestInfo struct
-			struct RequestInfo request;
-			request.msgCode = msgCode;
-			request.msgTime = ctime(&_time);
-			request.msg = out.substr(3);
-
-			//first, the client need to connect to his user
-			RequestResult res = m_clients[&ws]->handleRequest(request);
-			if (res.newHandler != nullptr)
-			{
-				m_clients[&ws] = res.newHandler;
-			}
-			ws.write(net::buffer(res.msg));
-			//we need to change the map aaccording the responseresult
-			// 
-			//std::cout << out << std::endl;
-			//sent data
-			//ws.write(buffer.data());
-		}
-		catch (beast::system_error const& e)
-		{
-			if (e.code() != websocket::error::closed)
-			{
-				std::cout << "Exception was catch in function clientHandler , what=" << e.what() << std::endl;
-				break;
-			}
-		}
-		//ws.close();
-	}
-}
-
-void WSServer::build_receive_message(const RequestInfo request, websocket::stream<tcp::socket> ws)
-{
-	
-} 
-
-void WSServer::getCommands()
-{
-	std::string command = "";
-	while (command != "EXIT") {
-		std::cin >> command;
-		_exit(1);
-	}
-}
+WSServer::~WSServer() {}
