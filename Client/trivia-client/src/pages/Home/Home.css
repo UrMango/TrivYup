@@ -51,6 +51,7 @@
 
 .feed .play-widget {
 	margin-top: 20px;
+	margin-bottom: 5px;
 	height: fit-content;
 	background-color: rgb(38, 137, 12);
 	color: white;

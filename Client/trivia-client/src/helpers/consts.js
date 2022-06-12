@@ -10,6 +10,10 @@ const ResponseCode = {
 	HighScore: 8,
 	PersonalStats: 9,
 	GetStatistics: 10,
+	CloseRoom: 11, 
+	StartGame: 12, 
+	GetRoomState: 13,
+	LeaveRoom: 14,
 }
 
 const LoginCode = {
@@ -31,6 +35,12 @@ const ClientToServerCode = {
 	JOIN_ROOM: 208,
 	GET_STATISTICS: 209,
 	LOG_OUT: 210,
+	HIGH_SCORE: 211,
+	GET_PERSONAL_STATS: 212,
+	CLOSE_ROOM: 213,
+	START_GAME: 214,
+	GET_ROOM_STATE: 215,
+	LEAVE_ROOM: 216
 }
 
 export {

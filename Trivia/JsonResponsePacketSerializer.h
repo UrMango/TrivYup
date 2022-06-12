@@ -85,7 +85,6 @@ struct LeaveRoomResponse {
 	unsigned int status;
 };
 struct GetPersonalStatsResponse {
-	unsigned int status;
 	std::vector<string> statistics;
 };
 class JsonResponsePacketSerializer

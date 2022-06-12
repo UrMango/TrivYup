@@ -1,0 +1,24 @@
+.statistics {
+	margin-top: -70px;
+	height: fit-content;
+}
+
+.statistics .icon {
+	width: 20px; 
+	margin-right: 7px;
+	margin-bottom: -2px;
+}
+
+.statistics .title {
+	margin-bottom: 10px;
+}
+
+.statistics .statistic {
+	font-size: 15px;
+	font-weight: 500;
+}
+
+.statistics .loading {
+	font-size: 15px;
+	font-weight: 500;
+}
