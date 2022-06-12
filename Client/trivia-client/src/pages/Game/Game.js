@@ -16,6 +16,9 @@ const Game = (props) => {
 	const { gameId } = useParams();
 	const state = useLocation().state;
 	
+	useEffect(() => {
+		console.log("sdsd");
+	}, []);
 	return (
 		<>
 			{!username && <Navigate to="/auth/login"/>}

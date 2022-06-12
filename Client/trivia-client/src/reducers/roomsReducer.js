@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
 	currentRoom: {},
-	rooms: []
+	rooms: [],
+	players: []
 };
 
 const roomsReducer = (state = INITIAL_STATE, action) => {
@@ -9,6 +10,8 @@ const roomsReducer = (state = INITIAL_STATE, action) => {
             return {...state, rooms: action.payload.rooms };
         case 'CURR_ROOM':
             return {...state, currentRoom: action.payload };
+        case 'PLAYERS':
+            return {...state, players: action.payload };
         default:
             return state;
     }

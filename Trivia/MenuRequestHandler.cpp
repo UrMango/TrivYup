@@ -40,16 +40,31 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	LogoutReponse logoutReponse;
 	LogOutRoomRequest logOutRoomRequest;
 	
+	LeaveRoomResponse leaveRoomResponse;
+
 	GetPersonalStatsResponse getPersonalStatsResponse;
+
+	int randomId;
+	bool found = false;
 
 	switch (request.msgCode) {
 		case CREATE_ROOM:
-				createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
+			createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
 
-			(this->_roomID)++;
+			while (!found) {
+				srand((unsigned)time(0));
+				randomId = (rand() % 999999) + 100000;
+
+				std::vector<RoomData> rooms = this->m_roomManager.getRooms();
+				if (rooms.size() < 1) found = true;
+				for (auto& it : rooms) {
+					if (it.id != randomId)
+						found = true;
+				}
+			}
 
 			//put data
-			roomD.id = _roomID;
+			roomD.id = randomId;
 			roomD.isActive = 0;
 			roomD.maxPlayers = createRoom.maxUsers;
 			roomD.name = createRoom.roomName;
@@ -75,8 +90,11 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			break;
 		case GET_PLAYERS_IN_ROOM:
 			getPlayersInRoom = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(request.msg);
-			getPlayersInRoomResponse.status = 1;
 			getPlayersInRoomResponse.players = m_roomManager.getAllUsersInRoom(getPlayersInRoom.roomid);
+			getPlayersInRoomResponse.status = 0;
+			if (!getPlayersInRoomResponse.players.empty()) {
+				getPlayersInRoomResponse.status = 1;
+			}
 			result.msg = JsonResponsePacketSerializer::serializeGetPlayersInRoomrResponse(getPlayersInRoomResponse);
 			result.newHandler = nullptr;
 			return result;
@@ -111,7 +129,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			break;
 		case LOG_OUT:
 			logOutRoomRequest = JsonRequestPacketDeserializer::deserializeLogOutRoomRequest(request.msg);
-			m_roomManager.addUserInRoom(logOutRoomRequest.roomid, this->m_user);
+			m_roomManager.removeUserInRoom(logOutRoomRequest.roomid, this->m_user);
 			logoutReponse.status = 1;
 			result.msg = JsonResponsePacketSerializer::serializeLogoutResponse(logoutReponse);
 			result.newHandler = nullptr;

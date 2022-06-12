@@ -22,8 +22,6 @@ const Play = () => {
 		return <GameBox key={room.id} username={username} gamename={room.name} maxPlayers={room.maxPlayers} gameCode={room.id} />
 	})
 
-	console.log(roomList);
-
 	useEffect(() => {
 		ws.send(ClientToServerCode.GET_ROOMS);
 	}, []);

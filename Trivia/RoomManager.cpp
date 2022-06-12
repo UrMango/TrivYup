@@ -26,15 +26,21 @@ std::vector<string> RoomManager::getAllUsersInRoom(const int ID)const
             return it.second.getAllUsers();
         }
     }
+    return std::vector<string>();
 }
-RoomData* RoomManager::addUserInRoom(const int ID, const LoggedUser user)const
+RoomData* RoomManager::addUserInRoom(const int ID, LoggedUser user)const
 {
     for (auto& it : m_rooms) {
         if (it.first == ID && it.second.getAllUsers().size() < it.second.getRoomData().maxPlayers) {
+            std::vector<std::string> users = it.second.getAllUsers();
+            for (auto& it2 : users) {
+                if (it2 == user.getUsername())
+                    return nullptr;
+            }
             return it.second.addUser(user);
         }
     }
-    return new RoomData();
+    return nullptr;
 }
 
 void RoomManager::removeUserInRoom(const int ID, const LoggedUser user)const
