@@ -10,6 +10,10 @@ const ResponseCode = {
 	HighScore: 8,
 	PersonalStats: 9,
 	GetStatistics: 10,
+	CloseRoom: 11, 
+	StartGame: 12, 
+	GetRoomState: 13,
+	LeaveRoom: 14,
 }
 
 const LoginCode = {

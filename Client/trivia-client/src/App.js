@@ -74,6 +74,12 @@ const App = () => {
             navigate("/play");
           }
           break;
+        case ResponseCode.PersonalStats:
+          dispatch({type: "STATS", payload: msg.statistics});
+          break;
+        case ResponseCode.GetStatistics:
+          dispatch({type: "HIGHSCORES", payload: msg.statistics});
+          break;
         // case "startgame":
         //   navigate(location.pathname + "?started");
         //   break;

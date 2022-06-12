@@ -5,6 +5,8 @@ import PlayBtn from '../../assets/images/playBtn.png';
 import CreateBtn from '../../assets/images/createBtn.png';
 
 import "./Home.css"
+import Statistics from '../../components/Statistics/Statistics';
+import Highscore from '../../components/Highscore/Highscore';
 
 const Home = () => {
 	const username = useSelector(state => state.user?.data?.username);
@@ -45,6 +47,8 @@ const Home = () => {
 				<h3>Time to end the project</h3>
 				<h2><Countdown date={new Date("Jun 15, 2022 12:00:00")}/></h2>
 			</div>
+			{ username && <Statistics /> }
+			{ username && <Highscore /> }
 		</div>
 	</>
 	)

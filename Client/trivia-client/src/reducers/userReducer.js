@@ -1,6 +1,8 @@
 const INITIAL_STATE = {
     isLogged: false,
-    data: null
+    data: null,
+    statistics: [],
+    highscores: []
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -11,6 +13,10 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return { ...state, ...INITIAL_STATE }
         case 'SET_USER_DATA':
             return { ...state, data: action.payload }
+        case 'STATS':
+            return { ...state, statistics: action.payload }
+        case 'HIGHSCORES':
+            return { ...state, highscores: action.payload }
         default:
             return state;
     }
