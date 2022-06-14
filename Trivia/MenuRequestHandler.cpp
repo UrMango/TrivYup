@@ -36,7 +36,6 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 
 
 	
-	GetPersonalStatsResponse getPersonalStatsResponse;
 
 	switch (request.msgCode) {
 		case CREATE_ROOM:
@@ -82,10 +81,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return result;
 			break;
 		case GET_PERSONAL_STATS:
-			getPersonalStatsResponse.statistics = m_statisticsManager.getUserStatistics(this->m_user.getUsername());
-			result.msg = JsonResponsePacketSerializer::serializeGetPersonalStatsResponse(getPersonalStatsResponse);
-			result.newHandler = nullptr;
-			return result;
+			return getPersonalStats(request);
 			break;
 		case LOG_OUT:
 			return signout(request);
@@ -94,6 +90,15 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	return result;
 }
 
+RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& request)
+{
+	struct RequestResult result;
+	GetPersonalStatsResponse getPersonalStatsResponse;
+	getPersonalStatsResponse.statistics = m_statisticsManager.getUserStatistics(this->m_user.getUsername());
+	result.msg = JsonResponsePacketSerializer::serializeGetPersonalStatsResponse(getPersonalStatsResponse);
+	result.newHandler = nullptr;
+	return result;
+}
 
 RequestResult MenuRequestHandler::signout(const RequestInfo& request)
 {
