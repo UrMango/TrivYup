@@ -56,7 +56,6 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 
 			//add room
 			m_roomManager.createRoom(this->m_user, roomD);
-
 			//serialize
 			createroomResponse.status = 1;
 			result.msg = JsonResponsePacketSerializer::serializecreateRoomResponse(createroomResponse);
