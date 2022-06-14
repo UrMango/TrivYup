@@ -11,10 +11,6 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& request)
 {
 	struct RequestResult result;
 
-	LeaveRoomResponse leaveRoomResponse;
-
-	StartGameResponse startGameResponse;
-
 	if (!(this->isRequestRelevant(request)))
 	{
 		//insert field to RequestInfo struct
@@ -24,17 +20,10 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& request)
 	}
 	switch (request.msgCode) {
 		case CLOSE_ROOM:
-			this->m_roomManager.deleteRoom(this->_roomUser->getRoomData().id);
-			m_user.removeRoom();
-			leaveRoomResponse.status = 1;
-			result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
-			result.newHandler = nullptr;
+			return closeRoom(request);
 			break;
 		case START_GAME:
-			this->m_roomManager.changeRoomState(1, this->_roomUser->getRoomData().id);
-			startGameResponse.status = 1;
-			result.msg = JsonResponsePacketSerializer::serializeStartGameResponse(startGameResponse);
-			result.newHandler = nullptr;
+
 			break;
 		case GET_ROOM_STATE:
 			RoomMemberRequestHandler* MemberRequestHandle = new RoomMemberRequestHandler(m_handlerFactory, m_user);
@@ -51,4 +40,27 @@ Room* RoomAdminRequestHandler::getRoomOfUser()
 LoggedUser& RoomAdminRequestHandler::getUser() const
 {
 	return this->m_user;
+}
+
+RequestResult& RoomAdminRequestHandler::closeRoom(const RequestInfo& request)
+{
+	struct RequestResult result;
+	LeaveRoomResponse leaveRoomResponse;
+	this->m_roomManager.deleteRoom(this->_roomUser->getRoomData().id);
+	m_user.removeRoom();
+	leaveRoomResponse.status = 1;
+	result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
+	result.newHandler = nullptr;
+	return result;
+}
+
+RequestResult& RoomAdminRequestHandler::startGame(const RequestInfo& request)
+{
+	struct RequestResult result;
+	StartGameResponse startGameResponse;
+	this->m_roomManager.changeRoomState(1, this->_roomUser->getRoomData().id);
+	startGameResponse.status = 1;
+	result.msg = JsonResponsePacketSerializer::serializeStartGameResponse(startGameResponse);
+	result.newHandler = nullptr;
+	return result;
 }

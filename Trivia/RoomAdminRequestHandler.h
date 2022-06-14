@@ -21,4 +21,8 @@ public:
 	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& user);
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
+	RequestResult& closeRoom(const RequestInfo& request);
+	RequestResult& startGame(const RequestInfo& request);
+
+
 };
