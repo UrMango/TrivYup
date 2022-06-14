@@ -23,10 +23,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& request)
 			return closeRoom(request);
 			break;
 		case START_GAME:
-
 			break;
 		case GET_ROOM_STATE:
-
 			break;
 	}
 }
@@ -49,7 +47,7 @@ RequestResult& RoomAdminRequestHandler::closeRoom(const RequestInfo& request)
 	m_user.removeRoom();
 	leaveRoomResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
-	result.newHandler = nullptr;
+	result.newHandler = m_handlerFactory.createMenuRequestHandler(m_user); //change to menu handle
 	return result;
 }
 
