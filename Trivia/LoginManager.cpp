@@ -30,3 +30,4 @@ void LoginManager::logout(std::string username)
 		}
 	}
 }
+

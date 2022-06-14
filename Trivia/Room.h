@@ -3,6 +3,7 @@
 #include "Helper.h"
 #include <vector>
 #include "LoggedUser.h"
+class LoggedUser;
 
 struct RoomData
 {
@@ -35,6 +36,7 @@ public:
 	RoomData* addUser(LoggedUser user); // adds a user to the users vector
 	void removeUser(LoggedUser user); // removes a user from the users vector
 	std::vector<string> getAllUsers(); // return a vector of all the users
+	void changeRoomState(const int state);
 
 	// getters
 	RoomData getRoomData()const;

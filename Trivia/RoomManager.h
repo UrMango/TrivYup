@@ -14,6 +14,9 @@ public:
 	RoomData* addUserInRoom(const int ID, LoggedUser user)const;
 	void removeUserInRoom(const int ID, const LoggedUser user)const;
 	std::vector<RoomData> getRooms()const;
+	Room* getRoom(const unsigned int IDOfRoom)const;
+	void changeRoomState(const int state, const int ID);
+
 private:
 	std::map<unsigned int, Room&> m_rooms;
 };
