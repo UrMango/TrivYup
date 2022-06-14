@@ -4,6 +4,7 @@
 #include "RequestHandlerFactory.h"
 #include "Helper.h"
 #include "JsonRequestPacketDeserializer.h"
+#include "JsonResponsePacketSerializer.h"
 #include "Room.h"
 
 

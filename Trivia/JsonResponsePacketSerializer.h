@@ -25,8 +25,8 @@ enum ResponseCode
 	HighScore,
 	PersonalStats,
 	GetStatistics,
-	CloseRoom, 
-	StartGame, 
+	CloseRoom,
+	StartGame,
 	GetRoomState,
 	LeaveRoom,
 };
@@ -47,7 +47,7 @@ enum SignupCode
 struct LogoutReponse {
 	unsigned int status;
 };
-struct JoinRoomResponse{
+struct JoinRoomResponse {
 	unsigned int status;
 };
 struct CreateRoomResponse {
@@ -56,7 +56,7 @@ struct CreateRoomResponse {
 struct GetRoomsResponse {
 	std::vector<RoomData> rooms;
 };
-struct GetPlayersInRoomResponse{
+struct GetPlayersInRoomResponse {
 	unsigned int status;
 	std::vector<string> players;
 };
@@ -87,7 +87,7 @@ struct GetPersonalStatsResponse {
 	std::vector<string> statistics;
 };
 class JsonResponsePacketSerializer
-{	
+{
 public:
 	static std::string serializeLoginResponse(LoginResponse response);
 	static std::string serializeSignupResponse(SignupResponse response);

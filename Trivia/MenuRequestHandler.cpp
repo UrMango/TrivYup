@@ -110,7 +110,7 @@ RequestResult MenuRequestHandler::signout(const RequestInfo& request)
 	struct RequestResult result;
 	LogoutReponse logoutReponse;
 	LogOutRoomRequest logOutRoomRequest = JsonRequestPacketDeserializer::deserializeLogOutRoomRequest(request.msg);
-	m_roomManager.addUserInRoom(logOutRoomRequest.roomid, this->m_user);
+	m_roomManager.removeUserInRoom(logOutRoomRequest.roomid, this->m_user);
 	logoutReponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLogoutResponse(logoutReponse);
 	result.newHandler = nullptr;
