@@ -4,6 +4,7 @@
 #include "Helper.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "Room.h"
+#include "RoomMemberRequestHandler.h"
 
 class RoomAdminRequestHandler : public IRequestHandler
 {
@@ -17,7 +18,7 @@ private:
 public:
 	Room* getRoomOfUser();
 	LoggedUser getUser() const;
-	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user);
+	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& user);
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
 };

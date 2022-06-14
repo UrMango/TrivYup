@@ -62,14 +62,3 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 	createRoomRequest.roomName = j["roomName"];
 	return createRoomRequest;
 }
-
-LogOutRoomRequest JsonRequestPacketDeserializer::deserializeLogOutRoomRequest(const string userMsg)
-{
-	// create fason object from string 
-	nlohmann::json j = nlohmann::json::parse(userMsg);
-
-	//insert field to struct
-	struct LogOutRoomRequest logOutRoomRequest;
-	logOutRoomRequest.roomid = j["roomid"];
-	return logOutRoomRequest;
-}

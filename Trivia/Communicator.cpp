@@ -67,6 +67,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 			{
 				m_clients[&ws] = res.newHandler;
 			}
+
 			if (ws.is_open() && (request.msgCode == START_GAME || request.msgCode == CLOSE_ROOM))
 			{
 				RoomAdminRequestHandler* userRequestHandler = (RoomAdminRequestHandler*)(m_clients[&ws]);
@@ -77,7 +78,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 						otherUserRequestHandler = (RoomAdminRequestHandler*)(i.second);
 						if (otherUserRequestHandler->getUser().getUsername() == it)
 						{
-							ws.write(net::buffer(res.msg));
+							(*(i.first)).write(net::buffer(res.msg));
 						}
 					}
 				}

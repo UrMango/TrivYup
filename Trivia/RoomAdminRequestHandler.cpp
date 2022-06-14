@@ -1,6 +1,6 @@
 #include "RoomAdminRequestHandler.h"
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user) : _roomUser(m_user.getRoom()), m_user(m_user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory) {}
+RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& user) : _roomUser(m_user.getRoom()), m_user(user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory) {}
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
@@ -9,14 +9,12 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& request) cons
 
 RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& request)
 {
-	std::string msg;
 	struct RequestResult result;
 
 	LeaveRoomResponse leaveRoomResponse;
 
 	StartGameResponse startGameResponse;
 
-	GetRoomStateResponse getRoomStateResponse;
 	if (!(this->isRequestRelevant(request)))
 	{
 		//insert field to RequestInfo struct
@@ -25,27 +23,23 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& request)
 		return result;
 	}
 	switch (request.msgCode) {
-	case CLOSE_ROOM:
-		this->m_roomManager.deleteRoom(this->_roomUser->getRoomData().id);
-		leaveRoomResponse.status = 1;
-		result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
-		result.newHandler = nullptr;
-		break;
-	case START_GAME:
-		this->m_roomManager.changeRoomState(1, this->_roomUser->getRoomData().id);
-		startGameResponse.status = 1;
-		result.msg = JsonResponsePacketSerializer::serializeStartGameResponse(startGameResponse);
-		result.newHandler = nullptr;
-		break;
-	case GET_ROOM_STATE:
-		getRoomStateResponse.status = 1;
-		getRoomStateResponse.hasGameBegun = this->m_roomManager.getRoomState(this->_roomUser->getRoomData().id);
-		getRoomStateResponse.answerTimeout = this->_roomUser->getRoomData().timePerQuestion;
-		getRoomStateResponse.players = this->m_roomManager.getAllUsersInRoom(this->_roomUser->getRoomData().id);
-		getRoomStateResponse.questionCount = this->_roomUser->getRoomData().numOfQuestionsInGame;
-		result.msg = JsonResponsePacketSerializer::serializeGetRoomStateResponse(getRoomStateResponse);
-		result.newHandler = nullptr;
-		break;
+		case CLOSE_ROOM:
+			this->m_roomManager.deleteRoom(this->_roomUser->getRoomData().id);
+			m_user.removeRoom();
+			leaveRoomResponse.status = 1;
+			result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
+			result.newHandler = nullptr;
+			break;
+		case START_GAME:
+			this->m_roomManager.changeRoomState(1, this->_roomUser->getRoomData().id);
+			startGameResponse.status = 1;
+			result.msg = JsonResponsePacketSerializer::serializeStartGameResponse(startGameResponse);
+			result.newHandler = nullptr;
+			break;
+		case GET_ROOM_STATE:
+			RoomMemberRequestHandler* MemberRequestHandle = new RoomMemberRequestHandler(m_handlerFactory, m_user);
+			MemberRequestHandle->getRoomState(request);
+			break;
 	}
 }
 

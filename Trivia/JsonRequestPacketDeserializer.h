@@ -33,9 +33,6 @@ struct CreateRoomRequest {
 	unsigned int answerTimeout;
 };
 
-struct LogOutRoomRequest {
-	unsigned int roomid;
-};
 //******************************************************************************************
 
 class JsonRequestPacketDeserializer
@@ -48,7 +45,6 @@ public:
 	static GetPlayersInRoomRequest deserializeGetPlayersRequest(const string userMsg);
 	static JoinRoomRequest deserializeJoinRoomRequest(const string userMsg);
 	static CreateRoomRequest deserializeCreateRoomRequest(const string userMsg);	
-	static LogOutRoomRequest deserializeLogOutRoomRequest(const string userMsg);
 
 };
 
