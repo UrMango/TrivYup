@@ -83,10 +83,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return result;
 			break;
 		case GET_ROOMS:
-			getRoomsResponse.rooms = m_roomManager.getRooms();
-			result.msg = JsonResponsePacketSerializer::serializeGetRoomResponse(getRoomsResponse);
-			result.newHandler = nullptr;
-			return result;
+			return getRooms(request);
 			break;
 		case GET_PLAYERS_IN_ROOM:
 			getPlayersInRoom = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(request.msg);
@@ -116,16 +113,10 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return result;
 			break;
 		case HIGH_SCORE:
-			getStatisticsResponse.statistics = m_statisticsManager.getHighScore();
-			result.msg = JsonResponsePacketSerializer::serializeGetStatisticsResponse(getStatisticsResponse);
-			result.newHandler = nullptr;
-			return result;
+			return getHighScore(request);
 			break;
 		case GET_PERSONAL_STATS:
-			getPersonalStatsResponse.statistics = m_statisticsManager.getUserStatistics(this->m_user.getUsername());
-			result.msg = JsonResponsePacketSerializer::serializeGetPersonalStatsResponse(getPersonalStatsResponse);
-			result.newHandler = nullptr;
-			return result;
+			return getPersonalStats(request);
 			break;
 		case LOG_OUT:
 			logOutRoomRequest = JsonRequestPacketDeserializer::deserializeLogOutRoomRequest(request.msg);
@@ -136,5 +127,95 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return result;
 			break;
 		}
+	return result;
+}
+
+RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
+{
+	struct RequestResult result;
+	RoomData roomD;
+	CreateRoomResponse createroomResponse;
+	CreateRoomRequest createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
+
+	(this->_roomID)++; //inc the num of id rooms
+
+	//put data
+	roomD.id = _roomID;
+	roomD.isActive = 0;
+	roomD.maxPlayers = createRoom.maxUsers;
+	roomD.name = createRoom.roomName;
+	roomD.numOfQuestionsInGame = createRoom.questionCount;
+	roomD.timePerQuestion = createRoom.answerTimeout;
+	//add room
+	m_roomManager.createRoom(this->m_user, roomD);
+	//serialize
+	createroomResponse.status = 1;
+	result.msg = JsonResponsePacketSerializer::serializecreateRoomResponse(createroomResponse);
+	result.newHandler = nullptr;
+	return result;
+}
+
+RequestResult MenuRequestHandler::joinRoom(const RequestInfo& request)
+{
+	struct RequestResult result;
+	JoinRoomResponse JoinRoomResponse;
+	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(request.msg);
+	m_roomManager.addUserInRoom(joinRoomRequest.roomid, this->m_user);
+	JoinRoomResponse.status = 1;
+	result.msg = JsonResponsePacketSerializer::serializejoinRoomResponse(JoinRoomResponse);
+	result.newHandler = nullptr;
+	return result;
+}
+
+RequestResult MenuRequestHandler::getHighScore(const RequestInfo& request)
+{
+	struct RequestResult result;
+	GetStatisticsResponse getStatisticsResponse;
+	getStatisticsResponse.statistics = m_statisticsManager.getHighScore();
+	result.msg = JsonResponsePacketSerializer::serializeGetStatisticsResponse(getStatisticsResponse);
+	result.newHandler = nullptr;
+	return result;
+}
+
+RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& request)
+{
+	struct RequestResult result;
+	GetPersonalStatsResponse getPersonalStatsResponse;
+	getPersonalStatsResponse.statistics = m_statisticsManager.getUserStatistics(this->m_user.getUsername());
+	result.msg = JsonResponsePacketSerializer::serializeGetPersonalStatsResponse(getPersonalStatsResponse);
+	result.newHandler = nullptr;
+	return result;
+}
+
+RequestResult MenuRequestHandler::signout(const RequestInfo& request)
+{
+	struct RequestResult result;
+	LogoutReponse logoutReponse;
+	LogOutRoomRequest logOutRoomRequest = JsonRequestPacketDeserializer::deserializeLogOutRoomRequest(request.msg);
+	m_roomManager.removeUserInRoom(logOutRoomRequest.roomid, this->m_user);
+	logoutReponse.status = 1;
+	result.msg = JsonResponsePacketSerializer::serializeLogoutResponse(logoutReponse);
+	result.newHandler = nullptr;
+	return result;
+}
+
+RequestResult MenuRequestHandler::getRooms(const RequestInfo& request) {
+	struct RequestResult result;
+	GetRoomsResponse getRoomsResponse;
+	getRoomsResponse.rooms = m_roomManager.getRooms();
+	result.msg = JsonResponsePacketSerializer::serializeGetRoomResponse(getRoomsResponse);
+	result.newHandler = nullptr;
+	return result;
+}
+
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& request)
+{
+	struct RequestResult result;
+	GetPlayersInRoomResponse getPlayersInRoomResponse;
+	GetPlayersInRoomRequest getPlayersInRoom = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(request.msg);
+	getPlayersInRoomResponse.status = 1;
+	getPlayersInRoomResponse.players = m_roomManager.getAllUsersInRoom(getPlayersInRoom.roomid);
+	result.msg = JsonResponsePacketSerializer::serializeGetPlayersInRoomrResponse(getPlayersInRoomResponse);
+	result.newHandler = nullptr;
 	return result;
 }

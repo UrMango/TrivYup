@@ -24,7 +24,7 @@ std::string JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse r
 	json["id"] = (int)ResponseCode::error;
 	json["message"] = response.message;
 
-	return json.dump();	
+	return json.dump();
 }
 
 std::string JsonResponsePacketSerializer::serializeLogoutResponse(LogoutReponse LogoutResponse)
@@ -122,3 +122,4 @@ std::string JsonResponsePacketSerializer::serializeLeaveRoomResponse(LeaveRoomRe
 	json["status"] = leaveRoomResponse.status;
 	return json.dump();
 }
+
