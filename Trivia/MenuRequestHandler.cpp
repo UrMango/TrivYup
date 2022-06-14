@@ -29,11 +29,6 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 
 
 
-	JoinRoomRequest joinRoomRequest;
-	JoinRoomResponse JoinRoomResponse;
-
-
-
 	
 
 	switch (request.msgCode) {
@@ -66,12 +61,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return getPlayersInRoom(request);
 			break;
 		case JOIN_ROOM:
-			joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(request.msg);
-			m_roomManager.addUserInRoom(joinRoomRequest.roomid, this->m_user);
-			JoinRoomResponse.status = 1;
-			result.msg = JsonResponsePacketSerializer::serializejoinRoomResponse(JoinRoomResponse);
-			result.newHandler = nullptr;
-			return result;
+			return joinRoom(request);
 			break;
 		case HIGH_SCORE:
 			return getHighScore(request);
@@ -83,6 +73,18 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return signout(request);
 			break;
 		}
+	return result;
+}
+
+RequestResult MenuRequestHandler::joinRoom(const RequestInfo& request)
+{
+	struct RequestResult result;
+	JoinRoomResponse JoinRoomResponse;
+	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(request.msg);
+	m_roomManager.addUserInRoom(joinRoomRequest.roomid, this->m_user);
+	JoinRoomResponse.status = 1;
+	result.msg = JsonResponsePacketSerializer::serializejoinRoomResponse(JoinRoomResponse);
+	result.newHandler = nullptr;
 	return result;
 }
 
