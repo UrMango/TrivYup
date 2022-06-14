@@ -25,7 +25,11 @@ RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(Lo
 	return (RoomAdminRequestHandler*)new RoomAdminRequestHandler(*requestHandlerFactory, m_user);
 }
 
-
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser& m_user, Room& room) const
+{
+	RequestHandlerFactory* requestHandlerFactory = (RequestHandlerFactory*)this;
+	return (RoomMemberRequestHandler*)new RoomMemberRequestHandler(*requestHandlerFactory, m_user);
+}
 
 LoginManager& RequestHandlerFactory::getLoginManager() const
 {
