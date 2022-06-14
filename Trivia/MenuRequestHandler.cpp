@@ -22,9 +22,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 		result.newHandler = nullptr;
 		return result;
 	}
-	CreateRoomRequest createRoom;
-	RoomData roomD;
-	CreateRoomResponse createroomResponse;
+
 
 
 
@@ -33,26 +31,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 
 	switch (request.msgCode) {
 		case CREATE_ROOM:
-			createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
-
-			(this->_roomID)++;
-
-			//put data
-			roomD.id = _roomID;
-			roomD.isActive = 0;
-			roomD.maxPlayers = createRoom.maxUsers;
-			roomD.name = createRoom.roomName;
-			roomD.numOfQuestionsInGame = createRoom.questionCount;
-			roomD.timePerQuestion = createRoom.answerTimeout;
-
-			//add room
-			m_roomManager.createRoom(this->m_user, roomD);
-
-			//serialize
-			createroomResponse.status = 1;
-			result.msg = JsonResponsePacketSerializer::serializecreateRoomResponse(createroomResponse);
-			result.newHandler = nullptr;
-			return result;
+			return createRoom(request);
 			break;
 		case GET_ROOMS:
 			return getRooms(request);
@@ -73,6 +52,31 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return signout(request);
 			break;
 		}
+	return result;
+}
+
+RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
+{
+	struct RequestResult result;
+	RoomData roomD;
+	CreateRoomResponse createroomResponse;
+	CreateRoomRequest createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
+
+	(this->_roomID)++; //inc the num of id rooms
+
+	//put data
+	roomD.id = _roomID;
+	roomD.isActive = 0;
+	roomD.maxPlayers = createRoom.maxUsers;
+	roomD.name = createRoom.roomName;
+	roomD.numOfQuestionsInGame = createRoom.questionCount;
+	roomD.timePerQuestion = createRoom.answerTimeout;
+	//add room
+	m_roomManager.createRoom(this->m_user, roomD);
+	//serialize
+	createroomResponse.status = 1;
+	result.msg = JsonResponsePacketSerializer::serializecreateRoomResponse(createroomResponse);
+	result.newHandler = nullptr;
 	return result;
 }
 
