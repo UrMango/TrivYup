@@ -32,7 +32,6 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	JoinRoomRequest joinRoomRequest;
 	JoinRoomResponse JoinRoomResponse;
 
-	GetStatisticsResponse getStatisticsResponse;
 
 
 	
@@ -75,10 +74,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return result;
 			break;
 		case HIGH_SCORE:
-			getStatisticsResponse.statistics = m_statisticsManager.getHighScore();
-			result.msg = JsonResponsePacketSerializer::serializeGetStatisticsResponse(getStatisticsResponse);
-			result.newHandler = nullptr;
-			return result;
+			return getHighScore(request);
 			break;
 		case GET_PERSONAL_STATS:
 			return getPersonalStats(request);
@@ -87,6 +83,16 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return signout(request);
 			break;
 		}
+	return result;
+}
+
+RequestResult MenuRequestHandler::getHighScore(const RequestInfo& request)
+{
+	struct RequestResult result;
+	GetStatisticsResponse getStatisticsResponse;
+	getStatisticsResponse.statistics = m_statisticsManager.getHighScore();
+	result.msg = JsonResponsePacketSerializer::serializeGetStatisticsResponse(getStatisticsResponse);
+	result.newHandler = nullptr;
 	return result;
 }
 
