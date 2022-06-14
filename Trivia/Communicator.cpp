@@ -65,6 +65,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 			
 			if (res.newHandler != nullptr)
 			{
+				delete(m_clients[&ws]);
 				m_clients[&ws] = res.newHandler;
 			}
 
