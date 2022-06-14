@@ -36,8 +36,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 
 	GetStatisticsResponse getStatisticsResponse;
 
-	LogoutReponse logoutReponse;
-	LogOutRoomRequest logOutRoomRequest;
+
 	
 	GetPersonalStatsResponse getPersonalStatsResponse;
 
@@ -99,13 +98,22 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return result;
 			break;
 		case LOG_OUT:
-			logOutRoomRequest = JsonRequestPacketDeserializer::deserializeLogOutRoomRequest(request.msg);
-			m_roomManager.addUserInRoom(logOutRoomRequest.roomid, this->m_user);
-			logoutReponse.status = 1;
-			result.msg = JsonResponsePacketSerializer::serializeLogoutResponse(logoutReponse);
-			result.newHandler = nullptr;
-			return result;
+			return signout(request);
 			break;
 		}
+	return result;
+}
+
+
+RequestResult MenuRequestHandler::signout(const RequestInfo& request)
+{
+	struct RequestResult result;
+	LogoutReponse logoutReponse;
+	LogOutRoomRequest logOutRoomRequest;
+	logOutRoomRequest = JsonRequestPacketDeserializer::deserializeLogOutRoomRequest(request.msg);
+	m_roomManager.addUserInRoom(logOutRoomRequest.roomid, this->m_user);
+	logoutReponse.status = 1;
+	result.msg = JsonResponsePacketSerializer::serializeLogoutResponse(logoutReponse);
+	result.newHandler = nullptr;
 	return result;
 }
