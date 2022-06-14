@@ -10,7 +10,7 @@ class RoomMemberRequestHandler : public IRequestHandler
 private:
 
 	Room* _roomUser;
-	LoggedUser m_user;
+	LoggedUser& m_user;
 	RoomManager& m_roomManager;
 	RequestHandlerFactory& m_handlerFactory;
 
@@ -21,4 +21,6 @@ public:
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
 	RequestResult getRoomState(const RequestInfo& request) const;
+	RequestResult leaveRoom(const RequestInfo& request) const;
+
 };

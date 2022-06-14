@@ -11,8 +11,6 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 {
 	struct RequestResult result;
 
-	LeaveRoomResponse leaveRoomResponse;
-
 	if (!(this->isRequestRelevant(request)))
 	{
 		//insert field to RequestInfo struct
@@ -22,11 +20,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 	}
 	switch (request.msgCode) {
 	case LEAVE_ROOM:
-		this->m_roomManager.removeUserInRoom(m_user.getRoom()->getRoomData().id, m_user);
-		m_user.removeRoom();
-		leaveRoomResponse.status = 1;
-		result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
-		result.newHandler = nullptr;
+
 		break;
 	case GET_ROOM_STATE:
 		return getRoomState(request);
@@ -44,6 +38,18 @@ RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo& request)
 	getRoomStateResponse.players = this->m_roomManager.getAllUsersInRoom(this->_roomUser->getRoomData().id);
 	getRoomStateResponse.questionCount = this->_roomUser->getRoomData().numOfQuestionsInGame;
 	result.msg = JsonResponsePacketSerializer::serializeGetRoomStateResponse(getRoomStateResponse);
+	result.newHandler = nullptr;
+	return result;
+}
+
+RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo& request) const
+{
+	LeaveRoomResponse leaveRoomResponse;
+	struct RequestResult result;
+	this->m_roomManager.removeUserInRoom(m_user.getRoom()->getRoomData().id, m_user);
+	this->m_user.removeRoom();
+	leaveRoomResponse.status = 1;
+	result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
 	result.newHandler = nullptr;
 	return result;
 }

@@ -48,7 +48,7 @@ Room* RoomAdminRequestHandler::getRoomOfUser()
 	return this->_roomUser;
 }
 
-LoggedUser RoomAdminRequestHandler::getUser() const
+LoggedUser& RoomAdminRequestHandler::getUser() const
 {
 	return this->m_user;
 }
