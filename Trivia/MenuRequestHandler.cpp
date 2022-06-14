@@ -26,7 +26,6 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	RoomData roomD;
 	CreateRoomResponse createroomResponse;
 
-	GetRoomsResponse getRoomsResponse;
 
 	GetPlayersInRoomRequest getPlayersInRoom;
 	GetPlayersInRoomResponse getPlayersInRoomResponse;
@@ -64,10 +63,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return result;
 			break;
 		case GET_ROOMS:
-			getRoomsResponse.rooms = m_roomManager.getRooms();
-			result.msg = JsonResponsePacketSerializer::serializeGetRoomResponse(getRoomsResponse);
-			result.newHandler = nullptr;
-			return result;
+			return getRooms(request);
 			break;
 		case GET_PLAYERS_IN_ROOM:
 			getPlayersInRoom = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(request.msg);
@@ -114,6 +110,15 @@ RequestResult MenuRequestHandler::signout(const RequestInfo& request)
 	m_roomManager.addUserInRoom(logOutRoomRequest.roomid, this->m_user);
 	logoutReponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLogoutResponse(logoutReponse);
+	result.newHandler = nullptr;
+	return result;
+}
+
+RequestResult MenuRequestHandler::getRooms(const RequestInfo& request) {
+	struct RequestResult result;
+	GetRoomsResponse getRoomsResponse;
+	getRoomsResponse.rooms = m_roomManager.getRooms();
+	result.msg = JsonResponsePacketSerializer::serializeGetRoomResponse(getRoomsResponse);
 	result.newHandler = nullptr;
 	return result;
 }
