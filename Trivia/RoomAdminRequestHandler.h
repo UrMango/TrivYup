@@ -6,6 +6,8 @@
 #include "Room.h"
 #include "RoomMemberRequestHandler.h"
 
+class RequestHandlerFactory;
+
 class RoomAdminRequestHandler : public IRequestHandler
 {
 private:

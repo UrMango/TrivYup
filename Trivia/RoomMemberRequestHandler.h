@@ -5,6 +5,8 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "Room.h"
 
+class RequestHandlerFactory;
+
 class RoomMemberRequestHandler : public IRequestHandler
 {
 private:
