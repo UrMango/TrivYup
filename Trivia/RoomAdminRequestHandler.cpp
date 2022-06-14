@@ -26,8 +26,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& request)
 
 			break;
 		case GET_ROOM_STATE:
-			RoomMemberRequestHandler* MemberRequestHandle = new RoomMemberRequestHandler(m_handlerFactory, m_user);
-			MemberRequestHandle->getRoomState(request);
+
 			break;
 	}
 }
@@ -63,4 +62,10 @@ RequestResult& RoomAdminRequestHandler::startGame(const RequestInfo& request)
 	result.msg = JsonResponsePacketSerializer::serializeStartGameResponse(startGameResponse);
 	result.newHandler = nullptr;
 	return result;
+}
+
+RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo& request)
+{
+	RoomMemberRequestHandler* MemberRequestHandle = new RoomMemberRequestHandler(m_handlerFactory, m_user);
+	return MemberRequestHandle->getRoomState(request);
 }

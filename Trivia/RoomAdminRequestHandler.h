@@ -23,6 +23,5 @@ public:
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
 	RequestResult& closeRoom(const RequestInfo& request);
 	RequestResult& startGame(const RequestInfo& request);
-
-
+	RequestResult getRoomState(const RequestInfo& request);
 };
