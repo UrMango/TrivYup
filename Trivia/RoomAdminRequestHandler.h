@@ -1,5 +1,8 @@
 #pragma once
 #include "IRequestHandler.h"
+#include "RequestHandlerFactory.h"
+#include "Helper.h"
+#include "JsonRequestPacketDeserializer.h"
 
 class RoomAdminRequestHandler : public IRequestHandler
 {

@@ -18,7 +18,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	if (!(this->isRequestRelevant(request)))
 	{
 		//insert field to RequestInfo struct
-		result.msg = JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("You must first log in or sign up"));
+		result.msg = JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Its not a valid request"));
 		result.newHandler = nullptr;
 		return result;
 	}
