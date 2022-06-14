@@ -1,10 +1,6 @@
 #pragma once
-//#include <string>
-//#include "Helper.h"
-//#include <vector>
 #include "Room.h"
 #include <map>
-//#include <map>
 
 class RoomManager
 {
@@ -17,7 +13,6 @@ public:
 	std::vector<string> getAllUsersInRoom(const int ID)const;
 	RoomData* addUserInRoom(const int ID, LoggedUser user)const;
 	void removeUserInRoom(const int ID, const LoggedUser user)const;
-
 	std::vector<RoomData> getRooms()const;
 private:
 	std::map<unsigned int, Room&> m_rooms;
