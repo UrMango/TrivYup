@@ -19,7 +19,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& request)
 	}
 	switch (request.msgCode) {
 	case CLOSE_ROOM:
-
+		
 		break;
 	}
 }
