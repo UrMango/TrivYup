@@ -20,7 +20,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 	}
 	switch (request.msgCode) {
 	case LEAVE_ROOM:
-
+		return leaveRoom(request);
 		break;
 	case GET_ROOM_STATE:
 		return getRoomState(request);
