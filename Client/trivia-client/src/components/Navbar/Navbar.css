@@ -17,7 +17,7 @@
 	background-color: white;
 }
 
-.logo {
+.logo-navbar {
 	display: flex;
 	position: fixed;
 	margin: 0px 2.5rem 0px 0px;
@@ -34,7 +34,7 @@
 	list-style-type: none;
 }
 
-.navbar .nav .nav-links .register {
+.navbar .nav .nav-links .registerBtn {
 	padding: .5rem 1rem;
 	border-radius: .25rem;
 	color: white;
@@ -44,7 +44,7 @@
 	position: relative;
 }
 
-.navbar .nav .nav-links .register:hover {
+.navbar .nav .nav-links .registerBtn:hover {
 	background-color: #60b34c;
 }
 

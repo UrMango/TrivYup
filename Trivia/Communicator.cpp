@@ -62,11 +62,13 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 			//first, the client need to connect to his user
 			RequestResult res = m_clients[&ws]->handleRequest(request);
+			
 			if (res.newHandler != nullptr)
 			{
 				m_clients[&ws] = res.newHandler;
 			}
-			ws.write(net::buffer(res.msg));
+			if(ws.is_open())
+				ws.write(net::buffer(res.msg));
 			//we need to change the map aaccording the responseresult
 			// 
 			//std::cout << out << std::endl;

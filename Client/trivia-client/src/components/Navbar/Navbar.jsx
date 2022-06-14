@@ -7,21 +7,34 @@ import "./Navbar.css";
 const Navbar = () => {
     const user = useSelector(state => state.user);
     
+    var today = new Date();
+    var curHr = today.getHours();
+    
+    let msg = "";
+
+    if (curHr >= 5 && curHr < 12) {
+        msg = 'Good morning';
+    } else if (curHr >= 12 && curHr < 18) {
+        msg = 'Good afternoon';
+    } else if (curHr >= 18 && curHr <= 10) {
+        msg = 'Good evening';
+    } else {
+        msg = 'Good night';
+    }
+
 	return (
         <>
-            <img className="logo" src={Logo} width={80}/>
+            <img className="logo-navbar" src={Logo} width={80}/>
             <div className="navbar">
                 <nav className="nav">
                     <ul className="nav-links">
                         <li><Link to="/">Home</Link></li>
-                        { user.isLogged && <><li><Link to="/create">Create Room</Link></li><li><Link to="/play">Play</Link></li></> }
-                        { !user.isLogged && <><li><Link to="/auth">Login</Link></li><li><Link className='register' to="/auth/register">Sign up</Link></li></> }
-                        
+                        { user.isLogged && <><li><Link to="/play">Play</Link></li><li><Link to="/create">Create Room</Link></li></> }
+                        { !user.isLogged && <><li><Link to="/auth">Login</Link></li><li><Link className='registerBtn' to="/auth/register">Sign up</Link></li></> }  
                     </ul>
-                    { user.isLogged && <li><p>Good evening, {user.data?.username}!</p></li>}
+                    { user.isLogged && <p>{msg}, {user.data?.username}!</p>}
                 </nav>
             </div>
-            <div className='space'></div>
         </>
 	)
 }

@@ -32,7 +32,7 @@ class Room
 {
 public:
 	Room(const LoggedUser user,const RoomData roomData);
-	void addUser(LoggedUser user); // adds a user to the users vector
+	RoomData* addUser(LoggedUser user); // adds a user to the users vector
 	void removeUser(LoggedUser user); // removes a user from the users vector
 	std::vector<string> getAllUsers(); // return a vector of all the users
 

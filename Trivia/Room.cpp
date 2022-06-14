@@ -5,9 +5,10 @@ Room::Room(const LoggedUser user, const RoomData roomData) : m_metadata(roomData
 	this->m_users.push_back(user); 
 }
 
-void Room::addUser(LoggedUser user)
+RoomData* Room::addUser(LoggedUser user)
 {
 	this->m_users.push_back(user);
+	return &this->m_metadata;
 }
 
 void Room::removeUser(LoggedUser user)

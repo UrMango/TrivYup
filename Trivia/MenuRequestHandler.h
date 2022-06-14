@@ -4,6 +4,7 @@
 #include "RequestHandlerFactory.h"
 #include "Helper.h"
 #include "JsonRequestPacketDeserializer.h"
+#include "JsonResponsePacketSerializer.h"
 #include "Room.h"
 
 
@@ -19,6 +20,13 @@ private:
 	IDatabase& m_database;
 	RoomManager& m_roomManager;
 	unsigned int _roomID;
+	RequestResult signout(const RequestInfo& request);
+	RequestResult getRooms(const RequestInfo& request);
+	RequestResult getPlayersInRoom(const RequestInfo& request);
+	RequestResult getPersonalStats(const RequestInfo& request);
+	RequestResult getHighScore(const RequestInfo& request);
+	RequestResult joinRoom(const RequestInfo& request);
+	RequestResult createRoom(const RequestInfo& request);
 
 
 public:
@@ -27,4 +35,5 @@ public:
 
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
+
 };
