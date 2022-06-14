@@ -22,13 +22,6 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 		result.newHandler = nullptr;
 		return result;
 	}
-
-
-
-
-
-	
-
 	switch (request.msgCode) {
 		case CREATE_ROOM:
 			return createRoom(request);
