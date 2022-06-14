@@ -70,7 +70,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
 	//serialize
 	createroomResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializecreateRoomResponse(createroomResponse);
-	result.newHandler = nullptr;
+	result.newHandler = this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, *(this->m_user.getRoom()));
 	return result;
 }
 
@@ -83,7 +83,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& request)
 	this->m_user.changeRoom(m_roomManager.getRoom(joinRoomRequest.roomid));
 	JoinRoomResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializejoinRoomResponse(JoinRoomResponse);
-	result.newHandler = nullptr;
+	result.newHandler = this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, *(this->m_user.getRoom()));
 	return result;
 }
 
