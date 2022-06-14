@@ -27,8 +27,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	CreateRoomResponse createroomResponse;
 
 
-	GetPlayersInRoomRequest getPlayersInRoom;
-	GetPlayersInRoomResponse getPlayersInRoomResponse;
+
 
 	JoinRoomRequest joinRoomRequest;
 	JoinRoomResponse JoinRoomResponse;
@@ -66,12 +65,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 			return getRooms(request);
 			break;
 		case GET_PLAYERS_IN_ROOM:
-			getPlayersInRoom = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(request.msg);
-			getPlayersInRoomResponse.status = 1;
-			getPlayersInRoomResponse.players = m_roomManager.getAllUsersInRoom(getPlayersInRoom.roomid);
-			result.msg = JsonResponsePacketSerializer::serializeGetPlayersInRoomrResponse(getPlayersInRoomResponse);
-			result.newHandler = nullptr;
-			return result;
+			return getPlayersInRoom(request);
 			break;
 		case JOIN_ROOM:
 			joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(request.msg);
@@ -105,8 +99,7 @@ RequestResult MenuRequestHandler::signout(const RequestInfo& request)
 {
 	struct RequestResult result;
 	LogoutReponse logoutReponse;
-	LogOutRoomRequest logOutRoomRequest;
-	logOutRoomRequest = JsonRequestPacketDeserializer::deserializeLogOutRoomRequest(request.msg);
+	LogOutRoomRequest logOutRoomRequest = JsonRequestPacketDeserializer::deserializeLogOutRoomRequest(request.msg);
 	m_roomManager.addUserInRoom(logOutRoomRequest.roomid, this->m_user);
 	logoutReponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLogoutResponse(logoutReponse);
@@ -119,6 +112,18 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo& request) {
 	GetRoomsResponse getRoomsResponse;
 	getRoomsResponse.rooms = m_roomManager.getRooms();
 	result.msg = JsonResponsePacketSerializer::serializeGetRoomResponse(getRoomsResponse);
+	result.newHandler = nullptr;
+	return result;
+}
+
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& request)
+{
+	struct RequestResult result;
+	GetPlayersInRoomResponse getPlayersInRoomResponse;
+	GetPlayersInRoomRequest getPlayersInRoom = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(request.msg);
+	getPlayersInRoomResponse.status = 1;
+	getPlayersInRoomResponse.players = m_roomManager.getAllUsersInRoom(getPlayersInRoom.roomid);
+	result.msg = JsonResponsePacketSerializer::serializeGetPlayersInRoomrResponse(getPlayersInRoomResponse);
 	result.newHandler = nullptr;
 	return result;
 }
