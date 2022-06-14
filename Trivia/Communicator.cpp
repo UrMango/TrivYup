@@ -67,13 +67,23 @@ void Communicator::handleNewClient(tcp::socket socket) {
 			{
 				m_clients[&ws] = res.newHandler;
 			}
-			if(ws.is_open())
+			if (ws.is_open() && (request.msgCode == START_GAME || request.msgCode == CLOSE_ROOM))
+			{
+				RoomAdminRequestHandler* userRequestHandler = (RoomAdminRequestHandler*)(m_clients[&ws]);
+				RoomAdminRequestHandler* otherUserRequestHandler;
+				for (auto& it : userRequestHandler->getRoomOfUser()->getAllUsers()) {
+					for (auto i : m_clients)
+					{
+						otherUserRequestHandler = (RoomAdminRequestHandler*)(i.second);
+						if (otherUserRequestHandler->getUser().getUsername() == it)
+						{
+							ws.write(net::buffer(res.msg));
+						}
+					}
+				}
+			}
+			else if(ws.is_open())
 				ws.write(net::buffer(res.msg));
-			//we need to change the map aaccording the responseresult
-			// 
-			//std::cout << out << std::endl;
-			//sent data
-			//ws.write(buffer.data());
 		}
 		catch (beast::system_error const& e)
 		{
@@ -86,7 +96,6 @@ void Communicator::handleNewClient(tcp::socket socket) {
 		//ws.close();
 	}
 }
-
 
 void Communicator::getCommands()
 {

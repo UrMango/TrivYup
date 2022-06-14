@@ -1,5 +1,7 @@
 #include "RoomAdminRequestHandler.h"
 
+RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user) : _roomUser(m_user.getRoom()), m_user(m_user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory) {}
+
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
 	return (request.msgCode == CLOSE_ROOM || request.msgCode == START_GAME || request.msgCode == GET_ROOM_STATE);
@@ -45,4 +47,14 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& request)
 		result.newHandler = nullptr;
 		break;
 	}
+}
+
+Room* RoomAdminRequestHandler::getRoomOfUser()
+{
+	return this->_roomUser;
+}
+
+LoggedUser RoomAdminRequestHandler::getUser() const
+{
+	return this->m_user;
 }

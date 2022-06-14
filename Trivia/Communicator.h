@@ -15,6 +15,7 @@
 #include "ErrorResponse.h"
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
+#include "RoomAdminRequestHandler.h"
 
 
 namespace beast = boost::beast;
