@@ -11,6 +11,7 @@ public:
 	~Question() {};
 	std::string getQuestion();
 	std::string getPossibleAnswers();
+	std::string getCorrentAnswer();
 
 
 private:

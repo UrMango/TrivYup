@@ -22,3 +22,8 @@ std::string Question::getPossibleAnswers()
 		answers += m_possibleAnswers[i] + ", ";
 	return answers;
 }
+
+std::string Question::getCorrentAnswer()
+{
+	return m_possibleAnswers[0];
+}
