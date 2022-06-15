@@ -10,6 +10,7 @@ public:
 	Question(int id, std::string question, std::string answer, std::string wrongAnswer, std::string wrongAnswer2, std::string wrongAnswer3);
 	~Question() {};
 	std::string getQuestion();
+	std::string getPossibleAnswers();
 
 
 private:

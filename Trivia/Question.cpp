@@ -14,3 +14,11 @@ std::string Question::getQuestion()
 {
 	return this->m_question;
 }
+
+std::string Question::getPossibleAnswers()
+{
+	std::string answers = "";
+	for (int i = 0; i < m_possibleAnswers.size(); i++)
+		answers += m_possibleAnswers[i] + ", ";
+	return answers;
+}
