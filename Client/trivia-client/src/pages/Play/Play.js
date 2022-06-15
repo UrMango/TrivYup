@@ -20,7 +20,7 @@ const Play = () => {
 	// since `todos` is an array, we can loop over it
 	const roomList = rooms.map(room => {
 		return <GameBox key={room.id} username={username} gamename={room.name} maxPlayers={room.maxPlayers} gameCode={room.id} />
-	})
+	});
 
 	useEffect(() => {
 		ws.send(ClientToServerCode.GET_ROOMS);
