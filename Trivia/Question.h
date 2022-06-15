@@ -7,11 +7,11 @@
 class Question
 {
 public:
-	Question(int id, std::string question, std::string answer, std::string wrongAnswer, std::string wrongAnswer2, std::string wrongAnswer3);
+	Question(const int id, const std::string question, const std::string answer, const std::string wrongAnswer, const std::string wrongAnswer2, const std::string wrongAnswer3);
 	~Question() {};
-	std::string getQuestion();
-	std::string getPossibleAnswers();
-	std::string getCorrentAnswer();
+	std::string getQuestion() const;
+	std::string getPossibleAnswers() const;
+	std::string getCorrentAnswer() const;
 
 
 private:

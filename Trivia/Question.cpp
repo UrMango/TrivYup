@@ -1,6 +1,6 @@
 #include "Question.h"
 
-Question::Question(int id, std::string question, std::string answer, std::string wrongAnswer, std::string wrongAnswer2, std::string wrongAnswer3)
+Question::Question(const int id, const std::string question, const std::string answer, const std::string wrongAnswer, const std::string wrongAnswer2, const std::string wrongAnswer3)
 {
 	this->id = id;
 	this->m_question = question;
@@ -10,12 +10,12 @@ Question::Question(int id, std::string question, std::string answer, std::string
 	m_possibleAnswers.push_back(wrongAnswer3);
 }
 
-std::string Question::getQuestion()
+std::string Question::getQuestion() const
 {
 	return this->m_question;
 }
 
-std::string Question::getPossibleAnswers()
+std::string Question::getPossibleAnswers() const
 {
 	std::string answers = "";
 	for (int i = 0; i < m_possibleAnswers.size(); i++)
@@ -23,7 +23,7 @@ std::string Question::getPossibleAnswers()
 	return answers;
 }
 
-std::string Question::getCorrentAnswer()
+std::string Question::getCorrentAnswer() const
 {
 	return m_possibleAnswers[0];
 }
