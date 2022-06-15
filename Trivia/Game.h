@@ -2,19 +2,14 @@
 #include <string>
 #include "Helper.h"
 #include <vector>
-#include "LoggedUser.h"
+#include "Question.h"
 
 struct GameData
 {
-
-		//+ currentQuestion : Question
-		//+ correctAnswerCount : unsigned int
-
-		//+ wrongAnswerCount : unsigned int
-
-		//+ averangeAnswerTime : unsigned int
-
-
+	Question currentQuestion;
+	unsigned int correctAnswerCount;
+	unsigned int wrongAnswerCount;
+	unsigned int averangeAnswerTime;
 };
 
 
