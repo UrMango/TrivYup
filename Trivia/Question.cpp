@@ -9,3 +9,8 @@ Question::Question(int id, std::string question, std::string answer, std::string
 	m_possibleAnswers.push_back(wrongAnswer2);
 	m_possibleAnswers.push_back(wrongAnswer3);
 }
+
+std::string Question::getQuestion()
+{
+	return this->m_question;
+}
