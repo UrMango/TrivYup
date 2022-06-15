@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 class Question
 {
@@ -11,10 +12,7 @@ public:
 
 private:
 	int id;
-	std::string question;
-	std::string answer;
-	std::string wrongAnswer;
-	std::string wrongAnswer2;
-	std::string wrongAnswer3;
+	std::string m_question;
+	std::vector<std::string> m_possibleAnswers;
 };
 
