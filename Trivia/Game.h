@@ -5,6 +5,7 @@
 #include <map>
 #include "Question.h"
 #include "LoggedUser.h"
+#include "Room.h"
 
 struct GameData
 {
@@ -17,15 +18,15 @@ struct GameData
 class Game
 {
 public:
-    Game(LoggedUser* User);
-    void submitAnswer(LoggedUser* users, int answeriD);
-    void removePlayer(LoggedUser* users);
+    Game(Room& room);
+    void submitAnswer(LoggedUser* users, std::string answer);
+    void removePlayer(LoggedUser users);
     int getGameId() const;
-    Question* getQuestionForUser(struct LoggedUser* users);
+    Question* getQuestionForUser(LoggedUser* users);
 
 private:
 	std::vector<Question*> m_questions;
-	std::map<LoggedUser*, GameData> m_players;
+	std::map<LoggedUser*, GameData*> m_players;
     int m_gameId;
 };
 

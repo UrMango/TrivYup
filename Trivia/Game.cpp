@@ -1,19 +1,43 @@
 #include "Game.h"
 
-Game::Game(LoggedUser* User)
+Game::Game(Room& room)
 {
-    Question* qeu = m_questions[0];
-    struct GameData gamedata;
-    gamedata.averangeAnswerTime = 0;
-    gamedata.correctAnswerCount = 0;
-    gamedata.currentQuestion = qeu;
-    gamedata.wrongAnswerCount = 0;
-    m_players.insert({ User, gamedata });
+    for (int i = 0; i < room.getAllLoggedUsers().size(); i++) {
+        struct GameData gamedata;
+        gamedata.currentQuestion = m_questions[0];
+        gamedata.averangeAnswerTime = 0;
+        gamedata.correctAnswerCount = 0;
+        gamedata.wrongAnswerCount = 0;
+        m_players.insert({&room.getAllLoggedUsers()[i], &gamedata});
+    }
 }
 
 Question* Game::getQuestionForUser(LoggedUser* users)
+{ 
+    for (auto it : m_players)
+    {
+        if (it.first == users)
+        {
+            return m_questions[it.second->wrongAnswerCount + it.second->correctAnswerCount];
+        }
+    }
+}
+
+void Game::submitAnswer(LoggedUser* users, std::string answer)
 {
     auto it = m_players.find(users);
-    int place = it->second.wrongAnswerCount + it->second.correctAnswerCount;
-    return m_questions[place];
+    if (answer == it->second->currentQuestion->getCorrentAnswer())
+    {
+        it->second->correctAnswerCount++;
+    }
+    else
+    {
+        it->second->wrongAnswerCount++;
+    }
 }
+
+int Game::getGameId() const
+{
+    return this->m_gameId;
+}
+

@@ -48,3 +48,8 @@ void Room::changeRoomState(const int state)
 {
 	this->m_metadata.isActive = state;
 }
+
+std::vector<LoggedUser> Room::getAllLoggedUsers()
+{
+	return this->m_users;
+}

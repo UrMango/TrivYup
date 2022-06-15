@@ -15,8 +15,6 @@ struct RoomData
 	unsigned int isActive = 0; //0-not active, 1-active
 };
 
-
-
 inline void to_json(nlohmann::json& j, const RoomData& rd)
 {
 	j = { {"id", rd.id},
@@ -27,21 +25,19 @@ inline void to_json(nlohmann::json& j, const RoomData& rd)
 		{"maxPlayers", rd.maxPlayers} };
 }
 
-
-
 class Room
 {
 public:
 	Room(const LoggedUser user,const RoomData roomData);
 	RoomData* addUser(LoggedUser user); // adds a user to the users vector
 	void removeUser(LoggedUser user); // removes a user from the users vector
-	std::vector<string> getAllUsers(); // return a vector of all the users
 	void changeRoomState(const int state);
 
 	// getters
 	RoomData getRoomData()const;
 	unsigned int getRoomState()const;
-
+	std::vector<string> getAllUsers(); // return a vector of all the users
+	std::vector<LoggedUser> getAllLoggedUsers();
 private:
 	RoomData m_metadata; // the data of the room
 	std::vector<LoggedUser> m_users; // the vector of the users in the room
