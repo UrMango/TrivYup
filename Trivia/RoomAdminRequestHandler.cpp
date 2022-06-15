@@ -1,6 +1,6 @@
 #include "RoomAdminRequestHandler.h"
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& user) : _roomUser(m_user.getRoom()), m_user(user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory) {}
+RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& user) : _roomUser(user.getRoom()), m_user(user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory) {}
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
@@ -23,10 +23,10 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& request)
 			return closeRoom(request);
 			break;
 		case START_GAME:
-
+			return startGame(request);
 			break;
 		case GET_ROOM_STATE:
-
+			return getRoomState(request);
 			break;
 	}
 }

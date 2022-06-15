@@ -9,9 +9,11 @@ import GameBox from "../../components/GameBox/GameBox";
 
 import "./Game.css";
 import Lobby from "../../components/Lobby/Lobby";
+import Quiz from "../../components/Quiz/Quiz";
 
 const Game = (props) => {
 	const username = useSelector(state => state.user?.data?.username);
+	const { hasGameBegun } = useSelector(state => state.rooms.currentRoom);
 	
 	const { gameId } = useParams();
 	const state = useLocation().state;
@@ -22,7 +24,7 @@ const Game = (props) => {
 	return (
 		<>
 			{!username && <Navigate to="/auth/login"/>}
-			<Lobby id={gameId} creator={state?.creator} data={state?.data}/>
+			{hasGameBegun ? <Quiz /> : <Lobby id={gameId} creator={state?.creator} data={state?.data}/>}
 		</>
 	)
 }
