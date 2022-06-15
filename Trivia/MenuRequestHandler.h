@@ -8,7 +8,6 @@
 #include "JsonResponsePacketSerializer.h"
 #include "Room.h"
 
-
 class RequestHandlerFactory;
 
 class MenuRequestHandler : public IRequestHandler
@@ -28,7 +27,6 @@ private:
 	RequestResult getHighScore(const RequestInfo& request);
 	RequestResult joinRoom(const RequestInfo& request);
 	RequestResult createRoom(const RequestInfo& request);
-
 
 public:
 	MenuRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user);
