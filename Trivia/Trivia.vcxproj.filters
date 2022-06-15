@@ -76,6 +76,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
+    <ClCompile Include="RoomMemberRequestHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -147,6 +148,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
+    <ClInclude Include="RoomMemberRequestHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

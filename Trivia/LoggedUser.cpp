@@ -5,12 +5,17 @@ std::string LoggedUser::getUsername()
     return this->m_username;
 }
 
-int LoggedUser::getRoomId()const
+Room* LoggedUser::getRoom()const
 {
-    return this->roodIdOfOser;
+    return this->roomOfOser;
 }
 
-void LoggedUser::changeRoomId(const int newId)
+void LoggedUser::changeRoom(Room* Room)
 {
-    this->roodIdOfOser = newId;
+    this->roomOfOser = Room;
+}
+
+void LoggedUser::removeRoom()
+{
+    this->roomOfOser = nullptr;
 }

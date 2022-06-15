@@ -7,17 +7,30 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* database) : m_database(d
 	this->m_roomManager = new RoomManager();
 }
 
-LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
+LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler() const
 {
-	RequestHandlerFactory* rr = (RequestHandlerFactory*)this;
-	return (LoginRequestHandler*)new LoginRequestHandler(*rr, *this->m_loginManager);
+	RequestHandlerFactory* requestHandlerFactory = (RequestHandlerFactory*)this;
+	return (LoginRequestHandler*)new LoginRequestHandler(*requestHandlerFactory, *this->m_loginManager);
 }
 
-MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser& m_user)
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser& m_user)const
 {
-	RequestHandlerFactory* rr = (RequestHandlerFactory*)this;
-	return (MenuRequestHandler*)new MenuRequestHandler(*rr, m_user);
+	RequestHandlerFactory* requestHandlerFactory = (RequestHandlerFactory*)this;
+	return (MenuRequestHandler*)new MenuRequestHandler(*requestHandlerFactory, m_user);
 }
+
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser& m_user, Room& room)const
+{
+	RequestHandlerFactory* requestHandlerFactory = (RequestHandlerFactory*)this;
+	return (RoomAdminRequestHandler*)new RoomAdminRequestHandler(*requestHandlerFactory, m_user);
+}
+
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser& m_user, Room& room) const
+{
+	RequestHandlerFactory* requestHandlerFactory = (RequestHandlerFactory*)this;
+	return (RoomMemberRequestHandler*)new RoomMemberRequestHandler(*requestHandlerFactory, m_user);
+}
+
 LoginManager& RequestHandlerFactory::getLoginManager() const
 {
 	return *(this->m_loginManager);

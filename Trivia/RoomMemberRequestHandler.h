@@ -4,11 +4,10 @@
 #include "Helper.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "Room.h"
-#include "RoomMemberRequestHandler.h"
 
 class RequestHandlerFactory;
 
-class RoomAdminRequestHandler : public IRequestHandler
+class RoomMemberRequestHandler : public IRequestHandler
 {
 private:
 
@@ -19,11 +18,11 @@ private:
 
 public:
 	Room* getRoomOfUser();
-	LoggedUser& getUser() const;
-	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& user);
+	LoggedUser getUser() const;
+	RoomMemberRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user);
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
-	RequestResult& closeRoom(const RequestInfo& request);
-	RequestResult& startGame(const RequestInfo& request);
-	RequestResult getRoomState(const RequestInfo& request);
+	RequestResult getRoomState(const RequestInfo& request) const;
+	RequestResult leaveRoom(const RequestInfo& request) const;
+
 };

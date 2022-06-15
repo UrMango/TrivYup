@@ -18,7 +18,14 @@ unsigned int RoomManager::getRoomState(const int ID)const
         }
     }
 }
-
+void RoomManager::changeRoomState(const int state, const int ID)
+{
+    for (auto& it : m_rooms) {
+        if (it.first == ID) {
+            return it.second.changeRoomState(state);
+        }
+    }
+}
 std::vector<string> RoomManager::getAllUsersInRoom(const int ID)const
 {
     for (auto& it : m_rooms) {
@@ -62,4 +69,15 @@ std::vector<RoomData> RoomManager::getRooms()const
         }
     }
     return rooms;
+}
+
+Room* RoomManager::getRoom(const unsigned int IDOfRoom)const
+{
+
+    auto it = this->m_rooms.find('c');
+    for (auto& it : m_rooms) {
+        if (it.first == IDOfRoom) {
+            return &(it.second);
+        }
+    }
 }
