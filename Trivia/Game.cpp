@@ -8,6 +8,7 @@ Game::Game(Room& room)
         gamedata.averangeAnswerTime = 0;
         gamedata.correctAnswerCount = 0;
         gamedata.wrongAnswerCount = 0;
+        gamedata.onGame = true;
         m_players.insert({&room.getAllLoggedUsers()[i], &gamedata});
     }
 }
@@ -33,6 +34,17 @@ void Game::submitAnswer(LoggedUser* users, std::string answer)
     else
     {
         it->second->wrongAnswerCount++;
+    }
+}
+
+void Game::removePlayer(LoggedUser* users)
+{
+    for (auto it : m_players)
+    {
+        if (it.first == users)
+        {
+            it.second->onGame = false;
+        }
     }
 }
 
