@@ -15,7 +15,8 @@ const Lobby = ({id, creator, data}) => {
 
 	const username = useSelector(state => state.user?.data?.username);
 
-	const players = useSelector(state => state.rooms?.players);
+	/**@type {Array} */
+	const players = useSelector(state => state.rooms?.currentRoom.players);
 
 	const toggle = () => setMute(!mute);
 
@@ -26,7 +27,7 @@ const Lobby = ({id, creator, data}) => {
 		return <id className="playername"><h3>{player}</h3></id>
 	});
 
-	if(players.length > 0 && players[0] == username) creator = true;
+	if(players?.length > 0 && players[0] == username) creator = true;
 	playersList?.splice(0, 1);
 
 	useEffect(() => {
@@ -45,21 +46,21 @@ const Lobby = ({id, creator, data}) => {
 		id = Number(id);
 		let toSend = JSON.stringify({ roomid: Number(id) });
 
-		ws.send(ClientToServerCode.GET_PLAYERS_IN_ROOM + toSend);
+		ws.send(ClientToServerCode.GET_ROOM_STATE + toSend);
 		const getPlayers = setInterval(() => {
-			ws.send(ClientToServerCode.GET_PLAYERS_IN_ROOM + toSend);
+			ws.send(ClientToServerCode.GET_ROOM_STATE + toSend);
 		}, 2500);
 
 		return () => {
             audio.pause();
 			clearInterval(getPlayers);
-			ws.send(ClientToServerCode.LEAVE_ROOM);
         }
 	}, [mute]);
 
 	const handleStartGame = e => {
 		e.preventDefault();
-		
+
+		ws.send(ClientToServerCode.START_GAME);
 		//send to server
 	}
 	return (
@@ -78,10 +79,10 @@ const Lobby = ({id, creator, data}) => {
 				<div className="upper">
 					<div className="playerCount">
 						<img className="userIcon" src={UserIcon} alt="" />
-						<h3>{playersList?.length}</h3>
+						<h3>{playersList?.length || 0}</h3>
 					</div>
 					<img className="logo" src={Logo}></img>
-					{ creator ? <button className="startBtn" onClick={handleStartGame} type="submit">Start</button> : <div style={{textAlign: "center", fontWeight: 500, marginTop: 20}}>Creator: {players[0]}</div> }
+					{players && ( creator ? <button className="startBtn" onClick={handleStartGame} type="submit">Start</button> : <div style={{textAlign: "center", fontWeight: 500, marginTop: 20}}>Creator: {players[0]}</div> )}
 				</div>
 				<div className="players">{playersList?.length > 0 ? playersList : <h4 className="noplayers">Waiting for players...</h4>}</div>
 			</div>

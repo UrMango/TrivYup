@@ -32,7 +32,7 @@ RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo& request)
 {
 	GetRoomStateResponse getRoomStateResponse;
 	struct RequestResult result;
-	getRoomStateResponse.status = 1;
+	getRoomStateResponse.status = 0;
 	getRoomStateResponse.hasGameBegun = this->m_roomManager.getRoomState(this->_roomUser->getRoomData().id);
 	getRoomStateResponse.answerTimeout = this->_roomUser->getRoomData().timePerQuestion;
 	getRoomStateResponse.players = this->m_roomManager.getAllUsersInRoom(this->_roomUser->getRoomData().id);
@@ -46,7 +46,9 @@ RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo& request) co
 {
 	LeaveRoomResponse leaveRoomResponse;
 	struct RequestResult result;
-	this->m_roomManager.removeUserInRoom(m_user.getRoom()->getRoomData().id, m_user);
+	if (m_user.getRoom()) {
+		m_user.getRoom()->removeUser(m_user);
+	}
 	this->m_user.removeRoom();
 	leaveRoomResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);

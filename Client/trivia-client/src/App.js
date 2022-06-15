@@ -80,8 +80,8 @@ const App = () => {
         case ResponseCode.GetStatistics:
           dispatch({type: "HIGHSCORES", payload: msg.statistics});
           break;
-        case ResponseCode.PlayersInRoom:
-          dispatch({type: "PLAYERS", payload: msg.players});
+        case ResponseCode.GetRoomState:
+          dispatch({type: "CURR_ROOM", payload: msg});
           break;
         // case "startgame":
         //   navigate(location.pathname + "?started");
