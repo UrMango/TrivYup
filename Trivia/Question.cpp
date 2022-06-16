@@ -23,7 +23,12 @@ std::string Question::getPossibleAnswers() const
 	return answers;
 }
 
-std::string Question::getCorrentAnswer() const
+int Question::getId() const
+{
+	return this->id;
+}
+
+std::string Question::getCorrectAnswer() const
 {
 	return m_possibleAnswers[0];
 }

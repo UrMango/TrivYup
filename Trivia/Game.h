@@ -9,7 +9,7 @@
 
 struct GameData
 {
-	Question* currentQuestion;
+	Question* currectQuestion;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
     float averangeAnswerTime;
@@ -19,7 +19,7 @@ struct GameData
 class Game
 {
 public:
-    Game(Room& room);
+    Game(Room& room, std::vector<Question*> questions);
     void submitAnswer(LoggedUser* users, std::string answer);
     void removePlayer(LoggedUser* users);
     int getGameId() const;
