@@ -19,7 +19,7 @@ int countSelectCallback(void* data, int argc, char** argv, char** azColName)
 
 int getQuestionCallback(void* data, int argc, char** argv, char** azColName)
 {
-	std::list<Question> questionList = *((std::list<Question>*)data);
+	Question* _question = ((Question*)data);
 
 	int id = -1;
 	std::string question;
@@ -56,7 +56,7 @@ int getQuestionCallback(void* data, int argc, char** argv, char** azColName)
 		}
 
 	}
-	questionList.push_back(Question(id, question, ans, wrongAns, wrongAns2, wrongAns3));
+	_question = new Question(id, question, ans, wrongAns, wrongAns2, wrongAns3);
 
 	return SQLITE_OK;
 }
@@ -257,19 +257,43 @@ void SqliteDataBase::addNewUser(std::string username, std::string pword, std::st
 	}
 }
 
-std::list<Question> SqliteDataBase::getQuestions() 
+std::list<Question> SqliteDataBase::getQuestions(int numQuestions)
 {
 	int res;
+	bool found = true;
+	int randomId = -1;
+	const int QUESTION_COUNT = 400;
 
-	questionList.clear();
-	std::string query = "SELECT * FROM QUESTIONS";
-	res = sqlite3_exec(db, query.c_str(), getQuestionCallback, &this->questionList, &errMessage);
-	if (res != SQLITE_OK)
+	std::list<Question> questionsList;
+
+	for (int i = 0; i < numQuestions; i++)
 	{
-		std::cout << errMessage << std::endl;
+		while (!found)
+		{
+			found = true;
+			srand((unsigned)time(0));
+			randomId = (rand() % QUESTION_COUNT) + 1;
+
+			for (auto it : questionsList)
+			{
+				if (it.getId() == randomId) {
+					found = false;
+					break;
+				}
+			}
+		}
+
+		std::string query = "SELECT * FROM QUESTIONS WHERE id = " + randomId;
+		query += ";";
+		res = sqlite3_exec(db, query.c_str(), getQuestionCallback, this->question, &errMessage);
+		if (res != SQLITE_OK)
+		{
+			std::cout << errMessage << std::endl;
+		}
+		questionsList.push_back(*this->question);
 	}
 
-	return this->questionList;
+	return questionsList;
 }
 
 float SqliteDataBase::getPlayerAverageAnswerTime(std::string username)

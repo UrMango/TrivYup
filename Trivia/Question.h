@@ -11,8 +11,8 @@ public:
 	~Question() {};
 	std::string getQuestion() const;
 	std::string getPossibleAnswers() const;
-	std::string getCorrentAnswer() const;
-
+	std::string getCorrectAnswer() const;
+	int getId() const;
 
 private:
 	int id;

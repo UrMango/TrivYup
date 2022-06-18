@@ -1,10 +1,10 @@
 #include "Game.h"
 
-Game::Game(Room& room)
+Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions)
 {
     for (int i = 0; i < room.getAllLoggedUsers().size(); i++) {
         struct GameData gamedata;
-        gamedata.currentQuestion = m_questions[0];
+        gamedata.currectQuestion = m_questions[0];
         gamedata.averangeAnswerTime = 0;
         gamedata.correctAnswerCount = 0;
         gamedata.wrongAnswerCount = 0;
@@ -27,7 +27,7 @@ Question* Game::getQuestionForUser(LoggedUser* users)
 void Game::submitAnswer(LoggedUser* users, std::string answer)
 {
     auto it = m_players.find(users);
-    if (answer == it->second->currentQuestion->getCorrentAnswer())
+    if (answer == it->second->currectQuestion->getCorrectAnswer())
     {
         it->second->correctAnswerCount++;
     }
