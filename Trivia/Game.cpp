@@ -23,6 +23,7 @@ Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
             {
                 return NULL;
             }
+            user->setMsgTime(time);
             it.second->currectQuestion = m_questions[it.second->wrongAnswerCount + it.second->correctAnswerCount];
             return it.second->currectQuestion;
         }
