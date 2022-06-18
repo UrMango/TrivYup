@@ -30,6 +30,10 @@ enum ResponseCode
 	StartGame,
 	GetRoomState,
 	LeaveRoom,
+	LeaveGame,
+	GetQuestions,
+	SubmitAnswer,
+	GetGameResult,
 };
 
 enum LoginCode
@@ -125,5 +129,9 @@ public:
 	static std::string serializeStartGameResponse(StartGameResponse startGameResponse);
 	static std::string serializeGetRoomStateResponse(GetRoomStateResponse getRoomStateResponse);
 	static std::string serializeLeaveRoomResponse(LeaveRoomResponse leaveRoomResponse);
+	static std::string serializeGetGameResultsResponse(GetGameResultsResponse getGameResultsResponse);
+	static std::string serializeSubmitAnswerResponse(SubmitAnswerResponse submitAnswerResponse);
+	static std::string serializeGetQuestionResponse(GetQuestionResponse getQuestionResponse);
+	static std::string serializeLeaveGameResponse(LeaveGameResponse leaveGameResponse);
 };
 

@@ -24,6 +24,14 @@ struct PlayerResults
     unsigned int averageAnswerTime;
 };
 
+inline void to_json(nlohmann::json& j, const PlayerResults& pl)
+{
+    j = { {"username", pl.username},
+        {"correctAnswerCount", pl.correctAnswerCount},
+        {"wrongAnswerCount", pl.wrongAnswerCount},
+        {"averageAnswerTime", pl.averageAnswerTime} };
+}
+
 class Game
 {
 public:

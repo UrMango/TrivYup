@@ -123,3 +123,39 @@ std::string JsonResponsePacketSerializer::serializeLeaveRoomResponse(LeaveRoomRe
 	return json.dump();
 }
 
+std::string JsonResponsePacketSerializer::serializeGetGameResultsResponse(GetGameResultsResponse getGameResultsResponse)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::GetGameResult;
+	json["status"] = getGameResultsResponse.status;
+	json["results"] = getGameResultsResponse.results;
+	return json.dump();
+}
+
+std::string JsonResponsePacketSerializer::serializeSubmitAnswerResponse(SubmitAnswerResponse submitAnswerResponse)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::SubmitAnswer;
+	json["status"] = submitAnswerResponse.status;
+	json["correctAnswerId"] = submitAnswerResponse.correctAnswerId;
+	return json.dump();
+}
+
+std::string JsonResponsePacketSerializer::serializeGetQuestionResponse(GetQuestionResponse getQuestionResponse)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::GetQuestions;
+	json["status"] = getQuestionResponse.status;
+	json["answers"] = getQuestionResponse.answers;
+	json["question"] = getQuestionResponse.question;
+	return json.dump();
+}
+
+std::string JsonResponsePacketSerializer::serializeLeaveGameResponse(LeaveGameResponse leaveGameResponse)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::LeaveGame;
+	json["status"] = leaveGameResponse.status;
+	return json.dump();
+}
+
