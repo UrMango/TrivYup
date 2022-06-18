@@ -20,10 +20,10 @@ class Game
 {
 public:
     Game(Room& room, std::vector<Question*> questions);
-    void submitAnswer(LoggedUser* users, std::string answer);
+    void submitAnswer(LoggedUser* user, std::string answer);
     void removePlayer(LoggedUser* users);
     int getGameId() const;
-    Question* getQuestionForUser(LoggedUser* users);
+    Question* getQuestionForUser(LoggedUser* user);
 
 private:
 	std::vector<Question*> m_questions;
