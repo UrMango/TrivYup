@@ -23,7 +23,7 @@ void Room::removeUser(LoggedUser user)
 	}
 }
 
-std::vector<string> Room::getAllUsers()
+std::vector<std::string> Room::getAllUsers()
 {
 	std::vector <std::string> allUsers;
 	for (int i = 0; i < this->m_users.size(); i++)

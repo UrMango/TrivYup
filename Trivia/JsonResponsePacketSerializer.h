@@ -11,6 +11,7 @@
 #include "SignupResponse.h"
 #include "Helper.h"
 #include "Room.h"
+#include "Game.h"
 
 enum ResponseCode
 {
@@ -87,6 +88,26 @@ struct LeaveRoomResponse {
 struct GetPersonalStatsResponse {
 	std::vector<string> statistics;
 };
+struct LeaveGameResponse {
+	unsigned int status;
+};
+struct GetQuestionResponse {
+	unsigned int status;
+	std::string question;
+	std::map<unsigned int, string> answers;
+};
+struct SubmitAnswerResponse {
+	unsigned int status;
+	unsigned int correctAnswerId;
+};
+struct GetGameResultsResponse {
+	unsigned int status;
+	std::vector<PlayerResults> results;
+};
+
+
+
+
 class JsonResponsePacketSerializer
 {
 public:

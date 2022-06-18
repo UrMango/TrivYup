@@ -1,12 +1,13 @@
 #pragma once
 #include <string>
-#include "Helper.h"
 #include <vector>
 #include <map>
 #include "Question.h"
+
+#include "Helper.h"
+
 #include "LoggedUser.h"
 #include "Room.h"
-
 struct GameData
 {
 	Question* currectQuestion;
@@ -14,6 +15,13 @@ struct GameData
 	unsigned int wrongAnswerCount;
     float averangeAnswerTime;
     bool onGame;
+};
+struct PlayerResults
+{
+    std::string username;
+    unsigned int correctAnswerCount;
+    unsigned int wrongAnswerCount;
+    unsigned int averageAnswerTime;
 };
 
 class Game
