@@ -32,12 +32,12 @@ enum MessageType
 	LEAVE_GAME = 217,
 	GET_QUESTION = 218,
 	SUBMIT_ANSWER = 219,
-	GET_GAME_RESUIL = 220
+	GET_GAME_RESULT = 220
 };
 
 struct RequestInfo {
 	int msgCode = 0;
-	std::string msgTime = "";
+	time_t msgTime = NULL;
 	std::string msg = "";
 };
 

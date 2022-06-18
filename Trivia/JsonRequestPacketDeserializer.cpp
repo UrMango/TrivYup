@@ -70,6 +70,6 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerReques
 
 	//insert field to struct
 	struct SubmitAnswerRequest submitAnswerRequest;
-	submitAnswerRequest.answerId = j["answerId"];
+	submitAnswerRequest.answer = j["answer"];
 	return submitAnswerRequest;
 }
