@@ -48,5 +48,6 @@ public:
 	static JoinRoomRequest deserializeJoinRoomRequest(const string userMsg);
 	static CreateRoomRequest deserializeCreateRoomRequest(const string userMsg);	
 
+	static SubmitAnswerRequest deserializeSubmitAnswerRequest(const string userMsg);
 };
 
