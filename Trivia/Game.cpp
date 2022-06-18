@@ -13,7 +13,7 @@ Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions
     }
 }
 
-Question* Game::getQuestionForUser(LoggedUser* user)
+Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
 { 
     for (auto it : m_players)
     {

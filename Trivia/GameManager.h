@@ -11,6 +11,9 @@ private:
 	std::vector<Game> m_games;
 
 public:
+	GameManager(IDatabase* database) : m_database(database), m_games(NULL) {};
+	~GameManager() {};
+
 	Game createGame(Room room);
 	void deleteGame(int gameId);
 };

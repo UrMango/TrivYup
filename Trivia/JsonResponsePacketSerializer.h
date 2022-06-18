@@ -98,7 +98,7 @@ struct LeaveGameResponse {
 struct GetQuestionResponse {
 	unsigned int status;
 	std::string question;
-	std::map<unsigned int, string> answers;
+	std::map<unsigned int, std::string> answers;
 };
 struct SubmitAnswerResponse {
 	unsigned int status;

@@ -15,11 +15,11 @@ std::string Question::getQuestion() const
 	return this->m_question;
 }
 
-std::string Question::getPossibleAnswers() const
+std::map<unsigned int, std::string> Question::getPossibleAnswers() const
 {
-	std::string answers = "";
+	std::map<unsigned int, std::string> answers;
 	for (int i = 0; i < m_possibleAnswers.size(); i++)
-		answers += m_possibleAnswers[i] + ", ";
+		answers.insert({ (i + 1), m_possibleAnswers[i] });
 	return answers;
 }
 
