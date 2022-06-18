@@ -36,7 +36,7 @@ public:
 	// getters
 	RoomData getRoomData()const;
 	unsigned int getRoomState()const;
-	std::vector<string> getAllUsers(); // return a vector of all the users
+	std::vector<std::string> getAllUsers(); // return a vector of all the users
 	std::vector<LoggedUser> getAllLoggedUsers();
 private:
 	RoomData m_metadata; // the data of the room

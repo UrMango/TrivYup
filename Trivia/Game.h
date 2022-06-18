@@ -1,12 +1,13 @@
 #pragma once
 #include <string>
-#include "Helper.h"
 #include <vector>
 #include <map>
 #include "Question.h"
+
+#include "Helper.h"
+
 #include "LoggedUser.h"
 #include "Room.h"
-
 struct GameData
 {
 	Question* currectQuestion;
@@ -15,6 +16,21 @@ struct GameData
     float averangeAnswerTime;
     bool onGame;
 };
+struct PlayerResults
+{
+    std::string username;
+    unsigned int correctAnswerCount;
+    unsigned int wrongAnswerCount;
+    unsigned int averageAnswerTime;
+};
+
+inline void to_json(nlohmann::json& j, const PlayerResults& pl)
+{
+    j = { {"username", pl.username},
+        {"correctAnswerCount", pl.correctAnswerCount},
+        {"wrongAnswerCount", pl.wrongAnswerCount},
+        {"averageAnswerTime", pl.averageAnswerTime} };
+}
 
 class Game
 {
