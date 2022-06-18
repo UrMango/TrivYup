@@ -260,7 +260,7 @@ void SqliteDataBase::addNewUser(std::string username, std::string pword, std::st
 std::list<Question> SqliteDataBase::getQuestions(int numQuestions)
 {
 	int res;
-	bool found = true;
+	bool ifAvailable = true;
 	int randomId = -1;
 	const int QUESTION_COUNT = 400;
 
@@ -268,16 +268,16 @@ std::list<Question> SqliteDataBase::getQuestions(int numQuestions)
 
 	for (int i = 0; i < numQuestions; i++)
 	{
-		while (!found)
+		while (ifAvailable)
 		{
-			found = true;
+			ifAvailable = true;
 			srand((unsigned)time(0));
 			randomId = (rand() % QUESTION_COUNT) + 1;
 
 			for (auto it : questionsList)
 			{
 				if (it.getId() == randomId) {
-					found = false;
+					ifAvailable = false;
 					break;
 				}
 			}
