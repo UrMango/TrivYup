@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Communicator.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="IDatabase.cpp" />
+    <ClCompile Include="Header.cpp" />
+    <ClCompile Include="IRequestHandler.cpp" />
+    <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
+    <ClCompile Include="JsonResponsePacketSerializer.cpp" />
+    <ClCompile Include="LoggedUser.cpp" />
+    <ClCompile Include="LoginManager.cpp" />
+    <ClCompile Include="LoginRequestHandler.cpp" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomAdminRequestHandler.cpp" />
+    <ClCompile Include="RoomManager.cpp" />
+    <ClCompile Include="Question.cpp" />
+    <ClCompile Include="MenuRequestHandler.cpp" />
+    <ClCompile Include="RoomMemberRequestHandler.cpp" />
+    <ClCompile Include="sqlite3.c" />
+    <ClCompile Include="SqliteDataBase.cpp" />
+    <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="StatisticsManager.cpp" />
+    <ClCompile Include="WSServer.cpp" />
+    <ClCompile Include="Trivia.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameRequestHandler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Communicator.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="IDatabase.h" />
+    <ClInclude Include="ErrorResponse.h" />
+    <ClInclude Include="Helper.h" />
+    <ClInclude Include="IRequestHandler.h" />
+    <ClInclude Include="JsonRequestPacketDeserializer.h" />
+    <ClInclude Include="JsonResponsePacketSerializer.h" />
+    <ClInclude Include="LoggedUser.h" />
+    <ClInclude Include="LoginManager.h" />
+    <ClInclude Include="LoginRequestHandler.h" />
+    <ClInclude Include="LoginResponse.h" />
+    <ClInclude Include="Question.h" />
+    <ClInclude Include="MenuRequestHandler.h" />
+    <ClInclude Include="RequestHandlerFactory.h" />
+    <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomAdminRequestHandler.h" />
+    <ClInclude Include="RoomManager.h" />
+    <ClInclude Include="RoomMemberRequestHandler.h" />
+    <ClInclude Include="SignupResponse.h" />
+    <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="SqliteDataBase.h" />
+    <ClInclude Include="StatisticsManager.h" />
+    <ClInclude Include="WSServer.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameRequestHandler.h" />
+  </ItemGroup>
+</Project>

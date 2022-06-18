@@ -1,0 +1,136 @@
+.joinCode {
+	height: calc(6rem + (7.625rem + 5vmin) - 6.5vmin + 0rem);
+	background-color: #25076B;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.joinCode .side-options {
+	position:absolute;
+	left: 10px;
+	top: calc(3.5rem + 20px);
+	
+}
+
+.joinCode .side-options .muteBtn {
+	border-radius: 100%;
+	cursor: pointer;
+}
+
+.joinCode .side-options .muteBtn img {
+	width: 40px;
+	padding: 10px;
+}
+
+.joinCode .joinCodePlace {
+	/* margin-right: 90px; */
+	padding: 1.1vmin 3vmin 1.8vmin 2vmin;
+	background-color: white;
+	border-radius: 0.5vmin;
+	color: #333333;
+}
+
+.joinCode .joinCodePlace .text {
+	font-size: 2.34vmin;
+}
+
+.joinCode .joinCodePlace .pin {
+	margin-left: 10px;
+	font-size: 8.5vmin;
+	font-weight: 900;
+}
+
+.lobby {
+	background-image: url("../../assets/images/bg-site2.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	width: 100%;
+	height: calc(100vh - 3.5rem - (6rem + (7.625rem + 5vmin) - 6.5vmin + 0rem)); /*3.5rem - height of navbar*/
+	color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.lobby .upper {
+	margin-top: 50px;
+	display: flex;
+	top: 0;
+	justify-content: space-between;
+	width: 90%;
+}
+
+.lobby .upper .playerCount {
+	padding: 0vmin 2vmin 0vmin 1vmin;
+	height: 55px;
+	border-radius: 4px;
+	background-color: rgba(0, 0, 0, 0.5);
+	font-weight: 600;
+	font-size: clamp(1.2rem, 2.5vmin, 2.5rem);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	/* margin-top: 20px; */
+}
+
+.lobby .upper .playerCount .userIcon {
+	width: 25px;
+	height:fit-content;
+	filter: invert(1);
+	margin-right: 5px;
+}
+
+.lobby .upper .startBtn {
+	padding: 0px 1rem 0.25rem;
+	box-shadow: rgb(0 0 0 / 15%) 0px -0.25rem 0px 0px inset, rgb(0 0 0 / 15%) 0px 2px 4px;
+	font-size: 1.2rem;
+	min-height: 2.5rem;
+	height: 4vmin;
+	border-radius: 4px;
+	background-color: rgb(255, 255, 255);
+	font-weight: bold;
+	text-decoration: none;
+	cursor: pointer;
+	border: none;
+}
+
+.lobby .logo {
+	justify-self:center;
+	width: 170px;
+	margin-bottom: 20px;
+}
+
+.lobby .players {
+	width: 80%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 15vmin;
+	flex-wrap: wrap;
+}
+
+.lobby .players .playername {
+	margin-left: 10px;
+	margin-right: 10px;
+	padding: 1vmin 3vmin;
+	font-weight: 600;
+	border-radius: 0.125rem 0px;
+	font-size: 3.5vmin;
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+.lobby .noplayers {
+	background-color: #230B47;
+	padding: 5px;
+	border-radius: 4px;
+	justify-self: center;
+	font-size: 4vmin;
+	font-weight: 500;
+	
+}
