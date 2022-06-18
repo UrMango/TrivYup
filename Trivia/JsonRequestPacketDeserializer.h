@@ -33,7 +33,7 @@ struct CreateRoomRequest {
 	unsigned int answerTimeout;
 };
 struct SubmitAnswerRequest {
-	unsigned int answerId;
+	std::string answer;
 };
 //******************************************************************************************
 

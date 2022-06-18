@@ -137,7 +137,7 @@ std::string JsonResponsePacketSerializer::serializeSubmitAnswerResponse(SubmitAn
 	nlohmann::json json;
 	json["id"] = (int)ResponseCode::SubmitAnswer;
 	json["status"] = submitAnswerResponse.status;
-	json["correctAnswerId"] = submitAnswerResponse.correctAnswerId;
+	json["correctAnswer"] = submitAnswerResponse.correctAnswer;
 	return json.dump();
 }
 

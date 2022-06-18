@@ -102,15 +102,12 @@ struct GetQuestionResponse {
 };
 struct SubmitAnswerResponse {
 	unsigned int status;
-	unsigned int correctAnswerId;
+	std::string correctAnswer;
 };
 struct GetGameResultsResponse {
 	unsigned int status;
 	std::vector<PlayerResults> results;
 };
-
-
-
 
 class JsonResponsePacketSerializer
 {
