@@ -19,6 +19,10 @@ Question* Game::getQuestionForUser(LoggedUser* user)
     {
         if (it.first == user)
         {
+            if (m_questions.size() == (it.second->wrongAnswerCount + it.second->correctAnswerCount + 1))
+            {
+                return NULL;
+            }
             it.second->currectQuestion = m_questions[it.second->wrongAnswerCount + it.second->correctAnswerCount];
             return it.second->currectQuestion;
         }
@@ -45,6 +49,7 @@ void Game::removePlayer(LoggedUser* users)
         if (it.first == users)
         {
             it.second->onGame = false;
+            break;
         }
     }
 }
