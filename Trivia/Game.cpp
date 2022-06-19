@@ -29,6 +29,11 @@ Question* Game::getQuestionForUser(LoggedUser* user)
     }
 }
 
+std::map<LoggedUser*, GameData*> Game::getPlayers()
+{
+    return this->m_players;
+}
+
 void Game::submitAnswer(LoggedUser* user, std::string answer)
 {
     auto it = m_players.find(user);

@@ -40,6 +40,7 @@ public:
     void removePlayer(LoggedUser* users);
     int getGameId() const;
     Question* getQuestionForUser(LoggedUser* user);
+    std::map<LoggedUser*, GameData*> getPlayers();
 
 private:
 	std::vector<Question*> m_questions;
