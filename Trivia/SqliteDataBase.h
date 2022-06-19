@@ -16,6 +16,7 @@ public:
 	//Question getQuestion(int id) override;
 	int getUserId(std::string username) override;
 	std::list<Question> getQuestions(int numQuestions) override;
+	void updateStatistics(std::string username, GameData playerGameData) override;
 	float getPlayerAverageAnswerTime(std::string username) override;
 	int getNumOfCorrectAnswers(std::string username) override;
 	int getNumOfTotalAnswers(std::string username) override;
