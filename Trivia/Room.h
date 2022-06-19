@@ -34,8 +34,8 @@ public:
 	void changeRoomState(const int state);
 
 	// getters
-	RoomData getRoomData()const;
-	unsigned int getRoomState()const;
+	RoomData getRoomData() const;
+	unsigned int getRoomState() const;
 	std::vector<std::string> getAllUsers(); // return a vector of all the users
 	std::vector<LoggedUser> getAllLoggedUsers();
 private:
