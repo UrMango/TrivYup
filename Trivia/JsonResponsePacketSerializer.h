@@ -34,7 +34,7 @@ enum ResponseCode
 	GetQuestions,
 	SubmitAnswer,
 	GetGameResult,
-	GameFinished
+	EveryOneAnswered
 };
 
 enum LoginCode
@@ -110,8 +110,8 @@ struct GetGameResultsResponse {
 	unsigned int status;
 	std::vector<PlayerResults> results;
 };
-struct GetIsGameFinishedResponse {
-	bool isGameFinished;
+struct GetIsEveryoneAnsweredResponse {
+	bool isEveryoneAnswered;
 };
 class JsonResponsePacketSerializer
 {
@@ -134,7 +134,7 @@ public:
 	static std::string serializeSubmitAnswerResponse(SubmitAnswerResponse submitAnswerResponse);
 	static std::string serializeGetQuestionResponse(GetQuestionResponse getQuestionResponse);
 	static std::string serializeLeaveGameResponse(LeaveGameResponse leaveGameResponse);
-	static std::string serializeIsGameFinishedResponse(GetIsGameFinishedResponse getIsGameFinishedResponse);
+	static std::string serializeIsEveryoneAnsweredResponse(GetIsEveryoneAnsweredResponse getIsEveryoneAnsweredResponse);
 
 };
 

@@ -5,6 +5,11 @@ Game& GameRequestHandler::getGame()
 	return this->m_game;
 }
 
+LoggedUser& GameRequestHandler::getUser() const
+{
+	return this->m_user;
+}
+
 bool GameRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
 	return (request.msgCode == LEAVE_GAME || request.msgCode == GET_QUESTION || request.msgCode == SUBMIT_ANSWER || request.msgCode == GET_GAME_RESULT);
@@ -87,7 +92,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 				getGameResultsResponse.results = {};
 			}
 			result.msg = JsonResponsePacketSerializer::serializeGetGameResultsResponse(getGameResultsResponse);
-			result.newHandler = nullptr;
+			result.newHandler = this->m_handlerFacroty.createMenuRequestHandler(this->m_user);;
 			return result;
 			break;
 	}

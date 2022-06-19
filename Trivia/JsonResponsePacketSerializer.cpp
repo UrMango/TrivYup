@@ -159,10 +159,10 @@ std::string JsonResponsePacketSerializer::serializeLeaveGameResponse(LeaveGameRe
 	return json.dump();
 }
 
-std::string JsonResponsePacketSerializer::serializeIsGameFinishedResponse(GetIsGameFinishedResponse getIsGameFinishedResponse)
+std::string JsonResponsePacketSerializer::serializeIsEveryoneAnsweredResponse(GetIsEveryoneAnsweredResponse getIsEveryoneAnsweredResponse)
 {
 	nlohmann::json json;
-	json["id"] = (int)ResponseCode::GameFinished;
-	json["isGameFinished"] = getIsGameFinishedResponse.isGameFinished;
+	json["id"] = (int)ResponseCode::EveryOneAnswered;
+	json["isEveryoneAnswered"] = getIsEveryoneAnsweredResponse.isEveryoneAnswered;
 	return json.dump();
 }
