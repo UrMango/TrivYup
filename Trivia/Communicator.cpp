@@ -57,7 +57,8 @@ void Communicator::handleNewClient(tcp::socket socket) {
 			//insert field to RequestInfo struct
 			struct RequestInfo request;
 			request.msgCode = msgCode;
-			request.msgTime = ctime(&_time);
+			ctime(&_time);
+			request.msgTime = _time;
 			request.msg = out.substr(3);
 
 			//first, the client need to connect to his user

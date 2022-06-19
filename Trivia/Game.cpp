@@ -13,16 +13,18 @@ Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions
     }
 }
 
-Question* Game::getQuestionForUser(LoggedUser* user)
+Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
 { 
     for (auto it : m_players)
     {
         if (it.first == user)
         {
-            if (m_questions.size() == (it.second->wrongAnswerCount + it.second->correctAnswerCount + 1))
+            if (m_questions.size() == (it.second->wrongAnswerCount + it.second->correctAnswerCount))
             {
+                this->isFinished = true;
                 return NULL;
             }
+            user->setMsgTime(time);
             it.second->currectQuestion = m_questions[it.second->wrongAnswerCount + it.second->correctAnswerCount];
             return it.second->currectQuestion;
         }
@@ -34,8 +36,18 @@ std::map<LoggedUser*, GameData*> Game::getPlayers()
     return this->m_players;
 }
 
-void Game::submitAnswer(LoggedUser* user, std::string answer)
+void Game::newAvg(int newTime, LoggedUser* user)
 {
+    auto it = m_players.find(user);
+    int numQuestions = it->second->wrongAnswerCount + it->second->correctAnswerCount;
+    it->second->averangeAnswerTime = ((1 / numQuestions + 1) * numQuestions * it->second->averangeAnswerTime) + (newTime * (1 / numQuestions + 1));
+}
+
+std::string Game::submitAnswer(LoggedUser* user, std::string answer) 
+{
+    time(&recieveTime);
+    int newTime = difftime(recieveTime, user->getMsgTime());
+    this->newAvg(newTime, user);
     auto it = m_players.find(user);
     if (answer == it->second->currectQuestion->getCorrectAnswer())
     {
@@ -45,6 +57,7 @@ void Game::submitAnswer(LoggedUser* user, std::string answer)
     {
         it->second->wrongAnswerCount++;
     }
+    return it->second->currectQuestion->getCorrectAnswer();
 }
 
 void Game::removePlayer(LoggedUser* users)
@@ -59,8 +72,38 @@ void Game::removePlayer(LoggedUser* users)
     }
 }
 
+bool Game::getIsFinished()
+{
+    return this->isFinished;
+}
+
 int Game::getGameId() const
 {
     return this->m_gameId;
 }
 
+std::vector<PlayerResults> Game::getAllPlayerResults()
+{
+    std::vector<PlayerResults> results;
+    for (auto it : m_players)
+    {
+        PlayerResults playerResults;
+        playerResults.averageAnswerTime = it.second->averangeAnswerTime;
+        playerResults.correctAnswerCount = it.second->correctAnswerCount;
+        playerResults.username = it.first->getUsername();
+        playerResults.wrongAnswerCount = it.second->wrongAnswerCount;
+        results.push_back(playerResults);
+    }
+    return results;
+}
+
+PlayerResults Game::getPlayerResults(LoggedUser* user)
+{
+    auto it = m_players.find(user);
+    PlayerResults playerResults;
+    playerResults.averageAnswerTime = it->second->averangeAnswerTime;
+    playerResults.correctAnswerCount = it->second->correctAnswerCount;
+    playerResults.username = user->getUsername();
+    playerResults.wrongAnswerCount = it->second->wrongAnswerCount;
+    return playerResults;
+}
