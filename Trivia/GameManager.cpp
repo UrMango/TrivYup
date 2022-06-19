@@ -16,6 +16,16 @@ Game GameManager::createGame(Room room)
     return game;
 }
 
+Game* GameManager::getGame(int gameId)
+{
+    for (auto it : this->m_games)
+    {
+        if(it.getGameId() == gameId)
+            return &it;
+    }
+    return nullptr;
+}
+
 void GameManager::updateStatistics(Game game)
 {
     for (auto it : game.getPlayers())
