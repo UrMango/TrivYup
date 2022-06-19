@@ -21,7 +21,6 @@ Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
         {
             if (m_questions.size() == (it.second->wrongAnswerCount + it.second->correctAnswerCount))
             {
-                this->isFinished = true;
                 return NULL;
             }
             user->setMsgTime(time);
@@ -57,6 +56,18 @@ std::string Game::submitAnswer(LoggedUser* user, std::string answer)
     {
         it->second->wrongAnswerCount++;
     }
+
+    bool everyoneAnswerd = true;
+    for (auto pl : m_players)
+    {
+        if (pl.second->correctAnswerCount + pl.second->wrongAnswerCount != it->second->correctAnswerCount + it->second->wrongAnswerCount)
+        {
+            everyoneAnswerd = false;
+            break;
+        }
+    }
+    this->isEveryoneAnswerd = everyoneAnswerd;
+    if (this->isEveryoneAnswerd && it->second->correctAnswerCount + it->second->wrongAnswerCount == this->m_questions.size()) { this->isFinished = true; }
     return it->second->currectQuestion->getCorrectAnswer();
 }
 
@@ -75,6 +86,11 @@ void Game::removePlayer(LoggedUser* users)
 bool Game::getIsFinished()
 {
     return this->isFinished;
+}
+
+bool Game::getIsEveryoneAnswerd()
+{
+    return this->isEveryoneAnswerd;
 }
 
 int Game::getGameId() const

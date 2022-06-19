@@ -70,7 +70,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 				m_clients[&ws] = res.newHandler;
 			}
 			
-			if (ws.is_open() && (request.msgCode == START_GAME || request.msgCode == CLOSE_ROOM))
+			if (ws.is_open() && (request.msgCode == START_GAME || request.msgCode == CLOSE_ROOM || request.msgCode == SUBMIT_ANSWER))
 			{
 				RoomAdminRequestHandler* userRequestHandler = (RoomAdminRequestHandler*)(m_clients[&ws]);
 				RoomMemberRequestHandler* otherUserRequestHandler;
@@ -92,8 +92,25 @@ void Communicator::handleNewClient(tcp::socket socket) {
 							}
 							if (request.msgCode == START_GAME)
 							{
-								//i.second = this->m_handlerFactory.createGameRequestHandler(i.second., m_clients[&ws]., this->m_handlerFactory.getGameManager());
+								i.second = this->m_handlerFactory.createGameRequestHandler(otherUserRequestHandler->getUser(), *this->m_handlerFactory.getGameManager().getGame(userRequestHandler->getRoomOfUser()->getRoomData().id), this->m_handlerFactory.getGameManager());
 
+							}
+							else if (request.msgCode == CLOSE_ROOM)
+							{
+								i.second = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+							}
+							else if (request.msgCode == SUBMIT_ANSWER)
+							{
+								int roomId = userRequestHandler->getRoomOfUser()->getRoomData().id;
+								if (this->m_handlerFactory.getGameManager().getGame(roomId)->getIsFinished())
+								{
+									GetIsGameFinishedResponse getIsGameFinishedResponse;
+									getIsGameFinishedResponse.isGameFinished = true;
+									(*(i.first)).write(net::buffer(JsonResponsePacketSerializer::serializeIsGameFinishedResponse(getIsGameFinishedResponse)));
+									i.second = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+									this->m_handlerFactory.getGameManager().deleteGame(roomId);
+									this->m_handlerFactory.getRoomManager().deleteRoom(roomId);
+								}
 							}
 						}
 					}

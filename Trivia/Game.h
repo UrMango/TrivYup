@@ -42,6 +42,7 @@ public:
     std::map<LoggedUser*, GameData*> getPlayers();
     Question* getQuestionForUser(LoggedUser* user, time_t time);
     bool getIsFinished();
+    bool getIsEveryoneAnswerd();
     PlayerResults getPlayerResults(LoggedUser* user);
     std::vector<PlayerResults> getAllPlayerResults();
 
@@ -50,6 +51,7 @@ private:
 	std::vector<Question*> m_questions;
 	std::map<LoggedUser*, GameData*> m_players;
     bool isFinished = false;
+    bool isEveryoneAnswerd = false;
     int m_gameId;
     time_t recieveTime;
 };

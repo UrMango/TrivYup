@@ -62,6 +62,6 @@ RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo& request) co
 	this->m_user.removeRoom();
 	leaveRoomResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
-	result.newHandler = nullptr;
+	result.newHandler = this->m_handlerFactory.createMenuRequestHandler(this->m_user);
 	return result;
 }

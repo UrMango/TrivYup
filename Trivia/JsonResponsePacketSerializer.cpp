@@ -158,3 +158,11 @@ std::string JsonResponsePacketSerializer::serializeLeaveGameResponse(LeaveGameRe
 	json["status"] = leaveGameResponse.status;
 	return json.dump();
 }
+
+std::string JsonResponsePacketSerializer::serializeIsGameFinishedResponse(GetIsGameFinishedResponse getIsGameFinishedResponse)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::GameFinished;
+	json["isGameFinished"] = getIsGameFinishedResponse.isGameFinished;
+	return json.dump();
+}

@@ -37,10 +37,13 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 			leaveGameResponse.status = 1;
 
 			this->m_game.removePlayer(&this->m_user);
-
+			if (m_user.getRoom()) {
+				m_user.getRoom()->removeUser(m_user);
+			}
+			this->m_user.removeRoom();
 			//insert field to RequestInfo struct
 			result.msg = JsonResponsePacketSerializer::serializeLeaveGameResponse(leaveGameResponse);
-			result.newHandler = nullptr;
+			result.newHandler = this->m_handlerFacroty.createMenuRequestHandler(this->m_user);
 			return result;
 			break;
 		case GET_QUESTION:
@@ -66,6 +69,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 			submitAnswerRequest = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(request.msg);
 			submitAnswerResponse.status = 1;
 			submitAnswerResponse.correctAnswer = this->m_game.submitAnswer(&this->m_user, submitAnswerRequest.answer);
+			submitAnswerResponse.everyoneAnswerd = this->m_game.getIsEveryoneAnswerd();
 			result.msg = JsonResponsePacketSerializer::serializeSubmitAnswerResponse(submitAnswerResponse);
 			result.newHandler = nullptr;
 			return result;
@@ -75,6 +79,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 			{
 				getGameResultsResponse.status = 1;
 				getGameResultsResponse.results = this->m_game.getAllPlayerResults();
+
 			}
 			else
 			{
