@@ -14,6 +14,7 @@ public:
 
 	/* V2*/
 	//Question getQuestion(int id) override;
+	int getUserId(std::string username) override;
 	std::list<Question> getQuestions(int numQuestions) override;
 	float getPlayerAverageAnswerTime(std::string username) override;
 	int getNumOfCorrectAnswers(std::string username) override;
