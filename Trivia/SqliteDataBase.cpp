@@ -335,7 +335,6 @@ void SqliteDataBase::updateStatistics(std::string username, GameData playerGameD
 		float averageAnswerTime = (this->getPlayerAverageAnswerTime(username) + playerGameData.averangeAnswerTime) / 2;
 		int numberOfGamesPlayed= this->getNumOfPlayerGames(username) + 1;
 		int numberOfCorrectAnswer = this->getNumOfCorrectAnswers(username) + playerGameData.correctAnswerCount;
-		int numberOfCorrectAnswer = this->getNumOfCorrectAnswers(username) + playerGameData.correctAnswerCount;
 		int numberOfAnswers = this->getNumOfTotalAnswers(username) + playerGameData.correctAnswerCount + playerGameData.wrongAnswerCount;
 
 		query = "UPDATE STATISTICS SET averageanswertime = " + std::to_string(averageAnswerTime) + ", numberofgamesplayed = " + std::to_string(numberOfGamesPlayed) + ", numofcorrectanswers = " + std::to_string(numberOfCorrectAnswer) + ", numofanswers = " + std::to_string(numberOfAnswers) + " WHERE userid = " + std::to_string(getUserId(username)) + ";";
