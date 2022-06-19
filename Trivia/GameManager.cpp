@@ -31,6 +31,7 @@ void GameManager::deleteGame(int gameId)
         if (it.getGameId() == gameId) 
         {
             updateStatistics(it);
+            std::remove(this->m_games.begin(), this->m_games.end(), it);
             return;
         }
     }
