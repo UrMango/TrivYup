@@ -23,7 +23,7 @@ void Room::removeUser(LoggedUser user)
 	}
 }
 
-std::vector<string> Room::getAllUsers()
+std::vector<std::string> Room::getAllUsers()
 {
 	std::vector <std::string> allUsers;
 	for (int i = 0; i < this->m_users.size(); i++)
@@ -47,4 +47,9 @@ RoomData Room::getRoomData()const
 void Room::changeRoomState(const int state)
 {
 	this->m_metadata.isActive = state;
+}
+
+std::vector<LoggedUser> Room::getAllLoggedUsers()
+{
+	return this->m_users;
 }

@@ -18,7 +18,7 @@ private:
 
 public:
 	Room* getRoomOfUser();
-	LoggedUser getUser() const;
+	LoggedUser& getUser() const;
 	RoomMemberRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user);
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;

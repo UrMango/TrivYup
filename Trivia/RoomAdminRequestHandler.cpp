@@ -49,7 +49,7 @@ RequestResult& RoomAdminRequestHandler::closeRoom(const RequestInfo& request)
 	m_user.removeRoom();
 	leaveRoomResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
-	result.newHandler = nullptr;
+	result.newHandler = m_handlerFactory.createMenuRequestHandler(m_user); //change to menu handle
 	return result;
 }
 
@@ -58,9 +58,12 @@ RequestResult& RoomAdminRequestHandler::startGame(const RequestInfo& request)
 	struct RequestResult result;
 	StartGameResponse startGameResponse;
 	this->m_roomManager.changeRoomState(1, this->_roomUser->getRoomData().id);
+
+	Game& game = this->m_handlerFactory.getGameManager().createGame(*this->_roomUser);
+
 	startGameResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeStartGameResponse(startGameResponse);
-	result.newHandler = nullptr;
+	result.newHandler = this->m_handlerFactory.createGameRequestHandler(m_user, game, this->m_handlerFactory.getGameManager());
 	return result;
 }
 

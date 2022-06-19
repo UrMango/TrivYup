@@ -1,5 +1,15 @@
 #include "RoomMemberRequestHandler.h"
 
+Room* RoomMemberRequestHandler::getRoomOfUser()
+{
+	return this->_roomUser;
+}
+
+LoggedUser& RoomMemberRequestHandler::getUser() const
+{
+	return this->m_user;
+}
+
 RoomMemberRequestHandler::RoomMemberRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user) : _roomUser(m_user.getRoom()), m_user(m_user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory) {}
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& request) const
@@ -52,6 +62,6 @@ RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo& request) co
 	this->m_user.removeRoom();
 	leaveRoomResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
-	result.newHandler = nullptr;
+	result.newHandler = this->m_handlerFactory.createMenuRequestHandler(this->m_user);
 	return result;
 }

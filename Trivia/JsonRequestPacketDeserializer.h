@@ -32,7 +32,9 @@ struct CreateRoomRequest {
 	unsigned int questionCount;
 	unsigned int answerTimeout;
 };
-
+struct SubmitAnswerRequest {
+	std::string answer;
+};
 //******************************************************************************************
 
 class JsonRequestPacketDeserializer
@@ -46,5 +48,6 @@ public:
 	static JoinRoomRequest deserializeJoinRoomRequest(const string userMsg);
 	static CreateRoomRequest deserializeCreateRoomRequest(const string userMsg);	
 
+	static SubmitAnswerRequest deserializeSubmitAnswerRequest(const string userMsg);
 };
 

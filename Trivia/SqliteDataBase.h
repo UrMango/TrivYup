@@ -14,7 +14,9 @@ public:
 
 	/* V2*/
 	//Question getQuestion(int id) override;
-	std::list<Question> getQuestions() override;
+	int getUserId(std::string username) override;
+	std::list<Question> getQuestions(int numQuestions) override;
+	void updateStatistics(std::string username, GameData playerGameData) override;
 	float getPlayerAverageAnswerTime(std::string username) override;
 	int getNumOfCorrectAnswers(std::string username) override;
 	int getNumOfTotalAnswers(std::string username) override;
@@ -24,7 +26,7 @@ private:
 	sqlite3* db;
 	char* errMessage;
 
-	std::list<Question> questionList;
+	Question* question;
 	int numReturn;
 	float floatReturn;
 };

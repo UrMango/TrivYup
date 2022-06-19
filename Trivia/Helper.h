@@ -7,9 +7,11 @@
 #include <boost/beast/websocket.hpp>
 #include <json.hpp>
 
+
 #include "IRequestHandler.h"
 using tcp = boost::asio::ip::tcp;
 class IRequestHandler;
+
 
 enum MessageType
 {
@@ -26,12 +28,16 @@ enum MessageType
 	CLOSE_ROOM = 213,
 	START_GAME = 214,
 	GET_ROOM_STATE = 215,
-	LEAVE_ROOM = 216
+	LEAVE_ROOM = 216,
+	LEAVE_GAME = 217,
+	GET_QUESTION = 218,
+	SUBMIT_ANSWER = 219,
+	GET_GAME_RESULT = 220
 };
 
 struct RequestInfo {
 	int msgCode = 0;
-	std::string msgTime = "";
+	time_t msgTime = NULL;
 	std::string msg = "";
 };
 
