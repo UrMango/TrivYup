@@ -39,6 +39,7 @@ public:
     std::string submitAnswer(LoggedUser* user, std::string answer);
     void removePlayer(LoggedUser* users);
     int getGameId() const;
+    std::map<LoggedUser*, GameData*> getPlayers();
     Question* getQuestionForUser(LoggedUser* user, time_t time);
     bool getIsFinished();
     PlayerResults getPlayerResults(LoggedUser* user);

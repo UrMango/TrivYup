@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions)
+Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions), m_gameId(room.getRoomData().id)
 {
     for (int i = 0; i < room.getAllLoggedUsers().size(); i++) {
         struct GameData gamedata;
@@ -29,6 +29,11 @@ Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
             return it.second->currectQuestion;
         }
     }
+}
+
+std::map<LoggedUser*, GameData*> Game::getPlayers()
+{
+    return this->m_players;
 }
 
 void Game::newAvg(int newTime, LoggedUser* user)
