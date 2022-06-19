@@ -15,6 +15,7 @@ public:
 	~GameManager() {};
 
 	Game createGame(Room room);
+	void updateStatistics(Game game);
 	void deleteGame(int gameId);
 };
 

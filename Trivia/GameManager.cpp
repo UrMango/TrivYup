@@ -16,6 +16,14 @@ Game GameManager::createGame(Room room)
     return game;
 }
 
+void GameManager::updateStatistics(Game game)
+{
+    for (auto it : game.getPlayers())
+    {
+        this->m_database->updateStatistics(it.first->getUsername(), *it.second);
+    }
+}
+
 void GameManager::deleteGame(int gameId)
 {
 }
