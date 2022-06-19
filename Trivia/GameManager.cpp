@@ -36,6 +36,7 @@ void GameManager::updateStatistics(Game game)
 
 void GameManager::deleteGame(int gameId)
 {
+    int i = 0;
     for (auto it : this->m_games )
     {
         if (it.getGameId() == gameId) 
@@ -44,5 +45,6 @@ void GameManager::deleteGame(int gameId)
             this->m_games.erase(this->m_games.begin() + i); 
             return;
         }
+        i++;
     }
 }
