@@ -26,11 +26,12 @@ public:
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser& m_user)const;
 	RoomAdminRequestHandler* createRoomAdminRequestHandler(LoggedUser& m_user, Room& room)const;
 	RoomMemberRequestHandler* createRoomMemberRequestHandler(LoggedUser& m_user, Room& room) const;
-	GameRequestHandler* createGameRequestHandler(LoggedUser& user, Room& room, Game& game, GameManager& gameManager) const;
+	GameRequestHandler* createGameRequestHandler(LoggedUser& user, Game& game, GameManager& gameManage) const;
 	LoginManager& getLoginManager() const;
 	StatisticsManager& getStatisticsManager() const;
 	IDatabase& getIDatabase() const;
 	RoomManager& getRoomManager() const;
+	GameManager& getGameManager() const;
 
 private:
 	LoginManager* m_loginManager;

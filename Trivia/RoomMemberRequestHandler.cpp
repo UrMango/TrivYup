@@ -1,5 +1,15 @@
 #include "RoomMemberRequestHandler.h"
 
+Room* RoomMemberRequestHandler::getRoomOfUser()
+{
+	return this->_roomUser;
+}
+
+LoggedUser& RoomMemberRequestHandler::getUser() const
+{
+	return this->m_user;
+}
+
 RoomMemberRequestHandler::RoomMemberRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user) : _roomUser(m_user.getRoom()), m_user(m_user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory) {}
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& request) const

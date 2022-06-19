@@ -1,5 +1,10 @@
 #include "GameRequestHandler.h"
 
+Game& GameRequestHandler::getGame()
+{
+	return this->m_game;
+}
+
 bool GameRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
 	return (request.msgCode == LEAVE_GAME || request.msgCode == GET_QUESTION || request.msgCode == SUBMIT_ANSWER || request.msgCode == GET_GAME_RESULT);

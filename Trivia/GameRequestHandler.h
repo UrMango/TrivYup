@@ -21,4 +21,5 @@ public:
 	~GameRequestHandler() {};
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
+	Game& getGame();
 };

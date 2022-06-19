@@ -1,6 +1,6 @@
 #include "GameManager.h"
 
-Game GameManager::createGame(Room room)
+Game& GameManager::createGame(Room room)
 {
     std::vector<Question*> questions;
     std::list<Question> questionList = m_database->getQuestions(room.getRoomData().numOfQuestionsInGame);

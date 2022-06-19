@@ -32,7 +32,7 @@ RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(
 	return (RoomMemberRequestHandler*)new RoomMemberRequestHandler(*requestHandlerFactory, m_user);
 }
 
-GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser& user, Room& room, Game& game, GameManager& gameManager) const
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser& user, Game& game, GameManager& gameManager) const
 {
 	RequestHandlerFactory* requestHandlerFactory = (RequestHandlerFactory*)this;
 	return (GameRequestHandler*)new GameRequestHandler(game, user, gameManager, *requestHandlerFactory);
@@ -56,4 +56,8 @@ IDatabase& RequestHandlerFactory::getIDatabase() const
 RoomManager& RequestHandlerFactory::getRoomManager() const
 {
 	return *(this->m_roomManager);
+}
+GameManager& RequestHandlerFactory::getGameManager() const
+{
+	return *(this->m_gameManager);
 }
