@@ -43,7 +43,7 @@ void GameManager::deleteGame(int gameId)
         if (it.getGameId() == gameId) 
         {
             updateStatistics(it);
-            this->m_games.erase(this->m_games.begin() + i);
+            this->m_games.erase(this->m_games.begin() + i); 
             return;
         }
         i++;
