@@ -40,6 +40,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 	beast::flat_buffer buffer;
 	ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
 
+
 	while (true)
 	{
 		try
@@ -57,7 +58,8 @@ void Communicator::handleNewClient(tcp::socket socket) {
 			//insert field to RequestInfo struct
 			struct RequestInfo request;
 			request.msgCode = msgCode;
-			request.msgTime = ctime(&_time);
+			ctime(&_time);
+			request.msgTime = _time;
 			request.msg = out.substr(3);
 
 			//first, the client need to connect to his user
@@ -68,24 +70,97 @@ void Communicator::handleNewClient(tcp::socket socket) {
 				delete(m_clients[&ws]);
 				m_clients[&ws] = res.newHandler;
 			}
-
+			
 			if (ws.is_open() && (request.msgCode == START_GAME || request.msgCode == CLOSE_ROOM))
 			{
 				RoomAdminRequestHandler* userRequestHandler = (RoomAdminRequestHandler*)(m_clients[&ws]);
-				RoomAdminRequestHandler* otherUserRequestHandler;
-				for (auto& it : userRequestHandler->getRoomOfUser()->getAllUsers()) {
-					for (auto i : m_clients)
+				RoomMemberRequestHandler* otherUserRequestHandler;
+				for (int x = 0; x < userRequestHandler->getRoomOfUser()->getAllUsers().size(); x++)
+				{
+					if (x == 0) //admin
 					{
-						otherUserRequestHandler = (RoomAdminRequestHandler*)(i.second);
-						if (otherUserRequestHandler->getUser().getUsername() == it)
+						ws.write(net::buffer(res.msg));
+					}
+					else
+					{
+						bool sendToServer = false;
+						for (auto i : m_clients)
 						{
-							(*(i.first)).write(net::buffer(res.msg));
+							otherUserRequestHandler = (RoomMemberRequestHandler*)(i.second);
+							if (otherUserRequestHandler->getUser().getUsername() == (userRequestHandler->getRoomOfUser()->getAllUsers())[x])
+							{								
+								if (request.msgCode == START_GAME)
+								{
+									i.second = this->m_handlerFactory.createGameRequestHandler(otherUserRequestHandler->getUser(), *this->m_handlerFactory.getGameManager().getGame(userRequestHandler->getRoomOfUser()->getRoomData().id), this->m_handlerFactory.getGameManager());
+									(*(i.first)).write(net::buffer(res.msg));
+								}
+								else if (request.msgCode == CLOSE_ROOM)
+								{
+									(*(i.first)).write(net::buffer(res.msg));
+									i.second = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+								}
+								else if (request.msgCode == SUBMIT_ANSWER)
+								{
+
+								}
+							}
+
 						}
 					}
 				}
 			}
+			else if (request.msgCode == SUBMIT_ANSWER && ws.is_open())
+			{
+				ws.write(net::buffer(res.msg));
+				GameRequestHandler* userRequestHandler = (GameRequestHandler*)(m_clients[&ws]);
+				GameRequestHandler* otherUserRequestHandler;
+				int gameId = userRequestHandler->getGame().getGameId();
+				if (this->m_handlerFactory.getGameManager().getGame(gameId)->getIsEveryoneAnswerd())
+				{
+					
+					for (auto x : userRequestHandler->getGame().getPlayers())
+					{
+						for (auto i : m_clients)
+						{
+							otherUserRequestHandler = (GameRequestHandler*)(i.second);
+							if (otherUserRequestHandler->getUser().getUsername() == x.first->getUsername())
+							{
+								GetIsEveryoneAnsweredResponse getIsEveryoneAnsweredResponse;
+								getIsEveryoneAnsweredResponse.isEveryoneAnswered = true;
+								(*(i.first)).write(net::buffer(JsonResponsePacketSerializer::serializeIsEveryoneAnsweredResponse(getIsEveryoneAnsweredResponse)));
+
+								i.second = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+								this->m_handlerFactory.getGameManager().deleteGame(gameId);
+								this->m_handlerFactory.getRoomManager().deleteRoom(gameId);
+							}
+						}
+					}
+				}
+
+				if (this->m_handlerFactory.getGameManager().getGame(gameId)->getIsFinished())
+				{
+					GameRequestHandler* userRequestHandler = (GameRequestHandler*)(m_clients[&ws]);
+					GameRequestHandler* otherUserRequestHandler;
+					for (auto x : userRequestHandler->getGame().getPlayers())
+					{
+						for (auto i : m_clients)
+						{
+							otherUserRequestHandler = (GameRequestHandler*)(i.second);
+							if (otherUserRequestHandler->getUser().getUsername() == x.first->getUsername())
+							{
+								i.second = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+								
+							}
+						}
+					}
+					this->m_handlerFactory.getGameManager().deleteGame(gameId);
+					this->m_handlerFactory.getRoomManager().deleteRoom(gameId);
+				}
+
+			}	
 			else if(ws.is_open())
 				ws.write(net::buffer(res.msg));
+			
 		}
 		catch (beast::system_error const& e)
 		{
