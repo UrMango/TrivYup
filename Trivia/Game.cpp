@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions)
+Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions), m_gameId(room.getRoomData().id)
 {
     for (int i = 0; i < room.getAllLoggedUsers().size(); i++) {
         struct GameData gamedata;
