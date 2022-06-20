@@ -24,5 +24,6 @@ public:
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
 	RequestResult getRoomState(const RequestInfo& request) const;
 	RequestResult leaveRoom(const RequestInfo& request) const;
+	virtual unsigned short getType() const override;
 
 };

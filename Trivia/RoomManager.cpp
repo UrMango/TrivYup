@@ -1,6 +1,6 @@
 #include "RoomManager.h"
 
-void RoomManager::createRoom(const LoggedUser user, const  RoomData roomData)
+void RoomManager::createRoom(LoggedUser user, const  RoomData roomData)
 {
 	m_rooms.insert(std::pair<unsigned int, Room&>(roomData.id, *(new Room(user, roomData))));
 }
@@ -50,7 +50,7 @@ RoomData* RoomManager::addUserInRoom(const int ID, LoggedUser user)const
     return nullptr;
 }
 
-void RoomManager::removeUserInRoom(const int ID, const LoggedUser user)const
+void RoomManager::removeUserInRoom(const int ID, LoggedUser user)const
 {
     for (auto& it : m_rooms) {
         if (it.first == ID) {

@@ -65,3 +65,8 @@ RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo& request) co
 	result.newHandler = this->m_handlerFactory.createMenuRequestHandler(this->m_user);
 	return result;
 }
+
+unsigned short RoomMemberRequestHandler::getType() const
+{
+	return ReqTypes::ROOM_MEMBER_REQ;
+}

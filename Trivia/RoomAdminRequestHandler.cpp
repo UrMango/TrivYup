@@ -75,3 +75,8 @@ RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo& request)
 	RoomMemberRequestHandler* MemberRequestHandle = new RoomMemberRequestHandler(m_handlerFactory, m_user);
 	return MemberRequestHandle->getRoomState(request);
 }
+
+unsigned short RoomAdminRequestHandler::getType() const
+{
+	return ReqTypes::ROOM_ADMIN_REQ;
+}

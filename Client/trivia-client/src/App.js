@@ -86,9 +86,9 @@ const App = () => {
         case ResponseCode.GetQuestions:
           dispatch({type: "QUESTION", payload: msg});
           break;
-        // case "startgame":
-        //   navigate(location.pathname + "?started");
-        //   break;
+        case ResponseCode.StartGame:
+          dispatch({type: "GAME_BEGUN", payload: msg.status});
+            break;
         default:
           break;
       }

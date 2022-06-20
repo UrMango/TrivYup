@@ -42,6 +42,11 @@ LoggedUser& LoginRequestHandler::getUser() const
 	return temp;
 }
 
+unsigned short LoginRequestHandler::getType() const
+{
+	return ReqTypes::LOGIN_REQ;
+}
+
 RequestResult LoginRequestHandler::signUp(const RequestInfo request)const
 {
 	struct RequestResult result;

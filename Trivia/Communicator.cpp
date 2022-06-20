@@ -87,8 +87,12 @@ void Communicator::handleNewClient(tcp::socket socket) {
 					{
 						bool sendToServer = false;
 						for (auto i : m_clients)
-						{							
-							if (i.second->getUser().getUsername() == (userRequestHandler->getRoomOfUser()->getAllUsers())[x])
+						{
+							if (i.second->getType() != ReqTypes::ROOM_MEMBER_REQ) continue;
+
+							otherUserRequestHandler = (RoomMemberRequestHandler*)i.second;
+
+							if (otherUserRequestHandler->getUser().getUsername() == (userRequestHandler->getRoomOfUser()->getAllUsers())[x])
 							{								
 								otherUserRequestHandler = (RoomMemberRequestHandler*)(i.second);
 								if (request.msgCode == START_GAME)
@@ -104,8 +108,12 @@ void Communicator::handleNewClient(tcp::socket socket) {
 							}
 
 						}
-						m_clients[&ws] = res.newHandler;
 					}
+
+				}
+				if (request.msgCode == START_GAME) {
+					delete(m_clients[&ws]);
+					m_clients[&ws] = res.newHandler;
 				}
 			}
 			else if (request.msgCode == SUBMIT_ANSWER && ws.is_open())
@@ -121,6 +129,8 @@ void Communicator::handleNewClient(tcp::socket socket) {
 					{
 						for (auto i : m_clients)
 						{
+							if (i.second->getType() != ReqTypes::GAME_REQ) continue;
+
 							otherUserRequestHandler = (GameRequestHandler*)(i.second);
 							if (otherUserRequestHandler->getUser().getUsername() == x.first->getUsername())
 							{
@@ -144,6 +154,8 @@ void Communicator::handleNewClient(tcp::socket socket) {
 					{
 						for (auto i : m_clients)
 						{
+							if (i.second->getType() != ReqTypes::GAME_REQ) continue;
+							
 							otherUserRequestHandler = (GameRequestHandler*)(i.second);
 							if (otherUserRequestHandler->getUser().getUsername() == x.first->getUsername())
 							{

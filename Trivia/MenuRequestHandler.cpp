@@ -48,6 +48,11 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	return result;
 }
 
+unsigned short MenuRequestHandler::getType() const
+{
+	return ReqTypes::MENU_REQ;
+}
+
 int randomId;
 bool found = false;
 

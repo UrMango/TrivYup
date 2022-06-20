@@ -7,12 +7,12 @@ class RoomManager
 public:
 	RoomManager(){};
 	~RoomManager() {};
-	void createRoom(const LoggedUser user,const  RoomData roomData);
+	void createRoom(LoggedUser user,const  RoomData roomData);
 	void deleteRoom(const int ID);
 	unsigned int getRoomState(const int ID)const;
 	std::vector<string> getAllUsersInRoom(const int ID)const;
 	RoomData* addUserInRoom(const int ID, LoggedUser user)const;
-	void removeUserInRoom(const int ID, const LoggedUser user)const;
+	void removeUserInRoom(const int ID,  LoggedUser user)const;
 	std::vector<RoomData> getRooms()const;
 	Room* getRoom(const unsigned int IDOfRoom)const;
 	void changeRoomState(const int state, const int ID);

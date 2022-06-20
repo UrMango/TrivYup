@@ -15,6 +15,8 @@ const roomsReducer = (state = INITIAL_STATE, action) => {
             return {...state, currQuestion: action.payload };
         case 'PLAYERS':
             return {...state, players: action.payload };
+        case 'GAME_BEGUN': 
+            return {...state, gameBegun: action.payload == 1 ? true : false };
         default:
             return state;
     }

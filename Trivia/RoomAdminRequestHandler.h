@@ -26,4 +26,6 @@ public:
 	RequestResult closeRoom(const RequestInfo& request);
 	RequestResult startGame(const RequestInfo& request);
 	RequestResult getRoomState(const RequestInfo& request);
+	virtual unsigned short getType() const override;
+
 };

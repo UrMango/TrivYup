@@ -10,6 +10,11 @@ LoggedUser& GameRequestHandler::getUser() const
 	return this->m_user;
 }
 
+unsigned short GameRequestHandler::getType() const
+{
+	return ReqTypes::GAME_REQ;
+}
+
 bool GameRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
 	return (request.msgCode == LEAVE_GAME || request.msgCode == GET_QUESTION || request.msgCode == SUBMIT_ANSWER || request.msgCode == GET_GAME_RESULT);

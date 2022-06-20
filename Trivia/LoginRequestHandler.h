@@ -19,12 +19,14 @@ public:
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
 	LoggedUser& getUser() const;
+	virtual unsigned short getType() const override;
 
 private:
 	LoginManager& m_loginManager;
 	RequestHandlerFactory& m_handlerRequest;
 	RequestResult signUp(const RequestInfo request)const;
 	RequestResult login(const RequestInfo request)const;
+
 };
 
 

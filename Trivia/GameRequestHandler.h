@@ -23,6 +23,5 @@ public:
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
 	Game& getGame();
 	LoggedUser& getUser() const;
-
-
+	virtual unsigned short getType() const override;
 };
