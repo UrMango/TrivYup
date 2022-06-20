@@ -5,7 +5,7 @@ Communicator::Communicator(RequestHandlerFactory& handlerFactory, IDatabase& dat
 	this->startHandleRequests();
 }
 
-Communicator::~Communicator(){}
+Communicator::~Communicator() {}
 
 void Communicator::startHandleRequests()
 {
@@ -64,13 +64,13 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 			//first, the client need to connect to his user
 			RequestResult res = m_clients[&ws]->handleRequest(request);
-			
+
 			if (res.newHandler != nullptr)
 			{
 				delete(m_clients[&ws]);
 				m_clients[&ws] = res.newHandler;
 			}
-			
+
 			if (ws.is_open() && (request.msgCode == START_GAME || request.msgCode == CLOSE_ROOM))
 			{
 				RoomAdminRequestHandler* userRequestHandler = (RoomAdminRequestHandler*)(m_clients[&ws]);
@@ -88,7 +88,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 						{
 							otherUserRequestHandler = (RoomMemberRequestHandler*)(i.second);
 							if (otherUserRequestHandler->getUser().getUsername() == (userRequestHandler->getRoomOfUser()->getAllUsers())[x])
-							{								
+							{
 								if (request.msgCode == START_GAME)
 								{
 									i.second = this->m_handlerFactory.createGameRequestHandler(otherUserRequestHandler->getUser(), *this->m_handlerFactory.getGameManager().getGame(userRequestHandler->getRoomOfUser()->getRoomData().id), this->m_handlerFactory.getGameManager());
@@ -117,7 +117,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 				int gameId = userRequestHandler->getGame().getGameId();
 				if (this->m_handlerFactory.getGameManager().getGame(gameId)->getIsEveryoneAnswerd())
 				{
-					
+
 					for (auto x : userRequestHandler->getGame().getPlayers())
 					{
 						for (auto i : m_clients)
@@ -149,7 +149,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 							if (otherUserRequestHandler->getUser().getUsername() == x.first->getUsername())
 							{
 								i.second = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
-								
+
 							}
 						}
 					}
@@ -157,10 +157,10 @@ void Communicator::handleNewClient(tcp::socket socket) {
 					this->m_handlerFactory.getRoomManager().deleteRoom(gameId);
 				}
 
-			}	
-			else if(ws.is_open())
+			}
+			else if (ws.is_open())
 				ws.write(net::buffer(res.msg));
-			
+
 		}
 		catch (beast::system_error const& e)
 		{
