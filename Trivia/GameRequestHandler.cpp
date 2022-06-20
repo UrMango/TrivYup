@@ -48,7 +48,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 
 			this->m_game.removePlayer(&this->m_user);
 			if (m_user.getRoom()) {
-				m_user.getRoom()->removeUser(m_user);
+				m_user.getRoom()->removeUser(&m_user);
 			}
 			this->m_user.removeRoom();
 			//insert field to RequestInfo struct
@@ -58,7 +58,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 			break;
 		case GET_QUESTION:
 			qu = this->m_game.getQuestionForUser(&this->m_user, request.msgTime);
-			if (qu == NULL)
+			if (qu == nullptr)
 			{
 				getQuestionResponse.status = 0;
 				getQuestionResponse.question = "";
@@ -72,13 +72,18 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 			}
 			result.msg = JsonResponsePacketSerializer::serializeGetQuestionResponse(getQuestionResponse);
 			result.newHandler = nullptr;
-			delete qu;
+			
 			return result;
 			break;
 		case SUBMIT_ANSWER:
 			submitAnswerRequest = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(request.msg);
-			submitAnswerResponse.status = 1;
 			submitAnswerResponse.correctAnswer = this->m_game.submitAnswer(&this->m_user, submitAnswerRequest.answer);
+
+			if(submitAnswerRequest.answer == submitAnswerResponse.correctAnswer)
+				submitAnswerResponse.status = 1;
+			else
+				submitAnswerResponse.status = 0;
+
 			submitAnswerResponse.everyoneAnswerd = this->m_game.getIsEveryoneAnswerd();
 			result.msg = JsonResponsePacketSerializer::serializeSubmitAnswerResponse(submitAnswerResponse);
 			result.newHandler = nullptr;

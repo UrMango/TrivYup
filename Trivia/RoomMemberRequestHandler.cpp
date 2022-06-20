@@ -57,7 +57,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo& request) co
 	LeaveRoomResponse leaveRoomResponse;
 	struct RequestResult result;
 	if (m_user.getRoom()) {
-		m_user.getRoom()->removeUser(m_user);
+		m_user.getRoom()->removeUser(&m_user);
 	}
 	this->m_user.removeRoom();
 	leaveRoomResponse.status = 1;

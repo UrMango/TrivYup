@@ -2,7 +2,9 @@ const INITIAL_STATE = {
 	currentRoom: {},
 	rooms: [],
 	players: [],
-    currQuestion: {}
+    currQuestion: {},
+    questionRes: {},
+    isEveryoneAnswered: false
 };
 
 const roomsReducer = (state = INITIAL_STATE, action) => {
@@ -13,8 +15,12 @@ const roomsReducer = (state = INITIAL_STATE, action) => {
             return {...state, currentRoom: action.payload };
         case 'QUESTION':
             return {...state, currQuestion: action.payload };
+        case 'QUESTION_RES':
+            return {...state, questionRes: action.payload };
         case 'PLAYERS':
             return {...state, players: action.payload };
+        case 'EVERYONE_ANSWERED':
+            return {...state, isEveryoneAnswered: action.payload };
         case 'GAME_BEGUN': 
             return {...state, gameBegun: action.payload == 1 ? true : false };
         default:

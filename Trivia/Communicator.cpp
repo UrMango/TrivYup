@@ -10,7 +10,7 @@ Communicator::~Communicator() {}
 void Communicator::startHandleRequests()
 {
 	auto const address = net::ip::make_address("127.0.0.1");
-	auto const port = static_cast<unsigned short>(std::atoi("8079"));
+	auto const port = static_cast<unsigned short>(std::atoi("8083"));
 
 	net::io_context ioc{ 1 };
 	tcp::acceptor acceptor{ ioc, {address, port} };
@@ -94,16 +94,19 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 							if (otherUserRequestHandler->getUser().getUsername() == (userRequestHandler->getRoomOfUser()->getAllUsers())[x])
 							{								
-								otherUserRequestHandler = (RoomMemberRequestHandler*)(i.second);
 								if (request.msgCode == START_GAME)
 								{
-									i.second = this->m_handlerFactory.createGameRequestHandler(otherUserRequestHandler->getUser(), *this->m_handlerFactory.getGameManager().getGame(userRequestHandler->getRoomOfUser()->getRoomData().id), this->m_handlerFactory.getGameManager());
+									auto handler = this->m_handlerFactory.createGameRequestHandler(otherUserRequestHandler->getUser(), *this->m_handlerFactory.getGameManager().getGame(userRequestHandler->getRoomOfUser()->getRoomData().id), this->m_handlerFactory.getGameManager());
+									delete(i.second);
+									m_clients[i.first] = handler;
 									(*(i.first)).write(net::buffer(res.msg));
 								}
 								else if (request.msgCode == CLOSE_ROOM)
 								{
 									(*(i.first)).write(net::buffer(res.msg));
-									i.second = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+									auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+									delete(i.second);
+									m_clients[i.first] = handler;
 								}
 							}
 
@@ -138,15 +141,20 @@ void Communicator::handleNewClient(tcp::socket socket) {
 								getIsEveryoneAnsweredResponse.isEveryoneAnswered = true;
 								(*(i.first)).write(net::buffer(JsonResponsePacketSerializer::serializeIsEveryoneAnsweredResponse(getIsEveryoneAnsweredResponse)));
 
-								i.second = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
-								this->m_handlerFactory.getGameManager().deleteGame(gameId);
-								this->m_handlerFactory.getRoomManager().deleteRoom(gameId);
+								if (this->m_handlerFactory.getGameManager().getGame(gameId) && this->m_handlerFactory.getGameManager().getGame(gameId)->getIsFinished()) {
+									auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+									delete(i.second);
+									m_clients[i.first] = handler;
+
+									this->m_handlerFactory.getGameManager().deleteGame(gameId);
+									this->m_handlerFactory.getRoomManager().deleteRoom(gameId);
+								}
 							}
 						}
 					}
 				}
 
-				if (this->m_handlerFactory.getGameManager().getGame(gameId)->getIsFinished())
+				if (this->m_handlerFactory.getGameManager().getGame(gameId) && this->m_handlerFactory.getGameManager().getGame(gameId)->getIsFinished())
 				{
 					GameRequestHandler* userRequestHandler = (GameRequestHandler*)(m_clients[&ws]);
 					GameRequestHandler* otherUserRequestHandler;
@@ -159,8 +167,9 @@ void Communicator::handleNewClient(tcp::socket socket) {
 							otherUserRequestHandler = (GameRequestHandler*)(i.second);
 							if (otherUserRequestHandler->getUser().getUsername() == x.first->getUsername())
 							{
-								i.second = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
-
+								auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+								delete(i.second);
+								m_clients[i.first] = handler;
 							}
 						}
 					}
@@ -178,6 +187,19 @@ void Communicator::handleNewClient(tcp::socket socket) {
 			if (e.code() != websocket::error::closed)
 			{
 				std::cout << "Exception was catch in function clientHandler , what=" << e.what() << std::endl;
+				if (!ws.is_open()) {
+					if (m_clients[&ws]->getType() == ReqTypes::GAME_REQ) {
+						GameRequestHandler* handler = (GameRequestHandler*)(m_clients[&ws]);
+						handler->getGame().removePlayer(&handler->getUser());
+					}
+					else if (m_clients[&ws]->getType() == ReqTypes::ROOM_MEMBER_REQ) {
+						RoomMemberRequestHandler* handler = (RoomMemberRequestHandler*)(m_clients[&ws]);
+						handler->leaveRoom(RequestInfo());
+					} else if (m_clients[&ws]->getType() == ReqTypes::ROOM_ADMIN_REQ) {
+						RoomAdminRequestHandler* handler = (RoomAdminRequestHandler*)(m_clients[&ws]);
+						handler->closeRoom(RequestInfo());
+					}
+				}
 				break;
 			}
 		}

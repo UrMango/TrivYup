@@ -18,7 +18,7 @@ const ResponseCode = {
 	GetQuestions: 16,
 	SubmitAnswer: 17,
 	GetGameResult: 18,
-	GameFinished: 19
+	EveryOneAnswered: 19
 }
 
 const LoginCode = {

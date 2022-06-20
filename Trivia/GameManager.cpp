@@ -1,6 +1,6 @@
 #include "GameManager.h"
 
-Game& GameManager::createGame(Room room)
+Game* GameManager::createGame(Room room)
 {
     std::vector<Question*> questions;
     std::list<Question> questionList = m_database->getQuestions(room.getRoomData().numOfQuestionsInGame);
@@ -11,18 +11,18 @@ Game& GameManager::createGame(Room room)
         questions.push_back(question);
     }
 
-    Game game = *(new Game(room, questions));
+    Game* game = new Game(room, questions);
     this->m_games.push_back(game);
 
-    return game;
+    return this->m_games[this->m_games.size() - 1];
 }
 
 Game* GameManager::getGame(int gameId)
 {
     for (auto it : this->m_games)
     {
-        if(it.getGameId() == gameId)
-            return &it;
+        if(it->getGameId() == gameId)
+            return it;
     }
     return nullptr;
 }
@@ -40,9 +40,9 @@ void GameManager::deleteGame(int gameId)
     int i = 0;
     for (auto it : this->m_games )
     {
-        if (it.getGameId() == gameId) 
+        if (it->getGameId() == gameId) 
         {
-            updateStatistics(it);
+            updateStatistics(*it);
             this->m_games.erase(this->m_games.begin() + i); 
             return;
         }

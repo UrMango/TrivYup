@@ -89,6 +89,12 @@ const App = () => {
         case ResponseCode.StartGame:
           dispatch({type: "GAME_BEGUN", payload: msg.status});
             break;
+        case ResponseCode.SubmitAnswer:
+          dispatch({type: "QUESTION_RES", payload: {correct: msg.correctAnswer, status: msg.status}});
+            break;
+        case ResponseCode.EveryOneAnswered:
+          dispatch({type: "EVERYONE_ANSWERED", payload: msg.isEveryoneAnswered});
+            break;
         default:
           break;
       }

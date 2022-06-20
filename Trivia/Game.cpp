@@ -2,14 +2,16 @@
 
 Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions), m_gameId(room.getRoomData().id)
 {
-    for (int i = 0; i < room.getAllLoggedUsers().size(); i++) {
-        struct GameData gamedata;
-        gamedata.currectQuestion = questions[0];
-        gamedata.averangeAnswerTime = 0;
-        gamedata.correctAnswerCount = 0;
-        gamedata.wrongAnswerCount = 0;
-        gamedata.onGame = true;
-        m_players.insert({&room.getAllLoggedUsers()[i], &gamedata});
+    for (int i = 0; i < room.getAllLoggedUsers()->size(); i++) {
+        struct GameData* gamedata = new GameData();
+        gamedata->currectQuestion = questions[0];
+        gamedata->averangeAnswerTime = 0;
+        gamedata->correctAnswerCount = 0;
+        gamedata->wrongAnswerCount = 0;
+        gamedata->onGame = true;
+
+        LoggedUser* user = (*room.getAllLoggedUsers())[i];
+        m_players.insert({user, gamedata});
     }
 }
 
@@ -21,13 +23,14 @@ Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
         {
             if (m_questions.size() == (it.second->wrongAnswerCount + it.second->correctAnswerCount))
             {
-                return NULL;
+                return nullptr;
             }
             user->setMsgTime(time);
             it.second->currectQuestion = m_questions[it.second->wrongAnswerCount + it.second->correctAnswerCount];
             return it.second->currectQuestion;
         }
     }
+    return nullptr;
 }
 
 std::map<LoggedUser*, GameData*> Game::getPlayers()
@@ -38,8 +41,10 @@ std::map<LoggedUser*, GameData*> Game::getPlayers()
 void Game::newAvg(int newTime, LoggedUser* user)
 {
     auto it = m_players.find(user);
-    int numQuestions = it->second->wrongAnswerCount + it->second->correctAnswerCount;
-    it->second->averangeAnswerTime = ((1 / numQuestions + 1) * numQuestions * it->second->averangeAnswerTime) + (newTime * (1 / numQuestions + 1));
+    if (it != m_players.end()) {
+        int numQuestions = it->second->wrongAnswerCount + it->second->correctAnswerCount;
+        it->second->averangeAnswerTime = ((1 / (numQuestions + 1)) * numQuestions * it->second->averangeAnswerTime) + (newTime * (1 / (numQuestions + 1)));
+    }
 }
 
 std::string Game::submitAnswer(LoggedUser* user, std::string answer) 
@@ -60,7 +65,7 @@ std::string Game::submitAnswer(LoggedUser* user, std::string answer)
     bool everyoneAnswerd = true;
     for (auto pl : m_players)
     {
-        if (pl.second->correctAnswerCount + pl.second->wrongAnswerCount != it->second->correctAnswerCount + it->second->wrongAnswerCount)
+        if (pl.second->correctAnswerCount + pl.second->wrongAnswerCount < it->second->correctAnswerCount + it->second->wrongAnswerCount)
         {
             everyoneAnswerd = false;
             break;

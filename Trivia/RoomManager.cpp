@@ -1,6 +1,6 @@
 #include "RoomManager.h"
 
-void RoomManager::createRoom(LoggedUser user, const  RoomData roomData)
+void RoomManager::createRoom(LoggedUser* user, const  RoomData roomData)
 {
 	m_rooms.insert(std::pair<unsigned int, Room&>(roomData.id, *(new Room(user, roomData))));
 }
@@ -35,13 +35,13 @@ std::vector<string> RoomManager::getAllUsersInRoom(const int ID)const
     }
     return std::vector<string>();
 }
-RoomData* RoomManager::addUserInRoom(const int ID, LoggedUser user)const
+RoomData* RoomManager::addUserInRoom(const int ID, LoggedUser* user)const
 {
     for (auto& it : m_rooms) {
         if (it.first == ID && it.second.getAllUsers().size() < it.second.getRoomData().maxPlayers) {
             std::vector<std::string> users = it.second.getAllUsers();
             for (auto& it2 : users) {
-                if (it2 == user.getUsername())
+                if (it2 == user->getUsername())
                     return nullptr;
             }
             return it.second.addUser(user);
@@ -50,7 +50,7 @@ RoomData* RoomManager::addUserInRoom(const int ID, LoggedUser user)const
     return nullptr;
 }
 
-void RoomManager::removeUserInRoom(const int ID, LoggedUser user)const
+void RoomManager::removeUserInRoom(const int ID, LoggedUser* user)const
 {
     for (auto& it : m_rooms) {
         if (it.first == ID) {
@@ -71,12 +71,10 @@ std::vector<RoomData> RoomManager::getRooms()const
     return rooms;
 }
 
-Room* RoomManager::getRoom(const unsigned int IDOfRoom)const
+Room* RoomManager::getRoom(const unsigned int idOfRoom)const
 {
-
-    auto it = this->m_rooms.find('c');
-    for (auto& it : m_rooms) {
-        if (it.first == IDOfRoom) {
+    for (auto it : m_rooms) {
+        if (it.first == idOfRoom) {
             return &(it.second);
         }
     }

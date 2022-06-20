@@ -61,11 +61,11 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& request)
 	StartGameResponse startGameResponse;
 	this->m_roomManager.changeRoomState(1, this->_roomUser->getRoomData().id);
 
-	Game& game = this->m_handlerFactory.getGameManager().createGame(*this->_roomUser);
+	Game* game = this->m_handlerFactory.getGameManager().createGame(*this->_roomUser);
 
 	startGameResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeStartGameResponse(startGameResponse);
-	result.newHandler = this->m_handlerFactory.createGameRequestHandler(m_user, game, this->m_handlerFactory.getGameManager());
+	result.newHandler = this->m_handlerFactory.createGameRequestHandler(m_user, *game, this->m_handlerFactory.getGameManager());
 	std::cout << result.msg << std::endl;
 	return result;
 }

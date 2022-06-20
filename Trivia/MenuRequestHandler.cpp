@@ -85,7 +85,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
 	roomD.numOfQuestionsInGame = createRoom.questionCount;
 	roomD.timePerQuestion = createRoom.answerTimeout;
 	//add room
-	m_roomManager.createRoom(this->m_user, roomD);
+	m_roomManager.createRoom(&this->m_user, roomD);
 	this->m_user.changeRoom(m_roomManager.getRoom(randomId));
 	//serialize
 	createroomResponse.status = 1;
@@ -105,7 +105,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& request)
 	struct RequestResult result;
 	JoinRoomResponse JoinRoomResponse;
 	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(request.msg);
-	m_roomManager.addUserInRoom(joinRoomRequest.roomid, this->m_user);
+	m_roomManager.addUserInRoom(joinRoomRequest.roomid, &this->m_user);
 	this->m_user.changeRoom(m_roomManager.getRoom(joinRoomRequest.roomid));
 	JoinRoomResponse.status = 0;
 	if (!this->m_user.getRoom())
@@ -141,7 +141,7 @@ RequestResult MenuRequestHandler::signout(const RequestInfo& request)
 	struct RequestResult result;
 	LogoutReponse logoutReponse;
 	if(this->m_user.getRoom())
-		this->m_user.getRoom()->removeUser(this->m_user);
+		this->m_user.getRoom()->removeUser(&this->m_user);
 	logoutReponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLogoutResponse(logoutReponse);
 	result.newHandler = this->m_handlerFactory.createLoginRequestHandler();

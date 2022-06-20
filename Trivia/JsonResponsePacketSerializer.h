@@ -32,9 +32,9 @@ enum ResponseCode
 	LeaveRoom,
 	LeaveGame,
 	GetQuestions,
-	SubmitAnswer,
+	SubmitAnswer,	
 	GetGameResult,
-	EveryOneAnswered
+	EveryOneAnswered,
 };
 
 enum LoginCode
