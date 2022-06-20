@@ -7,7 +7,8 @@ Game& GameManager::createGame(Room room)
 
     for (auto it : questionList)
     {
-        questions.push_back(&it);
+        Question* question = new Question(it.getId(), it.getQuestion(), it.getCorrectAnswer(), it.getPossibleAnswers()[1], it.getPossibleAnswers()[2], it.getPossibleAnswers()[3]);
+        questions.push_back(question);
     }
 
     Game game = *(new Game(room, questions));

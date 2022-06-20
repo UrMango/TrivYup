@@ -1,6 +1,8 @@
 #include "RoomAdminRequestHandler.h"
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& user) : _roomUser(user.getRoom()), m_user(user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory) {}
+RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& user) : _roomUser(user.getRoom()), m_user(user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory)
+{
+}
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
@@ -41,7 +43,7 @@ LoggedUser& RoomAdminRequestHandler::getUser() const
 	return this->m_user;
 }
 
-RequestResult& RoomAdminRequestHandler::closeRoom(const RequestInfo& request)
+RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& request)
 {
 	struct RequestResult result;
 	LeaveRoomResponse leaveRoomResponse;
@@ -53,7 +55,7 @@ RequestResult& RoomAdminRequestHandler::closeRoom(const RequestInfo& request)
 	return result;
 }
 
-RequestResult& RoomAdminRequestHandler::startGame(const RequestInfo& request)
+RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& request)
 {
 	struct RequestResult result;
 	StartGameResponse startGameResponse;
@@ -64,6 +66,7 @@ RequestResult& RoomAdminRequestHandler::startGame(const RequestInfo& request)
 	startGameResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeStartGameResponse(startGameResponse);
 	result.newHandler = this->m_handlerFactory.createGameRequestHandler(m_user, game, this->m_handlerFactory.getGameManager());
+	std::cout << result.msg << std::endl;
 	return result;
 }
 

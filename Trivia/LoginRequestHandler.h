@@ -18,7 +18,7 @@ public:
 
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
-
+	LoggedUser& getUser() const;
 
 private:
 	LoginManager& m_loginManager;

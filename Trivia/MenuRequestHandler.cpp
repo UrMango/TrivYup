@@ -90,6 +90,11 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
 	return result;
 }
 
+LoggedUser& MenuRequestHandler::getUser() const
+{
+	return this->m_user;
+}
+
 RequestResult MenuRequestHandler::joinRoom(const RequestInfo& request)
 {
 	struct RequestResult result;

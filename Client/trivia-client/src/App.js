@@ -83,6 +83,9 @@ const App = () => {
         case ResponseCode.GetRoomState:
           dispatch({type: "CURR_ROOM", payload: msg});
           break;
+        case ResponseCode.GetQuestions:
+          dispatch({type: "QUESTION", payload: msg});
+          break;
         // case "startgame":
         //   navigate(location.pathname + "?started");
         //   break;

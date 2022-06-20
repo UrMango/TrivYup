@@ -28,6 +28,7 @@ private:
 	RequestResult getHighScore(const RequestInfo& request);
 	RequestResult joinRoom(const RequestInfo& request);
 	RequestResult createRoom(const RequestInfo& request);
+	LoggedUser& getUser() const;
 
 
 public:
