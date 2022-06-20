@@ -28,7 +28,8 @@ std::vector<std::string> Room::getAllUsers()
 	std::vector <std::string> allUsers;
 	for (int i = 0; i < this->m_users.size(); i++)
 	{
-		allUsers.push_back(this->m_users[i].getUsername());
+		if(&this->m_users[i])
+			allUsers.push_back(this->m_users[i].getUsername());
 	}
 	return allUsers;
 }

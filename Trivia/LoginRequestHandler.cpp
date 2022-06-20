@@ -36,6 +36,12 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request)
 	}
 }
 
+LoggedUser& LoginRequestHandler::getUser() const
+{
+	LoggedUser temp = LoggedUser("");
+	return temp;
+}
+
 RequestResult LoginRequestHandler::signUp(const RequestInfo request)const
 {
 	struct RequestResult result;

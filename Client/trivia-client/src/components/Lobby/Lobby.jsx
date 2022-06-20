@@ -16,7 +16,7 @@ const Lobby = ({id, creator, data}) => {
 	const username = useSelector(state => state.user?.data?.username);
 
 	/**@type {Array} */
-	const players = useSelector(state => state.rooms?.currentRoom.players);
+	const players = useSelector(state => state.rooms?.currentRoom?.players);
 
 	const toggle = () => setMute(!mute);
 
@@ -31,6 +31,7 @@ const Lobby = ({id, creator, data}) => {
 	playersList?.splice(0, 1);
 
 	useEffect(() => {
+		audio.volume = 0.3;
 		if(mute) audio.pause();
 		else {
 			audio.loop = true;

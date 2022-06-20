@@ -26,7 +26,7 @@ private:
 	sqlite3* db;
 	char* errMessage;
 
-	Question* question;
+	Question question;
 	int numReturn;
 	float floatReturn;
 };
