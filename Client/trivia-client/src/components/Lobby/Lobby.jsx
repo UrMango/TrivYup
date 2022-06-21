@@ -9,8 +9,10 @@ import MutedIcon from "../../assets/images/mute.png";
 import { useEffect, useState } from "react";
 import "./Lobby.css";
 
+import lobbyMusic from "../../assets/music/Lobby.mp3";
+
 const Lobby = ({id, creator, data}) => {
-	const [audio] = useState(new Audio("https://assets-cdn.kahoot.it/player/v2/assets/lobby-fantasy.8bc91bd4.webm"));
+	const [audio] = useState(new Audio(lobbyMusic));
 	const [mute, setMute] = useState(false);
 
 	const username = useSelector(state => state.user?.data?.username);
