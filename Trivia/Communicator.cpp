@@ -122,59 +122,58 @@ void Communicator::handleNewClient(tcp::socket socket) {
 			else if (request.msgCode == SUBMIT_ANSWER && ws.is_open())
 			{
 				ws.write(net::buffer(res.msg));
-				GameRequestHandler* userRequestHandler = (GameRequestHandler*)(m_clients[&ws]);
-				GameRequestHandler* otherUserRequestHandler;
-				int gameId = userRequestHandler->getGame().getGameId();
-				if (this->m_handlerFactory.getGameManager().getGame(gameId)->getIsEveryoneAnswerd())
-				{
 
-					for (auto x : userRequestHandler->getGame().getPlayers())
+				if (m_clients[&ws]->getType() == ReqTypes::GAME_REQ) {
+
+					GameRequestHandler* userRequestHandler = (GameRequestHandler*)(m_clients[&ws]);
+					GameRequestHandler* otherUserRequestHandler;
+					int gameId = userRequestHandler->getGame().getGameId();
+					if (this->m_handlerFactory.getGameManager().getGame(gameId)->getIsEveryoneAnswerd())
 					{
-						for (auto i : m_clients)
+
+						for (auto x : userRequestHandler->getGame().getPlayers())
 						{
-							if (i.second->getType() != ReqTypes::GAME_REQ) continue;
-
-							otherUserRequestHandler = (GameRequestHandler*)(i.second);
-							if (otherUserRequestHandler->getUser().getUsername() == x.first->getUsername())
+							for (auto i : m_clients)
 							{
-								GetIsEveryoneAnsweredResponse getIsEveryoneAnsweredResponse;
-								getIsEveryoneAnsweredResponse.isEveryoneAnswered = true;
-								(*(i.first)).write(net::buffer(JsonResponsePacketSerializer::serializeIsEveryoneAnsweredResponse(getIsEveryoneAnsweredResponse)));
+								if (i.second->getType() != ReqTypes::GAME_REQ) continue;
 
-								if (this->m_handlerFactory.getGameManager().getGame(gameId) && this->m_handlerFactory.getGameManager().getGame(gameId)->getIsFinished()) {
-									auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
-									delete(i.second);
-									m_clients[i.first] = handler;
-
-
+								otherUserRequestHandler = (GameRequestHandler*)(i.second);
+								if (otherUserRequestHandler->getUser().getUsername() == x.first->getUsername())
+								{
+									GetIsEveryoneAnsweredResponse getIsEveryoneAnsweredResponse;
+									getIsEveryoneAnsweredResponse.isEveryoneAnswered = true;
+									(*(i.first)).write(net::buffer(JsonResponsePacketSerializer::serializeIsEveryoneAnsweredResponse(getIsEveryoneAnsweredResponse)));
 								}
 							}
 						}
 					}
 				}
 
-				if (this->m_handlerFactory.getGameManager().getGame(gameId) && this->m_handlerFactory.getGameManager().getGame(gameId)->getIsFinished())
-				{
-					GameRequestHandler* userRequestHandler = (GameRequestHandler*)(m_clients[&ws]);
-					GameRequestHandler* otherUserRequestHandler;
-					for (auto x : userRequestHandler->getGame().getPlayers())
-					{
-						for (auto i : m_clients)
-						{
-							if (i.second->getType() != ReqTypes::GAME_REQ) continue;
-							
-							otherUserRequestHandler = (GameRequestHandler*)(i.second);
-							if (otherUserRequestHandler->getUser().getUsername() == x.first->getUsername())
-							{
-								auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
-								delete(i.second);
-								m_clients[i.first] = handler;
-							}
-						}
-					}
+			}
+			else if (request.msgCode == CLOSE_GAME) {
 
+				ws.write(net::buffer(res.msg));
+				GameRequestHandler* userRequestHandler = (GameRequestHandler*)(m_clients[&ws]);
+				GameRequestHandler* otherUserRequestHandler;
+
+				for (auto x : userRequestHandler->getGame().getPlayers())
+				{
+					for (auto i : m_clients)
+					{
+						if (i.second->getType() != ReqTypes::GAME_REQ) continue;
+
+						otherUserRequestHandler = (GameRequestHandler*)(i.second);
+						
+						(*(i.first)).write(net::buffer(res.msg));
+
+						auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+						delete(i.second);
+						m_clients[i.first] = handler;
+					}
 				}
 
+				delete(m_clients[&ws]);
+				m_clients[&ws] = res.newHandler;
 			}
 			else if (ws.is_open())
 				ws.write(net::buffer(res.msg));
