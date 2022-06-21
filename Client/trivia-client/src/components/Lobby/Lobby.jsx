@@ -33,7 +33,7 @@ const Lobby = ({id, creator, data}) => {
 	playersList?.splice(0, 1);
 
 	useEffect(() => {
-		audio.volume = 0.3;
+		audio.volume = 0.2;
 		if(mute) audio.pause();
 		else {
 			audio.loop = true;

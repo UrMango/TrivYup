@@ -18,7 +18,8 @@ const ResponseCode = {
 	GetQuestions: 16,
 	SubmitAnswer: 17,
 	GetGameResult: 18,
-	EveryOneAnswered: 19
+	EveryOneAnswered: 19,
+	CloseGame: 20
 }
 
 const LoginCode = {
@@ -49,7 +50,8 @@ const ClientToServerCode = {
 	LEAVE_GAME: 217,
 	GET_QUESTION: 218,
 	SUBMIT_ANSWER: 219,
-	GET_GAME_RESULT: 220
+	GET_GAME_RESULT: 220,
+	CLOSE_GAME: 221
 }
 
 export {

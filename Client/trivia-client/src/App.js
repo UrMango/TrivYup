@@ -98,6 +98,9 @@ const App = () => {
         case ResponseCode.GetGameResult:
           dispatch({type: "GAME_RES", payload: msg.results});
           break;
+        case ResponseCode.CloseGame:
+          navigate("/");
+          break;
         default:
           break;
       }
