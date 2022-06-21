@@ -5,11 +5,11 @@ Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions
     for (int i = 0; i < room.getAllLoggedUsers()->size(); i++) {
         struct GameData* gamedata = new GameData();
         gamedata->currectQuestion = questions[0];
-        gamedata->averangeAnswerTime = 0;
+        gamedata->averangeAnswerTime = 1;
         gamedata->correctAnswerCount = 0;
         gamedata->wrongAnswerCount = 0;
         gamedata->onGame = true;
-
+        recieveTime = time(0);
         LoggedUser* user = (*room.getAllLoggedUsers())[i];
         m_players.insert({user, gamedata});
     }
@@ -38,19 +38,29 @@ std::map<LoggedUser*, GameData*> Game::getPlayers()
     return this->m_players;
 }
 
-void Game::newAvg(int newTime, LoggedUser* user)
+void Game::newAvg(float newTime, LoggedUser* user)
 {
     auto it = m_players.find(user);
     if (it != m_players.end()) {
-        int numQuestions = it->second->wrongAnswerCount + it->second->correctAnswerCount;
-        it->second->averangeAnswerTime = ((1 / (numQuestions + 1)) * numQuestions * it->second->averangeAnswerTime) + (newTime * (1 / (numQuestions + 1)));
+        int numQuestions = it->second->wrongAnswerCount + it->second->correctAnswerCount; 
+            if (numQuestions == 0)
+                it->second->averangeAnswerTime = newTime;
+            else
+                printf("\nres = %f \n", (1 / (numQuestions + 1)));
+                it->second->averangeAnswerTime = ((1 / (float)(numQuestions + 1)) * (numQuestions)*it->second->averangeAnswerTime) + (newTime * (1 / (float)(numQuestions + 1)));
+
     }
+    printf("\n new ang %f\n", it->second->averangeAnswerTime);
 }
 
 std::string Game::submitAnswer(LoggedUser* user, std::string answer) 
 {
+    recieveTime = time(0);
     time(&recieveTime);
-    int newTime = (recieveTime - user->getMsgTime()) * 1000;
+    float newTime = difftime(recieveTime , user->getMsgTime());
+    printf("%d, %d, %f \n", user->getMsgTime(), recieveTime, newTime);
+    std::cout << "Time required = " << difftime(recieveTime, user->getMsgTime()) << " seconds";
+
     this->newAvg(newTime, user);
     auto it = m_players.find(user);
     if (answer == it->second->currectQuestion->getCorrectAnswer())

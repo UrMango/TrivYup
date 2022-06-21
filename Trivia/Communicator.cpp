@@ -1,4 +1,6 @@
 #include "Communicator.h"
+
+
 Communicator::Communicator(RequestHandlerFactory& handlerFactory, IDatabase& database) : m_handlerFactory(handlerFactory), m_database(database)
 {
 	_time = time(0);
@@ -28,6 +30,7 @@ void Communicator::startHandleRequests()
 }
 
 void Communicator::handleNewClient(tcp::socket socket) {
+
 	// socket will be const - mutable should be used
 	websocket::stream<tcp::socket> ws{ std::move(const_cast<tcp::socket&>(socket)) };
 	// Accept the websocket handshake
@@ -39,8 +42,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 	beast::flat_buffer buffer;
 	ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
-
-
+	ctime(&_time);
 	while (true)
 	{
 		try
@@ -58,6 +60,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 			//insert field to RequestInfo struct
 			struct RequestInfo request;
 			request.msgCode = msgCode;
+			_time = time(0);
 			ctime(&_time);
 			request.msgTime = _time;
 			request.msg = out.substr(3);

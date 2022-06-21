@@ -20,7 +20,7 @@ struct PlayerResults
     std::string username;
     unsigned int correctAnswerCount;
     unsigned int wrongAnswerCount;
-    unsigned int averageAnswerTime;
+    float averageAnswerTime;
 };
 
 inline void to_json(nlohmann::json& j, const PlayerResults& pl)
@@ -47,7 +47,7 @@ public:
     std::vector<PlayerResults> getAllPlayerResults();
 
 private:
-    void newAvg(int newTime, LoggedUser* user);
+    void newAvg(float newTime, LoggedUser* user);
 	std::vector<Question*> m_questions;
 	std::map<LoggedUser*, GameData*> m_players;
     bool isFinished = false;
