@@ -3,13 +3,15 @@
 Game* GameManager::createGame(Room room)
 {
     std::vector<Question*> questions;
-    std::list<Question> questionList = m_database->getQuestions(room.getRoomData().numOfQuestionsInGame);
+    std::vector<Question> questionList = m_database->getQuestions(room.getRoomData().numOfQuestionsInGame);
 
-    for (auto it : questionList)
+    for (int i = 0; i < questionList.size(); i++)
     {
-        Question* question = new Question(it.getId(), it.getQuestion(), it.getCorrectAnswer(), it.getPossibleAnswers()[1], it.getPossibleAnswers()[2], it.getPossibleAnswers()[3]);
+        printf("ans = %s", questionList[i].getPossibleAnswers()[0]);
+        Question* question = new Question(questionList[i].getId(), questionList[i].getQuestion(), questionList[i].getPossibleAnswers()[1], questionList[i].getPossibleAnswers()[2], questionList[i].getPossibleAnswers()[3], questionList[i].getPossibleAnswers()[4]);
         questions.push_back(question);
     }
+
 
     Game* game = new Game(room, questions);
     this->m_games.push_back(game);

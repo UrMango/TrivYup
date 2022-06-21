@@ -276,14 +276,14 @@ int SqliteDataBase::getUserId(std::string username)
 	return id;
 }
 
-std::list<Question> SqliteDataBase::getQuestions(int numQuestions)
+std::vector<Question> SqliteDataBase::getQuestions(int numQuestions)
 {
 	int res;
 	bool ifAvailable = false;
 	int randomId = -1;
 	const int QUESTION_COUNT = 400;
 
-	std::list<Question> questionsList;
+	std::vector<Question> questionsList;
 
 	for (int i = 0; i < numQuestions; i++)
 	{

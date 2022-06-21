@@ -18,7 +18,7 @@ public:
 
 	virtual int getUserId(std::string username) = 0;
 
-	virtual std::list<Question> getQuestions(int numQuestions) = 0;
+	virtual std::vector<Question> getQuestions(int numQuestions) = 0;
 	virtual float getPlayerAverageAnswerTime(std::string username) = 0;
 	virtual void updateStatistics(std::string username, GameData playerGameData) = 0;
 	virtual int getNumOfCorrectAnswers(std::string username) = 0;
