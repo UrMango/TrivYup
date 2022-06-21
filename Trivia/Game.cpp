@@ -46,11 +46,10 @@ void Game::newAvg(float newTime, LoggedUser* user)
             if (numQuestions == 0)
                 it->second->averangeAnswerTime = newTime;
             else
-                printf("\nres = %f \n", (1 / (numQuestions + 1)));
                 it->second->averangeAnswerTime = ((1 / (float)(numQuestions + 1)) * (numQuestions)*it->second->averangeAnswerTime) + (newTime * (1 / (float)(numQuestions + 1)));
 
     }
-    printf("\n new ang %f\n", it->second->averangeAnswerTime);
+   // printf("\n new avg %f\n", it->second->averangeAnswerTime);
 }
 
 std::string Game::submitAnswer(LoggedUser* user, std::string answer) 
@@ -58,8 +57,7 @@ std::string Game::submitAnswer(LoggedUser* user, std::string answer)
     recieveTime = time(0);
     time(&recieveTime);
     float newTime = difftime(recieveTime , user->getMsgTime());
-    printf("%d, %d, %f \n", user->getMsgTime(), recieveTime, newTime);
-    std::cout << "Time required = " << difftime(recieveTime, user->getMsgTime()) << " seconds";
+    //std::cout << "Time required = " << difftime(recieveTime, user->getMsgTime()) << " seconds";
 
     this->newAvg(newTime, user);
     auto it = m_players.find(user);
