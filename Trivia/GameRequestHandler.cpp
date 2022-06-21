@@ -35,6 +35,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 
 	LeaveGameResponse leaveGameResponse;
 
+	CloseGameResponse closeGameResponse;
 	if (!(this->isRequestRelevant(request)))
 	{
 		//insert field to RequestInfo struct
@@ -102,6 +103,14 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 				getGameResultsResponse.results = {};
 			}
 			result.msg = JsonResponsePacketSerializer::serializeGetGameResultsResponse(getGameResultsResponse);
+			result.newHandler = this->m_handlerFacroty.createMenuRequestHandler(this->m_user);;
+			return result;
+			break;
+		case CLOSE_GAME:
+			this->m_handlerFacroty.getGameManager().deleteGame(this->getGame().getGameId());
+			this->m_handlerFacroty.getGameManager().deleteGame(this->getGame().getGameId());
+			closeGameResponse.status = 1;
+			result.msg = JsonResponsePacketSerializer::serializeCloseGameResponse(closeGameResponse);
 			result.newHandler = this->m_handlerFacroty.createMenuRequestHandler(this->m_user);;
 			return result;
 			break;

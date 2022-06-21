@@ -32,7 +32,8 @@ enum MessageType
 	LEAVE_GAME = 217,
 	GET_QUESTION = 218,
 	SUBMIT_ANSWER = 219,
-	GET_GAME_RESULT = 220
+	GET_GAME_RESULT = 220,
+	CLOSE_GAME = 221
 };
 
 struct RequestInfo {

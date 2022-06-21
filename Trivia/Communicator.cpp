@@ -146,8 +146,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 									delete(i.second);
 									m_clients[i.first] = handler;
 
-									this->m_handlerFactory.getGameManager().deleteGame(gameId);
-									this->m_handlerFactory.getRoomManager().deleteRoom(gameId);
+
 								}
 							}
 						}
@@ -173,8 +172,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 							}
 						}
 					}
-					this->m_handlerFactory.getGameManager().deleteGame(gameId);
-					this->m_handlerFactory.getRoomManager().deleteRoom(gameId);
+
 				}
 
 			}

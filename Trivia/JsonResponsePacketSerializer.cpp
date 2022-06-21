@@ -166,3 +166,12 @@ std::string JsonResponsePacketSerializer::serializeIsEveryoneAnsweredResponse(Ge
 	json["isEveryoneAnswered"] = getIsEveryoneAnsweredResponse.isEveryoneAnswered;
 	return json.dump();
 }
+
+std::string JsonResponsePacketSerializer::serializeCloseGameResponse(CloseGameResponse closeGameResponse)
+{
+	nlohmann::json json;
+	json["id"] = (int)ResponseCode::CloseGame;
+	json["status"] = closeGameResponse.status;
+	return json.dump();
+}
+
