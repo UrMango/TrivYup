@@ -50,7 +50,7 @@ void Game::newAvg(int newTime, LoggedUser* user)
 std::string Game::submitAnswer(LoggedUser* user, std::string answer) 
 {
     time(&recieveTime);
-    int newTime = difftime(recieveTime, user->getMsgTime());
+    int newTime = (recieveTime - user->getMsgTime()) * 1000;
     this->newAvg(newTime, user);
     auto it = m_players.find(user);
     if (answer == it->second->currectQuestion->getCorrectAnswer())
