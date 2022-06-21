@@ -95,6 +95,9 @@ const App = () => {
         case ResponseCode.EveryOneAnswered:
           dispatch({type: "EVERYONE_ANSWERED", payload: msg.isEveryoneAnswered});
             break;
+        case ResponseCode.GetGameResult:
+          dispatch({type: "GAME_RES", payload: msg.results});
+          break;
         default:
           break;
       }

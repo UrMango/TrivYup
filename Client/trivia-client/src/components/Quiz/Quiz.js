@@ -7,6 +7,7 @@ import CountdownTimer from '../../components/CountdownTimer/CountdownTimer.js';
 import { createRef, useEffect, useState } from "react";
 import "./Quiz.css";
 import Answer from "../../components/Answer/Answer";
+import Results from "../../components/Results/Results";
 
 import battleMusic from "../../assets/music/Battle.mp3";
 
@@ -112,7 +113,7 @@ const Quiz = () => {
 				{/* <Countdown controlled={false} onMount={() => console.log("mounted")} onStart={() => console.log("started")} onPause={() => console.log("paused")} onTick={() => console.log("tick")} onComplete={() => console.log("finished")} ref={countdownRef} date={startTime + roomData.answerTimeout * 1000} renderer={props => <div>{Math.floor(props.total / 1000)}  </div>} /> */}
 				<CountdownTimer targetDate={endTime} />
 				<div className="answers"><h3>{qCount}/{roomData.questionCount}</h3><h3>{roomData.gamePin}</h3></div>
-			</div>) : ( handleGameResults() ) }
+			</div>) : <Results isAdmin={username == roomData.players[0]} /> }
 		</>
 	)
 }
