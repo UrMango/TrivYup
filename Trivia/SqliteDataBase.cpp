@@ -456,7 +456,7 @@ std::vector<std::pair<std::string, int>> SqliteDataBase::getHighscores()
 		float averageTime = SqliteDataBase::getPlayerAverageAnswerTime(usersList[i].second);
 
 		// function: Total / (Wrong * average answer time)
-		int score = total / ((all - correct) * averageTime);
+		int score = all / ((total - correct) * averageTime);
 
 		highscoreList.push_back(std::pair<std::string, int>(usersList[i].second, score));
 

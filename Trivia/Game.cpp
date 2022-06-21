@@ -26,7 +26,6 @@ Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
                 return nullptr;
             }
             user->setMsgTime(time);
-            Question* pp = m_questions[it.second->wrongAnswerCount + it.second->correctAnswerCount];
             it.second->currectQuestion = m_questions[it.second->wrongAnswerCount + it.second->correctAnswerCount];
             return it.second->currectQuestion;
         }
@@ -112,6 +111,11 @@ int Game::getGameId() const
     return this->m_gameId;
 }
 
+bool compareByScore(const PlayerResults& a, const PlayerResults& b)
+{
+    return a.score > b.score;
+}
+
 std::vector<PlayerResults> Game::getAllPlayerResults()
 {
     std::vector<PlayerResults> results;
@@ -122,8 +126,11 @@ std::vector<PlayerResults> Game::getAllPlayerResults()
         playerResults.correctAnswerCount = it.second->correctAnswerCount;
         playerResults.username = it.first->getUsername();
         playerResults.wrongAnswerCount = it.second->wrongAnswerCount;
+        playerResults.score = (it.second->wrongAnswerCount) * (it.second->averangeAnswerTime);
         results.push_back(playerResults);
     }
+    std::sort(results.begin(), results.end(), compareByScore);
+
     return results;
 }
 

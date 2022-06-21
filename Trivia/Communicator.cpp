@@ -11,6 +11,8 @@ Communicator::~Communicator() {}
 
 void Communicator::startHandleRequests()
 {
+
+
 	auto const address = net::ip::make_address("127.0.0.1");
 	auto const port = static_cast<unsigned short>(std::atoi("8083"));
 

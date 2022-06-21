@@ -1,5 +1,7 @@
 #include "GameRequestHandler.h"
 
+void randomShuffleOfMap(std::map<unsigned int, std::string>& Question);
+
 Game& GameRequestHandler::getGame()
 {
 	return this->m_game;
@@ -68,8 +70,12 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 			else
 			{
 				getQuestionResponse.status = 1;
+				std::map<unsigned int, std::string> Question = qu->getPossibleAnswers();
+				printf("\n ans = %s\n", Question[1]);
+				randomShuffleOfMap(Question);
+				
 				getQuestionResponse.question = qu->getQuestion();
-				getQuestionResponse.answers = qu->getPossibleAnswers();
+				getQuestionResponse.answers = Question;
 			}
 			result.msg = JsonResponsePacketSerializer::serializeGetQuestionResponse(getQuestionResponse);
 			result.newHandler = nullptr;
@@ -117,4 +123,21 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 	}
 	
 	return result;
+}
+
+
+void randomShuffleOfMap(std::map<unsigned int, std::string> &Question)
+{
+	std::vector<std::string> v;
+	int counter = 0;
+	for (auto it = Question.begin(); it != Question.end(); ++it)
+	{
+		v.push_back(it->second);
+	}
+	std::random_shuffle(v.begin(), v.end());
+	for (auto it = Question.begin(); it != Question.end(); ++it)
+	{
+		it->second = v[counter];
+		counter++;
+	}
 }
