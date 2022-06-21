@@ -1,0 +1,12 @@
+.answers {
+	display: flex;
+    flex: 4 1 0%;
+    flex-wrap: wrap;
+    height: 100%;
+    align-content: stretch;
+    z-index: 1;
+	padding-top: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    padding-left: calc(env(safe-area-inset-left) + 1rem);
+}

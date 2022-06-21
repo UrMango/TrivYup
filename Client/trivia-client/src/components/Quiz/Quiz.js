@@ -26,7 +26,6 @@ const Quiz = () => {
 	const [endTime, setEndTime] = useState(Date.now() + roomData.answerTimeout * 1000);
 	
 	const [questionTimeout, setQuestionTimeout] = useState(null);
-	const [deleteTimeoutCallerId, setDeleteTimeoutCallerId] = useState(null);
 
 	/**  answering result - status 1 - yes, 0 - no
 	 * @type {object} */
@@ -63,11 +62,7 @@ const Quiz = () => {
         }
 	}, [mute]);
 
-	const deleteTimeout = (callerId) => {
-		if(deleteTimeoutCallerId == callerId) {
-			return;
-		}
-		setDeleteTimeoutCallerId(callerId);
+	const deleteTimeout = () => {
 		console.log("Deleted timeout");
 		clearTimeout(questionTimeout);
 		console.log(questionTimeout);
@@ -78,36 +73,46 @@ const Quiz = () => {
 		console.log("handlenext");
 		setTimeout(() => {
 			console.log("handled");
-			deleteTimeout(1);
+			deleteTimeout();
 			
 			ws.send(ClientToServerCode.GET_QUESTION);
-			dispatch({type: "EVERYONE_ANSWERED", payload: false});
 			dispatch({type: "QUESTION_RES", payload: {}});
+		}, 5000);
+	}
+
+	useEffect(() => {
+		if(isEveryoneAnswered) {
+			handleNextQuestion();
+		}
+	}, [isEveryoneAnswered]);
+
+	useEffect(() => {
+		if(questionRes.status != null) {
+			deleteTimeout();
+		}
+	}, [questionRes.status]);
+	
+	useEffect(() => {
+		if(question.question != null) {
 			setQCount(qCount + 1);
 			setEndTime(Date.now() + roomData.answerTimeout * 1000);
-			
+
+			// get to quiz back
+			dispatch({type: "EVERYONE_ANSWERED", payload: false});
+			dispatch({type: "QUESTION_RES", payload: {}});
+
 			setQuestionTimeout(setTimeout(() => {
 				console.log("Time's up!");
 				let toSend = JSON.stringify({ answer: "" });
 				ws.send(ClientToServerCode.SUBMIT_ANSWER + toSend);
 			}, roomData.answerTimeout * 1000));
-		}, 5000);
-	}
-
-	// const countdownRefHandle = r => {
-	// 	console.log("start");
-	// 	r.start();
-	// }
-
-	const handleGameResults = () => {
-		ws.send(ClientToServerCode.GET_GAME_RESULT);
-	}
+		}
+	}, [question]);
 
 	return (
 		<>
 			{!username && <Navigate to="/auth/login"/>}
-			{questionRes.status != null && <div>{deleteTimeout(0)}</div>}
-			{ (qCount <= roomData.questionCount) ? (questionRes.status != null ? (isEveryoneAnswered ? ( <div>{handleNextQuestion()}</div> && (questionRes?.status == 1 ? <h2>YOU'RE RIGHT</h2> : <h2>YOU'RE A NOOB</h2>)) : <h2>Waiting for everyone to answer...</h2>) : <div className="quiz">
+			{ (qCount <= roomData.questionCount) ? (questionRes.status != null ? (isEveryoneAnswered ? (questionRes?.status == 1 ? <h2>YOU'RE RIGHT</h2> : <h2>YOU'RE A NOOB</h2>) : <h2>Waiting for everyone to answer...</h2>) : <div className="quiz">
 				<div className="questionSection"><h3>{question?.question}</h3></div>
 				<div className="answers">{answers}</div>
 				{/* <Countdown controlled={false} onMount={() => console.log("mounted")} onStart={() => console.log("started")} onPause={() => console.log("paused")} onTick={() => console.log("tick")} onComplete={() => console.log("finished")} ref={countdownRef} date={startTime + roomData.answerTimeout * 1000} renderer={props => <div>{Math.floor(props.total / 1000)}  </div>} /> */}

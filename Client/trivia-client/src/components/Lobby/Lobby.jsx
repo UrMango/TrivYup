@@ -26,7 +26,7 @@ const Lobby = ({id, creator, data}) => {
 
 	/**@type {Array} */
 	const playersList = players?.map(player => {
-		return <id className="playername"><h3>{player}</h3></id>
+		return <div className="playername"><h3>{player}</h3></div>
 	});
 
 	if(players?.length > 0 && players[0] == username) creator = true;
