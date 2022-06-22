@@ -128,6 +128,8 @@ const Quiz = () => {
 			setQCount(qCount + 1);
 			if(qCount < roomData.questionCount){
 				ws.send(ClientToServerCode.GET_QUESTION);
+			} else {
+				audio.pause();
 			}
 			dispatch({type: "QUESTION", payload: {}});
 		}, 6000);

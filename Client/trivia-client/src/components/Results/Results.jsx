@@ -7,14 +7,25 @@ import ReactConfetti from 'react-confetti';
 import First from '../../assets/images/first.svg';
 import Second from '../../assets/images/second.svg';
 import Third from '../../assets/images/third.svg';
+import PodiumMusic from '../../assets/music/Podium.mp3';
 
 import "./Results.css";
+import { useState } from "react";
 
 const Results = ({isAdmin}) => {
+	const [audio] = useState(new Audio(PodiumMusic));
+	
 	const gameResults = useSelector(state => state?.rooms?.gameResults);
 	
 	useEffect(() => {
+		audio.loop = false;
+		audio.play(); 
+
 		ws.send(ClientToServerCode.GET_GAME_RESULT);
+
+		return () => {
+			audio.pause();
+		}
 	}, []);
 
 	const closeGameHandler = e => {
@@ -30,11 +41,11 @@ const Results = ({isAdmin}) => {
 
 	return (
 		<div className="results">
-			<ReactConfetti style={{zIndex: 5}}/>
+			<ReactConfetti className="confetti" style={{zIndex: 5}}/>
 			{isAdmin && <button className="exitBtn" onClick={closeGameHandler}>Exit</button>}
 			{gameResults.length > 0 ? (<div className="users">
 				<div className="user">
-					<h3 className="username">{gameResults[1]?.username}</h3>
+					<h3 className="username" id="second">{gameResults[1]?.username}</h3>
 					<div className="podium" id="second">
 						<section className="podiumContent">
 							<img className="img" src={Second}/>
@@ -52,7 +63,7 @@ const Results = ({isAdmin}) => {
 					</div>
 				</div>
 				<div className="user">
-					<h3 className="username">{gameResults[2]?.username}</h3>
+					<h3 className="username" id="third">{gameResults[2]?.username}</h3>
 					<div className="podium" id="third">
 						<section className="podiumContent">
 							<img className="img" src={Third}/>
