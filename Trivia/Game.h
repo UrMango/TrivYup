@@ -14,6 +14,7 @@ struct GameData
 	unsigned int wrongAnswerCount;
     float averangeAnswerTime;
     bool onGame;
+    bool hasAnswered;
 };
 struct PlayerResults
 {
@@ -39,6 +40,7 @@ public:
     Game() {};
     Game(Room& room, std::vector<Question*> questions);
     std::string submitAnswer(LoggedUser* user, std::string answer);
+    GameData* getPlayerData(LoggedUser* user);
     void removePlayer(LoggedUser* users);
     int getGameId() const;
     std::map<LoggedUser*, GameData*> getPlayers();

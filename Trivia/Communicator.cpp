@@ -72,7 +72,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 			if (res.newHandler != nullptr)
 			{
-				if (request.msgCode != START_GAME) {
+				if (request.msgCode != START_GAME && request.msgCode != CLOSE_GAME) {
 					delete(m_clients[&ws]);
 					m_clients[&ws] = res.newHandler;
 				}

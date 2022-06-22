@@ -9,6 +9,8 @@ Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions
         gamedata->correctAnswerCount = 0;
         gamedata->wrongAnswerCount = 0;
         gamedata->onGame = true;
+        gamedata->hasAnswered = false;
+
         recieveTime = time(0);
         LoggedUser* user = (*room.getAllLoggedUsers())[i];
         m_players.insert({user, gamedata});
@@ -27,6 +29,7 @@ Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
             }
             user->setMsgTime(time);
             it.second->currectQuestion = m_questions[it.second->wrongAnswerCount + it.second->correctAnswerCount];
+            it.second->hasAnswered = false;
             return it.second->currectQuestion;
         }
     }
@@ -70,6 +73,8 @@ std::string Game::submitAnswer(LoggedUser* user, std::string answer)
         it->second->wrongAnswerCount++;
     }
 
+    it->second->hasAnswered = true;
+
     bool everyoneAnswerd = true;
     for (auto pl : m_players)
     {
@@ -82,6 +87,18 @@ std::string Game::submitAnswer(LoggedUser* user, std::string answer)
     this->isEveryoneAnswerd = everyoneAnswerd;
     if (this->isEveryoneAnswerd && it->second->correctAnswerCount + it->second->wrongAnswerCount == this->m_questions.size()) { this->isFinished = true; }
     return it->second->currectQuestion->getCorrectAnswer();
+}
+
+GameData* Game::getPlayerData(LoggedUser* user)
+{
+    for (auto it : m_players)
+    {
+        if (it.first == user)
+        {
+            return it.second;
+        }
+    }
+    return nullptr;
 }
 
 void Game::removePlayer(LoggedUser* users)
