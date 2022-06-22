@@ -173,7 +173,9 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 							otherUserRequestHandler = (GameRequestHandler*)(i.second);
 
-							(*(i.first)).write(net::buffer(res.msg));
+							if (i.first->is_open()) {
+								(*(i.first)).write(net::buffer(res.msg));
+							}
 
 							auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
 							delete(i.second);
