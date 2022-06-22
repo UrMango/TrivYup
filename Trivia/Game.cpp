@@ -2,7 +2,6 @@
 
 Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions), m_gameId(room.getRoomData().id)
 {
-   // _playersMtx = new std::mutex();
 
     for (int i = 0; i < room.getAllLoggedUsers()->size(); i++) {
         struct GameData* gamedata = new GameData();
@@ -53,7 +52,6 @@ void Game::newAvg(float newTime, LoggedUser* user)
         else
             it->second->averangeAnswerTime = ((1 / (float)(numQuestions + 1)) * (numQuestions)*it->second->averangeAnswerTime) + (newTime * (1 / (float)(numQuestions + 1)));
     }
-    // printf("\n new avg %f\n", it->second->averangeAnswerTime);
 }
 
 std::string Game::submitAnswer(LoggedUser* user, std::string answer)
@@ -61,7 +59,6 @@ std::string Game::submitAnswer(LoggedUser* user, std::string answer)
     recieveTime = time(0);
     time(&recieveTime);
     float newTime = difftime(recieveTime, user->getMsgTime());
-    //std::cout << "Time required = " << difftime(recieveTime, user->getMsgTime()) << " seconds";
 
     this->newAvg(newTime, user);
     auto it = m_players.find(user);

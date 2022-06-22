@@ -259,7 +259,9 @@ void SqliteDataBase::addNewUser(std::string username, std::string pword, std::st
 
 	std::string* query = new string();
 	*query = "INSERT INTO USERS (username, password, email) VALUES ('" + username + "', '" + pword + "', '" + email + "');";
-	res = sqlite3_exec(db, (*query).c_str(), nullptr, nullptr, &errMessage);
+	_dataBasetx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+		res = sqlite3_exec(db, (*query).c_str(), nullptr, nullptr, &errMessage);
+	_dataBasetx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
@@ -267,7 +269,9 @@ void SqliteDataBase::addNewUser(std::string username, std::string pword, std::st
 	
 	
 	*query = "INSERT INTO STATISTICS (userid, averageanswertime, numberofgamesplayed, numofcorrectanswers, numofanswers) VALUES(" + std::to_string(getUserId(username)) + ", 0.0, 0, 0, 0);";
-	res = sqlite3_exec(db, (*query).c_str(), nullptr, nullptr, &errMessage);
+	_dataBasetx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+		res = sqlite3_exec(db, (*query).c_str(), nullptr, nullptr, &errMessage);
+	_dataBasetx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
@@ -346,8 +350,10 @@ void SqliteDataBase::updateStatistics(std::string username, GameData playerGameD
 	numberOfAnswers += playerGameData.correctAnswerCount + playerGameData.wrongAnswerCount;
 
 	*query2 = "UPDATE STATISTICS SET averageanswertime = " + std::to_string(averageAnswerTime) + ", numberofgamesplayed = " + std::to_string(numberOfGamesPlayed) + ", numofcorrectanswers = " + std::to_string(numberOfCorrectAnswer) + ", numofanswers = " + std::to_string(numberOfAnswers) + " WHERE userid = " + std::to_string(getUserId(username)) + ";";
+	_dataBasetx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+		res = sqlite3_exec(db, (*query2).c_str(), nullptr, nullptr, &errMessage);
+	_dataBasetx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 
-	res = sqlite3_exec(db, (*query2).c_str(), nullptr, nullptr, &errMessage);
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
@@ -464,18 +470,6 @@ std::vector<std::pair<std::string, int>> SqliteDataBase::getHighscores()
 		int score = 1000*(all / (correct / averageTime));
 
 		highscoreList.push_back(std::pair<std::string, int>(usersList[i].second, score));
-
-		/*if (score > first.second) {
-			third = second;
-			second = first;
-			first = std::pair<std::string, int>(usersList[i].second, score);
-		}
-		else if (score > second.second) {
-			third = second;
-			second = std::pair<std::string, int>(usersList[i].second, score);
-		} else if (score > third.second) {
-			third = second;
-		}*/
 	}
 
 	std::sort(highscoreList.begin(), highscoreList.end(), [](auto& left, auto& right) {

@@ -31,13 +31,11 @@ void Room::removeUser(LoggedUser* user)
 std::vector<std::string> Room::getAllUsers()
 {
 	std::vector <std::string> allUsers;
-	_roomsMtx->lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 		for (int i = 0; i < this->m_users.size(); i++)
 		{
 			if(&this->m_users[i])
 				allUsers.push_back(this->m_users[i]->getUsername());
 		}
-	_roomsMtx->unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked=
 	return allUsers;
 }
 

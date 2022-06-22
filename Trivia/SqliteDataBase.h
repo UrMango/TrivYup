@@ -29,4 +29,6 @@ private:
 	Question question;
 	int numReturn;
 	float floatReturn;
+	std::mutex _dataBasetx;
+
 };

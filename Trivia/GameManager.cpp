@@ -12,7 +12,6 @@ Game* GameManager::createGame(Room room)
         questions.push_back(question);
     }
 
-
     Game* game = new Game(room, questions);
     _gamesMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
         this->m_games.push_back(game);
@@ -23,25 +22,20 @@ Game* GameManager::createGame(Room room)
 
 Game* GameManager::getGame(int gameId)
 {
-    _gamesMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
         for (auto it : this->m_games)
         {
             if (it->getGameId() == gameId)
-                _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
                 return it;
         }
-    _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
     return nullptr;
 }
 
 void GameManager::updateStatistics(Game game)
 {
-    _gamesMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
-        for (auto it : game.getPlayers())
-        {
-            this->m_database->updateStatistics(it.first->getUsername(), *it.second);
-        }
-    _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+    for (auto it : game.getPlayers())
+    {
+        this->m_database->updateStatistics(it.first->getUsername(), *it.second);
+    }
 }
 
 void GameManager::deleteGame(int gameId)
