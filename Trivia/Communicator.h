@@ -38,4 +38,6 @@ private:
 	RequestHandlerFactory& m_handlerFactory;
 	IDatabase& m_database;
 	time_t _time;
+	std::mutex _clientsMtx;
+
 };

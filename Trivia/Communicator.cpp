@@ -12,9 +12,8 @@ Communicator::~Communicator() {}
 void Communicator::startHandleRequests()
 {
 
-
 	auto const address = net::ip::make_address("127.0.0.1");
-	auto const port = static_cast<unsigned short>(std::atoi("8083"));
+	auto const port = static_cast<unsigned short>(std::atoi("8081"));
 
 	net::io_context ioc{ 1 };
 	tcp::acceptor acceptor{ ioc, {address, port} };
@@ -40,10 +39,12 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 	std::cout << "Connection succesfuly made!" << std::endl;
 
-	this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, IRequestHandler*>(&ws, (LoginRequestHandler*)m_handlerFactory.createLoginRequestHandler()));
+	_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+		this->m_clients.insert(std::pair<websocket::stream<tcp::socket>*, IRequestHandler*>(&ws, (LoginRequestHandler*)m_handlerFactory.createLoginRequestHandler()));
+	_clientsMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
 
 	beast::flat_buffer buffer;
-	ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
+	ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Connection succesfuly"))));
 	ctime(&_time);
 	while (true)
 	{
@@ -67,14 +68,17 @@ void Communicator::handleNewClient(tcp::socket socket) {
 			request.msgTime = _time;
 			request.msg = out.substr(3);
 
-			//first, the client need to connect to his user
-			RequestResult res = m_clients[&ws]->handleRequest(request);
+			_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+				RequestResult res = m_clients[&ws]->handleRequest(request);
+			_clientsMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
 
 			if (res.newHandler != nullptr)
 			{
 				if (request.msgCode != START_GAME) {
-					delete(m_clients[&ws]);
-					m_clients[&ws] = res.newHandler;
+					_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+						delete(m_clients[&ws]);
+						m_clients[&ws] = res.newHandler;
+					_clientsMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
 				}
 			}
 			
@@ -91,6 +95,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 					else
 					{
 						bool sendToServer = false;
+						_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 						for (auto i : m_clients)
 						{
 							if (i.second->getType() != ReqTypes::ROOM_MEMBER_REQ) continue;
@@ -114,14 +119,16 @@ void Communicator::handleNewClient(tcp::socket socket) {
 									m_clients[i.first] = handler;
 								}
 							}
-
+							_clientsMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
 						}
 					}
-
 				}
 				if (request.msgCode == START_GAME) {
-					delete(m_clients[&ws]);
-					m_clients[&ws] = res.newHandler;
+					_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+						delete(m_clients[&ws]);
+						m_clients[&ws] = res.newHandler;
+					_clientsMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
+
 				}
 			}
 			else if (request.msgCode == SUBMIT_ANSWER && ws.is_open())
@@ -135,6 +142,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 					int gameId = userRequestHandler->getGame().getGameId();
 					if (this->m_handlerFactory.getGameManager().getGame(gameId)->getIsEveryoneAnswerd())
 					{
+						_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 
 						for (auto x : userRequestHandler->getGame().getPlayers())
 						{
@@ -151,9 +159,9 @@ void Communicator::handleNewClient(tcp::socket socket) {
 								}
 							}
 						}
+						_clientsMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
 					}
 				}
-
 			}
 			else if (request.msgCode == CLOSE_GAME) {
 
@@ -161,6 +169,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 				GameRequestHandler* userRequestHandler = (GameRequestHandler*)(m_clients[&ws]);
 				GameRequestHandler* otherUserRequestHandler;
 
+				_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 				for (auto x : userRequestHandler->getGame().getPlayers())
 				{
 					for (auto i : m_clients)
@@ -179,6 +188,8 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 				delete(m_clients[&ws]);
 				m_clients[&ws] = res.newHandler;
+				_clientsMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
+
 			}
 			else if (ws.is_open())
 				ws.write(net::buffer(res.msg));
@@ -191,15 +202,22 @@ void Communicator::handleNewClient(tcp::socket socket) {
 				std::cout << "Exception was catch in function clientHandler , what=" << e.what() << std::endl;
 				if (!ws.is_open()) {
 					if (m_clients[&ws]->getType() == ReqTypes::GAME_REQ) {
-						GameRequestHandler* handler = (GameRequestHandler*)(m_clients[&ws]);
-						handler->getGame().removePlayer(&handler->getUser());
+						_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+							GameRequestHandler* handler = (GameRequestHandler*)(m_clients[&ws]);
+							handler->getGame().removePlayer(&handler->getUser());
+						_clientsMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
 					}
 					else if (m_clients[&ws]->getType() == ReqTypes::ROOM_MEMBER_REQ) {
-						RoomMemberRequestHandler* handler = (RoomMemberRequestHandler*)(m_clients[&ws]);
-						handler->leaveRoom(RequestInfo());
+						_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+							RoomMemberRequestHandler* handler = (RoomMemberRequestHandler*)(m_clients[&ws]);
+							handler->leaveRoom(RequestInfo());
+						_clientsMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
+
 					} else if (m_clients[&ws]->getType() == ReqTypes::ROOM_ADMIN_REQ) {
-						RoomAdminRequestHandler* handler = (RoomAdminRequestHandler*)(m_clients[&ws]);
-						handler->closeRoom(RequestInfo());
+						_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+							RoomAdminRequestHandler* handler = (RoomAdminRequestHandler*)(m_clients[&ws]);
+							handler->closeRoom(RequestInfo());
+						_clientsMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
 					}
 				}
 				break;
