@@ -8,12 +8,13 @@ import Game from "./pages/Game/Game";
 import Create from "./pages/Create/Create";
 import Auth from "./pages/Auth/Auth";
 import Navbar from "./components/Navbar/Navbar";
+import Alert from "./components/Alert/Alert";
 import { useEffect, useState } from "react";
 
 import { ResponseCode, LoginCode, RegisterCode } from "./helpers/consts";
 
 import "./App.css"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./actions/userActions";
 
 const App = () => {
@@ -21,6 +22,8 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
+	const alert = useSelector(state => state.user.alert);
+
   useEffect(() => {
     socket.onopen = (e) => {
       window.addEventListener("beforeunload", function (e) {
@@ -44,13 +47,16 @@ const App = () => {
             dispatch(login());
           } else if(msg.status == LoginCode.loginError) {
             dispatch(logout());
+            dispatch({type: "ALERT", payload: <Alert text={"Login failed."} type="Error"/>});
             console.log("Login failed.");
           }
           break;
         case ResponseCode.signup:
           if(msg.status == RegisterCode.signupSuccess) {
-            console.log("Register succeeded!")
+            dispatch({type: "ALERT", payload: <Alert text={"Register succeeded!"} type="Success"/>});
+            window.location.reload(false);
           } else if(msg.status == RegisterCode.signupError) {
+            dispatch({type: "ALERT", payload: <Alert text={"Register failed."} type="Error"/>});
             console.log("Register failed.");
           }
           break;
@@ -71,6 +77,7 @@ const App = () => {
             dispatch({type: "CURR_ROOM", payload: msg.roomData});
           }
           else {
+            dispatch({type: "ALERT", payload: <Alert text={"Failed join room. Room is either full or already in-game."} type="Error"/>});
             navigate("/play");
           }
           break;
@@ -118,6 +125,7 @@ const App = () => {
   return (
     <div className="App">
         <Navbar/>
+        {alert}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/play" element={<Play />} />

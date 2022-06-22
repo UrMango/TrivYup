@@ -2,7 +2,8 @@ const INITIAL_STATE = {
     isLogged: false,
     data: null,
     statistics: [],
-    highscores: []
+    highscores: [],
+    alert: null
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -17,6 +18,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return { ...state, statistics: action.payload }
         case 'HIGHSCORES':
             return { ...state, highscores: action.payload }
+        case 'ALERT':
+            return { ...state, alert: action.payload }
         default:
             return state;
     }

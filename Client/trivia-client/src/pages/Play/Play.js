@@ -18,9 +18,16 @@ const Play = () => {
 	const navigate = useNavigate();
 
 	// since `todos` is an array, we can loop over it
-	const roomList = rooms.map(room => {
+	const roomList = rooms.filter(room => {
+		if(room.isActive == 1) {
+		  return false; // skip
+		}
+		return true;
+	}).map(room => {
 		return <GameBox key={room.id} username={username} gamename={room.name} maxPlayers={room.maxPlayers} gameCode={room.id} />
 	});
+
+	console.log(roomList);
 
 	useEffect(() => {
 		ws.send(ClientToServerCode.GET_ROOMS);
