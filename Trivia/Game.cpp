@@ -13,12 +13,12 @@ Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions
 
         recieveTime = time(0);
         LoggedUser* user = (*room.getAllLoggedUsers())[i];
-        m_players.insert({user, gamedata});
+        m_players.insert({ user, gamedata });
     }
 }
 
 Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
-{ 
+{
     for (auto it : m_players)
     {
         if (it.first == user)
@@ -45,21 +45,21 @@ void Game::newAvg(float newTime, LoggedUser* user)
 {
     auto it = m_players.find(user);
     if (it != m_players.end()) {
-        int numQuestions = it->second->wrongAnswerCount + it->second->correctAnswerCount; 
-            if (numQuestions == 0)
-                it->second->averangeAnswerTime = newTime;
-            else
-                it->second->averangeAnswerTime = ((1 / (float)(numQuestions + 1)) * (numQuestions)*it->second->averangeAnswerTime) + (newTime * (1 / (float)(numQuestions + 1)));
+        int numQuestions = it->second->wrongAnswerCount + it->second->correctAnswerCount;
+        if (numQuestions == 0)
+            it->second->averangeAnswerTime = newTime;
+        else
+            it->second->averangeAnswerTime = ((1 / (float)(numQuestions + 1)) * (numQuestions)*it->second->averangeAnswerTime) + (newTime * (1 / (float)(numQuestions + 1)));
 
     }
-   // printf("\n new avg %f\n", it->second->averangeAnswerTime);
+    // printf("\n new avg %f\n", it->second->averangeAnswerTime);
 }
 
-std::string Game::submitAnswer(LoggedUser* user, std::string answer) 
+std::string Game::submitAnswer(LoggedUser* user, std::string answer)
 {
     recieveTime = time(0);
     time(&recieveTime);
-    float newTime = difftime(recieveTime , user->getMsgTime());
+    float newTime = difftime(recieveTime, user->getMsgTime());
     //std::cout << "Time required = " << difftime(recieveTime, user->getMsgTime()) << " seconds";
 
     this->newAvg(newTime, user);

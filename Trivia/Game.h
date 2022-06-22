@@ -9,9 +9,9 @@
 
 struct GameData
 {
-	Question* currectQuestion;
-	unsigned int correctAnswerCount;
-	unsigned int wrongAnswerCount;
+    Question* currectQuestion;
+    unsigned int correctAnswerCount;
+    unsigned int wrongAnswerCount;
     float averangeAnswerTime;
     bool onGame;
     bool hasAnswered;
@@ -31,7 +31,7 @@ inline void to_json(nlohmann::json& j, const PlayerResults& pl)
         {"correctAnswerCount", pl.correctAnswerCount},
         {"wrongAnswerCount", pl.wrongAnswerCount},
         {"averageAnswerTime", pl.averageAnswerTime},
-        { "score", pl.score}};
+        { "score", pl.score} };
 }
 
 class Game
@@ -52,11 +52,10 @@ public:
 
 private:
     void newAvg(float newTime, LoggedUser* user);
-	std::vector<Question*> m_questions;
-	std::map<LoggedUser*, GameData*> m_players;
+    std::vector<Question*> m_questions;
+    std::map<LoggedUser*, GameData*> m_players;
     bool isFinished = false;
     bool isEveryoneAnswerd = false;
     int m_gameId;
     time_t recieveTime;
 };
-

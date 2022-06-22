@@ -77,7 +77,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 					m_clients[&ws] = res.newHandler;
 				}
 			}
-			
+
 			if (ws.is_open() && (request.msgCode == START_GAME || request.msgCode == CLOSE_ROOM))
 			{
 				if (m_clients[&ws]->getType() == ReqTypes::ROOM_ADMIN_REQ)
@@ -100,7 +100,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 								otherUserRequestHandler = (RoomMemberRequestHandler*)i.second;
 
 								if (otherUserRequestHandler->getUser().getUsername() == (userRequestHandler->getRoomOfUser()->getAllUsers())[x])
-								{								
+								{
 									if (request.msgCode == START_GAME)
 									{
 										auto handler = this->m_handlerFactory.createGameRequestHandler(otherUserRequestHandler->getUser(), *this->m_handlerFactory.getGameManager().getGame(userRequestHandler->getRoomOfUser()->getRoomData().id), this->m_handlerFactory.getGameManager());
@@ -202,7 +202,8 @@ void Communicator::handleNewClient(tcp::socket socket) {
 					else if (m_clients[&ws]->getType() == ReqTypes::ROOM_MEMBER_REQ) {
 						RoomMemberRequestHandler* handler = (RoomMemberRequestHandler*)(m_clients[&ws]);
 						handler->leaveRoom(RequestInfo());
-					} else if (m_clients[&ws]->getType() == ReqTypes::ROOM_ADMIN_REQ) {
+					}
+					else if (m_clients[&ws]->getType() == ReqTypes::ROOM_ADMIN_REQ) {
 						RoomAdminRequestHandler* handler = (RoomAdminRequestHandler*)(m_clients[&ws]);
 						handler->closeRoom(RequestInfo());
 					}
@@ -222,3 +223,4 @@ void Communicator::getCommands()
 		_exit(1);
 	}
 }
+

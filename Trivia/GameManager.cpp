@@ -23,7 +23,7 @@ Game* GameManager::getGame(int gameId)
 {
     for (auto it : this->m_games)
     {
-        if(it->getGameId() == gameId)
+        if (it->getGameId() == gameId)
             return it;
     }
     return nullptr;
@@ -40,12 +40,12 @@ void GameManager::updateStatistics(Game game)
 void GameManager::deleteGame(int gameId)
 {
     int i = 0;
-    for (auto it : this->m_games )
+    for (auto it : this->m_games)
     {
-        if (it->getGameId() == gameId) 
+        if (it->getGameId() == gameId)
         {
             updateStatistics(*it);
-            this->m_games.erase(this->m_games.begin() + i); 
+            this->m_games.erase(this->m_games.begin() + i);
             return;
         }
         i++;
