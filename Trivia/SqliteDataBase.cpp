@@ -450,13 +450,13 @@ std::vector<std::pair<std::string, int>> SqliteDataBase::getHighscores()
 
 	for (int i = 0; i < usersList.size(); i++)
 	{
-		int total = SqliteDataBase::getNumOfTotalAnswers(usersList[i].second);
+		/*int total = SqliteDataBase::getNumOfTotalAnswers(usersList[i].second);*/
 		int correct = SqliteDataBase::getNumOfCorrectAnswers(usersList[i].second);
 		int all = SqliteDataBase::getNumOfPlayerGames(usersList[i].second);
 		float averageTime = SqliteDataBase::getPlayerAverageAnswerTime(usersList[i].second);
 
 		// function: Total / (Wrong * average answer time)
-		int score = all / ((total - correct) * averageTime);
+		int score = 1000*(all / (correct / averageTime));
 
 		highscoreList.push_back(std::pair<std::string, int>(usersList[i].second, score));
 
