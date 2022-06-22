@@ -106,18 +106,19 @@ void Communicator::handleNewClient(tcp::socket socket) {
 							if (otherUserRequestHandler->getUser().getUsername() == (userRequestHandler->getRoomOfUser()->getAllUsers())[x] && (request.msgCode == START_GAME || request.msgCode == CLOSE_ROOM))
 							{
 								(*(i.first)).write(net::buffer(res.msg));
-								delete(i.second);
 
 								if (request.msgCode == START_GAME)
 								{
 									//sends to the clients in the room to start the game
 									auto handler = this->m_handlerFactory.createGameRequestHandler(otherUserRequestHandler->getUser(), *this->m_handlerFactory.getGameManager().getGame(userRequestHandler->getRoomOfUser()->getRoomData().id), this->m_handlerFactory.getGameManager());
+									delete(i.second);
 									m_clients[i.first] = handler;
 								}
 								else if (request.msgCode == CLOSE_ROOM)
 								{
 									//sends to the clients in the room to close the room because the admin closed it
 									auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+									delete(i.second);
 									m_clients[i.first] = handler;
 								}
 							}

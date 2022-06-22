@@ -7,7 +7,7 @@ Game* GameManager::createGame(Room room)
 
     for (int i = 0; i < questionList.size(); i++)
     {
-        printf("ans = %s", questionList[i].getPossibleAnswers()[0]);
+        /*printf("ans = %s", questionList[i].getPossibleAnswers()[0]);*/
         Question* question = new Question(questionList[i].getId(), questionList[i].getQuestion(), questionList[i].getPossibleAnswers()[1], questionList[i].getPossibleAnswers()[2], questionList[i].getPossibleAnswers()[3], questionList[i].getPossibleAnswers()[4]);
         questions.push_back(question);
     }
