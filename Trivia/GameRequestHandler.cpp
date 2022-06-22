@@ -3,7 +3,7 @@
 void randomShuffleOfMap(std::map<unsigned int, std::string>& Question);
 
 Game& GameRequestHandler::getGame()
-{
+	{
 	return this->m_game;
 }
 
@@ -19,7 +19,7 @@ unsigned short GameRequestHandler::getType() const
 
 bool GameRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
-	return (request.msgCode == LEAVE_GAME || request.msgCode == GET_QUESTION || request.msgCode == SUBMIT_ANSWER || request.msgCode == GET_GAME_RESULT);
+	return (request.msgCode == LEAVE_GAME || request.msgCode == GET_QUESTION || request.msgCode == SUBMIT_ANSWER || request.msgCode == GET_GAME_RESULT || request.msgCode == CLOSE_GAME);
 }
 
 RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
@@ -83,6 +83,13 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 			return result;
 			break;
 		case SUBMIT_ANSWER:
+			if (this->m_game.getPlayerData(&this->m_user)->hasAnswered)
+			{
+				ErrorResponse errorResponse("You can't answer more than once...");
+				result.msg = JsonResponsePacketSerializer::serializeErrorResponse(errorResponse);
+				result.newHandler = nullptr;
+				return result;
+			}
 			submitAnswerRequest = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(request.msg);
 			submitAnswerResponse.correctAnswer = this->m_game.submitAnswer(&this->m_user, submitAnswerRequest.answer);
 
@@ -109,12 +116,12 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 				getGameResultsResponse.results = {};
 			}
 			result.msg = JsonResponsePacketSerializer::serializeGetGameResultsResponse(getGameResultsResponse);
-			result.newHandler = this->m_handlerFacroty.createMenuRequestHandler(this->m_user);;
+			result.newHandler = nullptr;
 			return result;
 			break;
 		case CLOSE_GAME:
 			this->m_handlerFacroty.getGameManager().deleteGame(this->getGame().getGameId());
-			this->m_handlerFacroty.getGameManager().deleteGame(this->getGame().getGameId());
+			this->m_handlerFacroty.getRoomManager().deleteRoom(this->getGame().getGameId());
 			closeGameResponse.status = 1;
 			result.msg = JsonResponsePacketSerializer::serializeCloseGameResponse(closeGameResponse);
 			result.newHandler = this->m_handlerFacroty.createMenuRequestHandler(this->m_user);;

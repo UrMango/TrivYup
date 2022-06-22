@@ -53,15 +53,14 @@ unsigned short MenuRequestHandler::getType() const
 	return ReqTypes::MENU_REQ;
 }
 
-int randomId;
-bool found = false;
-
 RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
 {
 	struct RequestResult result;
 	RoomData roomD;
 	CreateRoomResponse createroomResponse;
 	CreateRoomRequest createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
+	int randomId;
+	bool found = false;
 
 	createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
 
@@ -105,7 +104,14 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& request)
 	struct RequestResult result;
 	JoinRoomResponse JoinRoomResponse;
 	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(request.msg);
-	m_roomManager.addUserInRoom(joinRoomRequest.roomid, &this->m_user);
+	RoomData* roomData = m_roomManager.addUserInRoom(joinRoomRequest.roomid, &this->m_user);
+	if (!roomData) {
+		JoinRoomResponse.status = 1;
+		JoinRoomResponse.data = RoomData();
+		result.msg = JsonResponsePacketSerializer::serializejoinRoomResponse(JoinRoomResponse);
+		result.newHandler = nullptr;
+		return result;
+	}
 	this->m_user.changeRoom(m_roomManager.getRoom(joinRoomRequest.roomid));
 	JoinRoomResponse.status = 0;
 	if (!this->m_user.getRoom())

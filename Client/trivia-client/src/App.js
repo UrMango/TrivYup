@@ -99,6 +99,10 @@ const App = () => {
           dispatch({type: "GAME_RES", payload: msg.results});
           break;
         case ResponseCode.CloseGame:
+        case ResponseCode.CloseRoom:
+        case ResponseCode.LeaveRoom:
+          dispatch({type: "QUESTION_RES", payload: {}});
+          dispatch({type: "GAME_RES", payload: []});
           navigate("/");
           break;
         default:

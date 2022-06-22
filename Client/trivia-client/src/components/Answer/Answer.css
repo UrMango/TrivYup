@@ -1,13 +1,16 @@
 
 .answer button {
-	margin-left: 15px;
-	margin-right: 15px;
-	height: calc(70% * 1vh);
-	min-width: 200px;
+	/* margin-left: 15px;
+	margin-right: 15px; */
+	/* height: calc(70% * 1vh); */
+	/* min-width: 200px; */
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	width: fit-content;
+	
+	justify-content: center;
+	/* width: fit-content; */
+	width: 100%;
+	height: 100%;
 	padding: 20px 40px 20px 40px;
 	border: 1px rgb(204, 204, 204);
 	box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px 0px;
@@ -19,7 +22,6 @@
 .answer .answer-text{
 	font-weight:700;
 	font-size: 25px;
-	letter-spacing: 5px;
 	margin-top: 5px;
 	margin-bottom: 10px;
 }

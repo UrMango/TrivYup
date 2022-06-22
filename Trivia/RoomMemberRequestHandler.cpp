@@ -40,6 +40,15 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 
 RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo& request)const
 {
+	if (!this->_roomUser)
+	{
+		struct RequestResult result;
+		result.msg = JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Can't get that now"));
+		result.newHandler = nullptr;
+
+		return result;
+	}
+
 	GetRoomStateResponse getRoomStateResponse;
 	struct RequestResult result;
 	getRoomStateResponse.status = 0;
