@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 
 import "./Answer.css";
 
-const Answer = ({text}) => {
+const Answer = ({text, color}) => {
 	const navigate = useNavigate();
 
 	const handleAnswer = e => {
@@ -16,7 +16,7 @@ const Answer = ({text}) => {
 
 	return (
 		<div className="answer">
-			<button onClick={handleAnswer} className="answer-text">{text}</button>
+			<button onClick={handleAnswer} style={{color: "white", backgroundColor: color}} className="answer-text">{text}</button>
 		</div>			
 	)
 }

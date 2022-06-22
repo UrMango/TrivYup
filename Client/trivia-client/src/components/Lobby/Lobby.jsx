@@ -10,23 +10,25 @@ import { useEffect, useState } from "react";
 import "./Lobby.css";
 
 import lobbyMusic from "../../assets/music/Lobby.mp3";
+import { useRef } from "react";
 
 const Lobby = ({id, creator, data}) => {
 	const [audio] = useState(new Audio(lobbyMusic));
 	const [mute, setMute] = useState(false);
+	const toggle = () => setMute(!mute);
 
 	const username = useSelector(state => state.user?.data?.username);
 
 	/**@type {Array} */
 	const players = useSelector(state => state.rooms?.currentRoom?.players);
 
-	const toggle = () => setMute(!mute);
-
 	const navigate = useNavigate();
+	
+	const loadingRef = useRef();
 
 	/**@type {Array} */
 	const playersList = players?.map(player => {
-		return <div className="playername"><h3>{player}</h3></div>
+		return <div key={player} className="playername"><h3>{player}</h3></div>
 	});
 
 	if(players?.length > 0 && players[0] == username) creator = true;
@@ -43,7 +45,6 @@ const Lobby = ({id, creator, data}) => {
 		if(!creator) {	
 			id = Number(id);
 			let toSend = JSON.stringify({ roomid: Number(id) });
-			console.log(":sd");
 			ws.send(ClientToServerCode.JOIN_ROOM + toSend);
 		}
 		id = Number(id);
@@ -63,12 +64,27 @@ const Lobby = ({id, creator, data}) => {
 	const handleStartGame = e => {
 		e.preventDefault();
 
+		// start - disable
+		// loadingGame - enable
+		console.log(loadingRef.current);
+		loadingRef.current.style.display = "flex";
+		loadingRef.current.style.position = "fixed";
+		loadingRef.current.style.justifyContent = "center";
+		loadingRef.current.style.alignItems = "center";
+		loadingRef.current.style.width = "100%";
+		loadingRef.current.style.height = "100vh";
+		loadingRef.current.style.color = "white";
+		loadingRef.current.style.backgroundColor = "rgb(0 0 0 / 24%)";
+		loadingRef.current.style.fontWeight = "bold";
+		loadingRef.current.style.fontSize = "20px";
+
 		ws.send(ClientToServerCode.START_GAME);
 		//send to server
 	}
 	return (
 		<>
 			{!username && <Navigate to="/auth/login"/>}
+			<div ref={loadingRef} style={{display: "none"}} className="loadingGame"><center>Starting Game...</center></div>
 			<div className="joinCode">
 				<div className="side-options">
 					<button className="muteBtn" onClick={toggle}><img src={ mute ? MutedIcon : PlayingIcon } /></button>
