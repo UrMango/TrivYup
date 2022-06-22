@@ -3,10 +3,7 @@
 
 class ErrorResponse
 {
-
 public:
 	std::string message;
-
 	ErrorResponse(std::string msg) : message(msg) {};
-
 };

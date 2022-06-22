@@ -18,12 +18,17 @@ private:
 	RequestHandlerFactory& m_handlerFactory;
 
 public:
-	Room* getRoomOfUser();
-	LoggedUser& getUser() const;
+
 	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& user);
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
-	RequestResult& closeRoom(const RequestInfo& request);
-	RequestResult& startGame(const RequestInfo& request);
+	RequestResult closeRoom(const RequestInfo& request);
+	RequestResult startGame(const RequestInfo& request);
+
+	//getters
+	Room* getRoomOfUser();
+	LoggedUser& getUser() const;
 	RequestResult getRoomState(const RequestInfo& request);
+	virtual unsigned short getType() const override;
+
 };

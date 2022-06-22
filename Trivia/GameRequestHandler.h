@@ -21,4 +21,12 @@ public:
 	~GameRequestHandler() {};
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
+	RequestResult getQuestion(const RequestInfo& request)const;
+	RequestResult leaveRoom(const RequestInfo& request)const;
+	RequestResult getRoomRes(const RequestInfo& request)const;
+	RequestResult closeGame(const RequestInfo& request);
+	RequestResult sumbitAns(const RequestInfo& request)const;
+	Game& getGame();
+	LoggedUser& getUser() const;
+	virtual unsigned short getType() const override;
 };

@@ -10,6 +10,9 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& request) const
 	return (request.msgCode == CREATE_ROOM || request.msgCode == GET_ROOMS || request.msgCode == GET_PLAYERS_IN_ROOM || request.msgCode == JOIN_ROOM || request.msgCode == GET_PERSONAL_STATS || request.msgCode == HIGH_SCORE || request.msgCode == LOG_OUT);
 }
 
+//***********************************************************************************************
+//the func return a answer for request
+//***********************************************************************************************
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request) 
 {
 	std::string msg;
@@ -48,8 +51,10 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request)
 	return result;
 }
 
-int randomId;
-bool found = false;
+unsigned short MenuRequestHandler::getType() const
+{
+	return ReqTypes::MENU_REQ;
+}
 
 RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
 {
@@ -57,6 +62,8 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
 	RoomData roomD;
 	CreateRoomResponse createroomResponse;
 	CreateRoomRequest createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
+	int randomId;
+	bool found = false;
 
 	createRoom = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(request.msg);
 
@@ -71,7 +78,6 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
 				found = true;
 		}
 	}
-
 	//put data
 	roomD.id = randomId;
 	roomD.isActive = 0;
@@ -80,7 +86,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
 	roomD.numOfQuestionsInGame = createRoom.questionCount;
 	roomD.timePerQuestion = createRoom.answerTimeout;
 	//add room
-	m_roomManager.createRoom(this->m_user, roomD);
+	m_roomManager.createRoom(&this->m_user, roomD);
 	this->m_user.changeRoom(m_roomManager.getRoom(randomId));
 	//serialize
 	createroomResponse.status = 1;
@@ -90,12 +96,24 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
 	return result;
 }
 
+LoggedUser& MenuRequestHandler::getUser() const
+{
+	return this->m_user;
+}
+
 RequestResult MenuRequestHandler::joinRoom(const RequestInfo& request)
 {
 	struct RequestResult result;
 	JoinRoomResponse JoinRoomResponse;
 	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(request.msg);
-	m_roomManager.addUserInRoom(joinRoomRequest.roomid, this->m_user);
+	RoomData* roomData = m_roomManager.addUserInRoom(joinRoomRequest.roomid, &this->m_user);
+	if (!roomData) {
+		JoinRoomResponse.status = 1;
+		JoinRoomResponse.data = RoomData();
+		result.msg = JsonResponsePacketSerializer::serializejoinRoomResponse(JoinRoomResponse);
+		result.newHandler = nullptr;
+		return result;
+	}
 	this->m_user.changeRoom(m_roomManager.getRoom(joinRoomRequest.roomid));
 	JoinRoomResponse.status = 0;
 	if (!this->m_user.getRoom())
@@ -131,7 +149,7 @@ RequestResult MenuRequestHandler::signout(const RequestInfo& request)
 	struct RequestResult result;
 	LogoutReponse logoutReponse;
 	if(this->m_user.getRoom())
-		this->m_user.getRoom()->removeUser(this->m_user);
+		this->m_user.getRoom()->removeUser(&this->m_user);
 	logoutReponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLogoutResponse(logoutReponse);
 	result.newHandler = this->m_handlerFactory.createLoginRequestHandler();

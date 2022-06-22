@@ -18,8 +18,10 @@ std::string Question::getQuestion() const
 std::map<unsigned int, std::string> Question::getPossibleAnswers() const
 {
 	std::map<unsigned int, std::string> answers;
-	for (int i = 0; i < m_possibleAnswers.size(); i++)
+	for (int i = 0; i < m_possibleAnswers.size(); i++) {
+		std::cout << m_possibleAnswers[i] << " " << i << std::endl;
 		answers.insert({ (i + 1), m_possibleAnswers[i] });
+	}
 	return answers;
 }
 

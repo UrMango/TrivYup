@@ -1,0 +1,251 @@
+.results {
+	background-color: rgb(70, 23, 143);
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	color: white;
+}
+
+.results .podiumName {
+	position: fixed;
+	top: calc(3.5rem + 20px);
+	color: black;
+	background-color: white;
+	border-radius: 5px;
+    padding: 16px 32px;
+    box-shadow:  0px 7px 20px rgb(0 0 0 / 35%);
+    word-break: break-word;
+    overflow-wrap: break-word;
+    font-weight: 700;
+    width: fit-content; 
+    max-width: 60%;
+    text-align: center;
+    letter-spacing: -0.063rem;
+    line-height: 1.25;
+    white-space: pre-wrap;
+    font-size: 4.2vmin;
+}
+
+.results .confetti {
+	opacity: 0;
+	animation-delay: 14s;
+	animation-name: opacity;
+	animation-duration: 2s;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+}
+
+@keyframes opacity {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 100;
+	}
+}
+
+.results .exitBtn{
+	position: fixed;
+	right: 20px;
+	top: calc(3.5rem + 20px);
+	
+	font-size: 2vmin;
+    height: 4.4vmin;
+    margin: 0px;
+    border: 0px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: bottom;
+    box-shadow: rgb(0 0 0 / 25%) 0px -4px inset;
+    background: rgb(19, 104, 206);
+    color: rgb(255, 255, 255);
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    min-width: 42px;
+    min-height: 42px;
+    padding: 0px 16px 4px;
+    
+}
+
+.results .users {
+	all: revert;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	justify-content: center;
+	width: 95vmin;
+	height: calc(100vh - 3.5rem); /*3.5rem - height of navbar*/
+	bottom: 0px;
+}
+
+.results .users .user {
+	all: revert;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: fit-content;
+	width: 100%;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.results .users .user .username {
+	font-size: 4.1vmin;
+	font-weight: 600;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.results .users .user #first.username {
+	font-size: 6.1vmin;
+	font-weight: 700;
+	margin-bottom: 30px;
+	animation-delay: 13s, 10s;
+    animation-name: opacity, textDance;
+	animation-duration: 2s, 1s;
+    animation-iteration-count: 1, infinite;
+	opacity: 0;
+    transform: scale(0);
+    transform-origin: center;
+    animation-timing-function: ease-in, ease-in-out;
+    animation-fill-mode: forwards;
+    animation-direction: normal, normal;
+}
+
+@keyframes textDance {
+	0% {
+	  transform: rotate(-10deg);
+	}
+	50% {
+		transform: rotate(10deg);
+	}
+	100% {
+	  transform: rotate(-10deg);
+	}
+}
+  
+
+.results .users .user .podium {
+	transform: translateY(100%);
+	height: 30px;
+	width: 100%;
+	border-radius: 0.375rem 0.375rem 0px 0px;
+	background-color: rgb(134, 76, 191);
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.results .users .user .podium .podiumContent {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.results .users .user .podium .podiumContent .score {
+	font-size: 3.6vmin;
+	font-weight: 600;
+	line-height: normal;
+}
+
+.results .users .user .podium .podiumContent .img {
+	margin-top: 20px;
+	margin-bottom: 3.6vmin;
+	height: 12.5vmin;
+}
+
+.results .users .user #first.podium {
+	z-index: 3;
+	height: 60vh;
+	font-size: 25px;
+	font-weight: 800;
+	box-shadow: rgb(0 0 0 / 50%) 0px 37px 37px 0px;
+
+	animation-delay: 10s;
+	animation-duration: 2s;
+    animation-iteration-count: 1;
+    transform-origin: center;
+    animation-name: BounceIn;
+    animation-timing-function: cubic-bezier(0, 1.3, 0.32, 1), ease-in-out;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+}
+
+@keyframes BounceIn {
+	from {
+	  transform: translateY(100%);
+	}
+  
+	80% {
+	  transform: translateY(20%);
+	}
+  
+	to {
+	  transform: translateY(0);
+	}
+}
+
+.results .users .user #second.podium {
+	height: 50vh;
+	margin-left: 20px;
+	animation-delay: 6.4s;
+	animation-duration: 1s;
+    animation-iteration-count: 1;
+    transform-origin: center;
+    animation-name: BounceIn;
+    animation-timing-function: cubic-bezier(0, 1.3, 0.32, 1), ease-in-out;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+}
+
+.results .users .user #second.username {
+	animation-delay: 7s;
+    animation-name: opacity;
+	animation-duration: 1.2s;
+    animation-iteration-count: 1;
+	opacity: 0;
+    transform-origin: center;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+}
+
+.results .users .user #third.podium {
+	height: 42vh;
+	margin-right: 20px;
+	
+	animation-delay: 2.5s;
+	animation-duration: 1s;
+    animation-iteration-count: 1;
+    transform-origin: center;
+    animation-name: BounceIn;
+    animation-timing-function: cubic-bezier(0, 1.3, 0.32, 1), ease-in-out;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+}
+
+.results .users .user #third.username {
+	animation-delay: 3s;
+	animation-name: opacity;
+	animation-duration: 1.2s;
+	animation-iteration-count: 1;
+	opacity: 0;
+	transform-origin: center;
+	animation-timing-function: ease-in;
+	animation-fill-mode: forwards;
+	animation-direction: normal;
+}
+
+.results .users .user h3 {
+	font-size: 15px;
+	font-weight: 500;
+}

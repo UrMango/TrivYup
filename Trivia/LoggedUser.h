@@ -20,7 +20,5 @@ public:
 	Room* getRoom()const;
 	void changeRoom(Room* Room);
 	void removeRoom();
-
-
 };
 

@@ -28,17 +28,18 @@ inline void to_json(nlohmann::json& j, const RoomData& rd)
 class Room
 {
 public:
-	Room(const LoggedUser user,const RoomData roomData);
-	RoomData* addUser(LoggedUser user); // adds a user to the users vector
-	void removeUser(LoggedUser user); // removes a user from the users vector
+	Room(LoggedUser* user,const RoomData roomData);
+	RoomData* addUser(LoggedUser* user); // adds a user to the users vector
+	void removeUser(LoggedUser* user); // removes a user from the users vector
 	void changeRoomState(const int state);
 
 	// getters
-	RoomData getRoomData()const;
-	unsigned int getRoomState()const;
+	RoomData getRoomData() const;
+	unsigned int getRoomState() const;
 	std::vector<std::string> getAllUsers(); // return a vector of all the users
-	std::vector<LoggedUser> getAllLoggedUsers();
+	std::vector<LoggedUser*>* getAllLoggedUsers();
 private:
 	RoomData m_metadata; // the data of the room
-	std::vector<LoggedUser> m_users; // the vector of the users in the room
+	std::vector<LoggedUser*> m_users; // the vector of the users in the room
+	std::mutex* _roomsMtx;
 };

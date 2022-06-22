@@ -8,12 +8,13 @@ import Game from "./pages/Game/Game";
 import Create from "./pages/Create/Create";
 import Auth from "./pages/Auth/Auth";
 import Navbar from "./components/Navbar/Navbar";
+import Alert from "./components/Alert/Alert";
 import { useEffect, useState } from "react";
 
 import { ResponseCode, LoginCode, RegisterCode } from "./helpers/consts";
 
 import "./App.css"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./actions/userActions";
 
 const App = () => {
@@ -21,6 +22,9 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
+  /** Alert to display from redux */
+	const alert = useSelector(state => state.user.alert);
+
   useEffect(() => {
     socket.onopen = (e) => {
       window.addEventListener("beforeunload", function (e) {
@@ -37,21 +41,21 @@ const App = () => {
     socket.onmessage = (e) => {
       
       const msg = JSON.parse(e.data);
-      console.log(msg);
       switch (msg.id) {
         case ResponseCode.login:
           if(msg.status == LoginCode.loginSuccess) {
             dispatch(login());
           } else if(msg.status == LoginCode.loginError) {
             dispatch(logout());
-            console.log("Login failed.");
+            dispatch({type: "ALERT", payload: <Alert text={"Login failed."} type="Error"/>});
           }
           break;
         case ResponseCode.signup:
           if(msg.status == RegisterCode.signupSuccess) {
-            console.log("Register succeeded!")
+            dispatch({type: "ALERT", payload: <Alert text={"Register succeeded!"} type="Success"/>});
+            window.location.reload(false);
           } else if(msg.status == RegisterCode.signupError) {
-            console.log("Register failed.");
+            dispatch({type: "ALERT", payload: <Alert text={"Register failed."} type="Error"/>});
           }
           break;
         case ResponseCode.getRooms:
@@ -71,6 +75,7 @@ const App = () => {
             dispatch({type: "CURR_ROOM", payload: msg.roomData});
           }
           else {
+            dispatch({type: "ALERT", payload: <Alert text={"Failed join room. Room is either full or already in-game."} type="Error"/>});
             navigate("/play");
           }
           break;
@@ -83,9 +88,35 @@ const App = () => {
         case ResponseCode.GetRoomState:
           dispatch({type: "CURR_ROOM", payload: msg});
           break;
-        // case "startgame":
-        //   navigate(location.pathname + "?started");
-        //   break;
+        case ResponseCode.GetQuestions:
+          dispatch({type: "QUESTION", payload: msg});
+          break;
+        case ResponseCode.StartGame:
+          dispatch({type: "GAME_BEGUN", payload: msg.status});
+            break;
+        case ResponseCode.SubmitAnswer:
+          dispatch({type: "QUESTION_RES", payload: {correct: msg.correctAnswer, status: msg.status}});
+            break;
+        case ResponseCode.EveryOneAnswered:
+          dispatch({type: "EVERYONE_ANSWERED", payload: msg.isEveryoneAnswered});
+            break;
+        case ResponseCode.GetGameResult:
+          dispatch({type: "GAME_RES", payload: msg.results});
+          break;
+        case ResponseCode.CloseGame:
+        case ResponseCode.CloseRoom:
+        case ResponseCode.LeaveRoom:
+        case ResponseCode.LeaveGame:
+          dispatch({type: "CURR_ROOM", payload: {}});
+          dispatch({type: "EVERYONE_ANSWERED", payload: false});
+          dispatch({type: "QUESTION_RES", payload: {}});
+          dispatch({type: "GAME_RES", payload: []});
+          dispatch({type: "GAME_BEGUN", payload: false});
+          navigate("/");
+          break;
+        case ResponseCode.logout:
+          dispatch(logout());
+          break;
         default:
           break;
       }
@@ -95,6 +126,7 @@ const App = () => {
   return (
     <div className="App">
         <Navbar/>
+        {alert}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/play" element={<Play />} />

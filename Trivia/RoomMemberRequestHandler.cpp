@@ -1,5 +1,15 @@
 #include "RoomMemberRequestHandler.h"
 
+Room* RoomMemberRequestHandler::getRoomOfUser()
+{
+	return this->_roomUser;
+}
+
+LoggedUser& RoomMemberRequestHandler::getUser() const
+{
+	return this->m_user;
+}
+
 RoomMemberRequestHandler::RoomMemberRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user) : _roomUser(m_user.getRoom()), m_user(m_user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory) {}
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& request) const
@@ -7,6 +17,9 @@ bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& request) con
 	return (request.msgCode == LEAVE_ROOM || request.msgCode == GET_ROOM_STATE);
 }
 
+//***********************************************************************************************
+//the func return a answer for request
+//***********************************************************************************************
 RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request)
 {
 	struct RequestResult result;
@@ -30,6 +43,15 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 
 RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo& request)const
 {
+	if (!this->_roomUser)
+	{
+		struct RequestResult result;
+		result.msg = JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Can't get that now"));
+		result.newHandler = nullptr;
+
+		return result;
+	}
+
 	GetRoomStateResponse getRoomStateResponse;
 	struct RequestResult result;
 	getRoomStateResponse.status = 0;
@@ -42,16 +64,24 @@ RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo& request)
 	return result;
 }
 
+//***********************************************************************************************
+//the func takes the user out of the room
+//***********************************************************************************************
 RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo& request) const
 {
 	LeaveRoomResponse leaveRoomResponse;
 	struct RequestResult result;
 	if (m_user.getRoom()) {
-		m_user.getRoom()->removeUser(m_user);
+		m_user.getRoom()->removeUser(&m_user);
 	}
 	this->m_user.removeRoom();
 	leaveRoomResponse.status = 1;
 	result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
-	result.newHandler = nullptr;
+	result.newHandler = this->m_handlerFactory.createMenuRequestHandler(this->m_user);
 	return result;
+}
+
+unsigned short RoomMemberRequestHandler::getType() const
+{
+	return ReqTypes::ROOM_MEMBER_REQ;
 }

@@ -1,3 +1,4 @@
+/** Response code got from server */
 const ResponseCode = {
 	error: 0,
 	login: 1,
@@ -14,6 +15,12 @@ const ResponseCode = {
 	StartGame: 12, 
 	GetRoomState: 13,
 	LeaveRoom: 14,
+	LeaveGame: 15,
+	GetQuestions: 16,
+	SubmitAnswer: 17,
+	GetGameResult: 18,
+	EveryOneAnswered: 19,
+	CloseGame: 20
 }
 
 const LoginCode = {
@@ -26,6 +33,7 @@ const RegisterCode = {
 	signupError: 1
 }
 
+/** Response codes to send to server */
 const ClientToServerCode = {
 	MT_CLIENT_LOG_IN: 200,
 	MT_CLIENT_SIGN_UP: 204,
@@ -40,7 +48,12 @@ const ClientToServerCode = {
 	CLOSE_ROOM: 213,
 	START_GAME: 214,
 	GET_ROOM_STATE: 215,
-	LEAVE_ROOM: 216
+	LEAVE_ROOM: 216,
+	LEAVE_GAME: 217,
+	GET_QUESTION: 218,
+	SUBMIT_ANSWER: 219,
+	GET_GAME_RESULT: 220,
+	CLOSE_GAME: 221
 }
 
 export {

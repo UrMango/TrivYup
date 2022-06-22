@@ -2,9 +2,7 @@
 
 
 LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory, LoginManager& loginManager) : m_handlerRequest(handlerFactory), m_loginManager(loginManager)
-{
-	
-}
+{}
 
 LoginRequestHandler::~LoginRequestHandler(){}
 
@@ -34,6 +32,17 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request)
 	{
 		return signUp(request);
 	}
+}
+
+LoggedUser& LoginRequestHandler::getUser() const
+{
+	LoggedUser temp = LoggedUser("");
+	return temp;
+}
+
+unsigned short LoginRequestHandler::getType() const
+{
+	return ReqTypes::LOGIN_REQ;
 }
 
 RequestResult LoginRequestHandler::signUp(const RequestInfo request)const

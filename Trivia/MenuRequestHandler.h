@@ -21,6 +21,8 @@ private:
 	IDatabase& m_database;
 	RoomManager& m_roomManager;
 	unsigned int _roomID;
+
+	//funcs
 	RequestResult signout(const RequestInfo& request);
 	RequestResult getRooms(const RequestInfo& request);
 	RequestResult getPlayersInRoom(const RequestInfo& request);
@@ -29,6 +31,8 @@ private:
 	RequestResult joinRoom(const RequestInfo& request);
 	RequestResult createRoom(const RequestInfo& request);
 
+	//getter
+	LoggedUser& getUser() const;
 
 public:
 	MenuRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user);
@@ -36,5 +40,5 @@ public:
 
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
-
+	virtual unsigned short getType() const override;
 };

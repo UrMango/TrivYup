@@ -7,7 +7,7 @@ std::string LoggedUser::getUsername()
 
 time_t LoggedUser::getMsgTime()
 {
-    return time_t();
+    return msgTime;
 }
 
 void LoggedUser::setMsgTime(time_t time)

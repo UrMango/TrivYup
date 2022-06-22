@@ -1,27 +1,53 @@
 import ws from "../../services/websocket";
 import { ClientToServerCode } from "../../helpers/consts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Alert from "../../components/Alert/Alert";
 
 import "./Create.css";
 
 const Create = () => {
 	const username = useSelector(state => state.user?.data?.username);
 	const [roomName, setRoomName] = useState("");
-	const [maxUsers, setMaxUsers] = useState(0);
-	const [questionCount, setQuestionCount] = useState(0);
-	const [answerTimeout, setAnswerTimeout] = useState(0);
+	const [maxUsers, setMaxUsers] = useState("");
+	const [questionCount, setQuestionCount] = useState("");
+	const [answerTimeout, setAnswerTimeout] = useState("");
 
+	const dispatch = useDispatch();
+
+	/**
+	 * Function for handling create game button click
+	 * @param {Event} e 
+	 * @returns 
+	 */
 	const handleCreateGame = (e) => {
 		e.preventDefault();
+
+		if(maxUsers.length == 0 || questionCount.length == 0 || answerTimeout.length == 0) {
+			dispatch({type: "ALERT", payload: <Alert text={"Fill all the inputs."} type="Error"/>});
+			return;
+		}
+
 		setMaxUsers(Number(maxUsers));
 		setQuestionCount(Number(questionCount));
 		setAnswerTimeout(Number(answerTimeout));
+		
+		if(maxUsers <= 0 || maxUsers != Math.trunc(maxUsers)) {
+			dispatch({type: "ALERT", payload: <Alert text={"Max users should be a number bigger than 0"} type="Error"/>});
+			return;
+		}
+		if(questionCount <= 0 || questionCount != Math.trunc(questionCount)) {
+			dispatch({type: "ALERT", payload: <Alert text={"Question count should be a number bigger than 0"} type="Error"/>});
+			return;
+		}
+		if(answerTimeout <= 0 || answerTimeout != Math.trunc(answerTimeout)) {
+			dispatch({type: "ALERT", payload: <Alert text={"Answer timeout should be a number bigger than 0"} type="Error"/>});
+			return;
+		}
 
 		const toSend = {roomName, maxUsers, questionCount, answerTimeout};
 		let toSendString = JSON.stringify(toSend);
-		console.log(toSendString);
 		ws.send(ClientToServerCode.CREATE_ROOM + toSendString);
 	}
 
