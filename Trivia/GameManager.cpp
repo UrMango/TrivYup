@@ -16,8 +16,8 @@ Game* GameManager::createGame(Room room)
     Game* game = new Game(room, questions);
     _gamesMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
         this->m_games.push_back(game);
-        return this->m_games[this->m_games.size() - 1];
     _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+    return this->m_games[this->m_games.size() - 1];
 }
 
 Game* GameManager::getGame(int gameId)

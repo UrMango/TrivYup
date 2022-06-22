@@ -51,7 +51,7 @@ RoomData Room::getRoomData()const
 	return m_metadata;
 }
 
-
+ 
 void Room::changeRoomState(const int state)
 {
 	this->m_metadata.isActive = state;
@@ -59,7 +59,5 @@ void Room::changeRoomState(const int state)
 
 std::vector<LoggedUser*>* Room::getAllLoggedUsers()
 {
-	_roomsMtx->lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 		return &this->m_users;
-	_roomsMtx->unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked=
 }
