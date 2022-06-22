@@ -18,6 +18,8 @@ const randomAnswers = {
 		"Nice!! Very good job",
 		"You're smart :)",
 		"Your'e welcomed to the cooler people group",
+		"WOW MAN!! You're so good!",
+		"No way you did it!",
 	],
 	incorrect: [
 		"No one said it would be easy 😉",
@@ -27,6 +29,12 @@ const randomAnswers = {
 		"Think next time.",
 		"You were right by being wrong.",
 		"Yes. You were just wrong",
+		"Don't answer next time...",
+		"Get out of here!",
+		"Jokes aside, you are just bad.",
+		"Even a 3 years old would have known the answer 👶",
+		"You didn't even try...",
+		"😐",
 	]
 }
 
@@ -113,7 +121,7 @@ const Quiz = () => {
 				ws.send(ClientToServerCode.GET_QUESTION);
 			}
 			dispatch({type: "QUESTION", payload: {}});
-		}, 5000);
+		}, 6000);
 	}
 
 	useEffect(() => {
