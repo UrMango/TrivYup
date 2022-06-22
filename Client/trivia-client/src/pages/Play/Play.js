@@ -27,8 +27,6 @@ const Play = () => {
 		return <GameBox key={room.id} username={username} gamename={room.name} maxPlayers={room.maxPlayers} gameCode={room.id} />
 	});
 
-	console.log(roomList);
-
 	useEffect(() => {
 		ws.send(ClientToServerCode.GET_ROOMS);
 	}, []);
@@ -40,15 +38,11 @@ const Play = () => {
 	 */
 	const handleJoinGame = e => {
 		e.preventDefault();
-		// console.log(e);
 		if(e.target.id.length > 0) {
-			console.log("Game code is: " + e.target.id);
-
 			navigate("/play/" + e.target.id);
 			return;
 		}
 		
-		console.log("Game code is: " + gamepin);
 		navigate("/play/" + gamepin);
 	}
 	
