@@ -36,12 +36,10 @@ Game* GameManager::getGame(int gameId)
 
 void GameManager::updateStatistics(Game game)
 {
-    _gamesMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
-        for (auto it : game.getPlayers())
-        {
-            this->m_database->updateStatistics(it.first->getUsername(), *it.second);
-        }
-    _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+    for (auto it : game.getPlayers())
+    {
+        this->m_database->updateStatistics(it.first->getUsername(), *it.second);
+    }
 }
 
 void GameManager::deleteGame(int gameId)

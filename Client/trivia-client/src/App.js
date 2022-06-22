@@ -101,6 +101,7 @@ const App = () => {
         case ResponseCode.CloseGame:
         case ResponseCode.CloseRoom:
         case ResponseCode.LeaveRoom:
+        case ResponseCode.LeaveGame:
           dispatch({type: "CURR_ROOM", payload: {}});
           dispatch({type: "EVERYONE_ANSWERED", payload: false});
           dispatch({type: "QUESTION_RES", payload: {}});

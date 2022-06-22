@@ -10,14 +10,16 @@
 
 .results .podiumName {
 	position: fixed;
-	top: 10px;
+	top: calc(3.5rem + 20px);
+	color: black;
 	background-color: white;
+	border-radius: 5px;
     padding: 16px 32px;
-    box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px;
+    box-shadow:  0px 7px 20px rgb(0 0 0 / 35%);
     word-break: break-word;
     overflow-wrap: break-word;
     font-weight: 700;
-    width: fit-content;
+    width: fit-content; 
     max-width: 60%;
     text-align: center;
     letter-spacing: -0.063rem;

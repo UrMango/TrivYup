@@ -50,20 +50,20 @@ std::vector<string> RoomManager::getAllUsersInRoom(const int ID)
 }
 RoomData* RoomManager::addUserInRoom(const int ID, LoggedUser* user)
 {
-    _roomsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+    //_roomsMtx.lock(); //if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
         for (auto& it : m_rooms) {
             if (it.first == ID && it.second.getAllUsers().size() < it.second.getRoomData().maxPlayers) {
                 std::vector<std::string> users = it.second.getAllUsers();
                 for (auto& it2 : users) {
                     if (it2 == user->getUsername())
-                        _roomsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+                        //_roomsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
                         return nullptr;
                 }
-                _roomsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+                //_roomsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
                 return it.second.addUser(user);
             }
         }
-    _roomsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+    //_roomsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
     return nullptr;
 }
 
@@ -82,14 +82,12 @@ void RoomManager::removeUserInRoom(const int ID, LoggedUser* user)
 std::vector<RoomData> RoomManager::getRooms()
 {
     std::vector<RoomData> rooms;
-    _roomsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
-        for (auto& it : m_rooms) {
-            if ((it.second.getAllUsers().size() > 0) || (it.second.getRoomState() != 0))
-            {
-                rooms.push_back(it.second.getRoomData());
-            }
+    for (auto& it : m_rooms) {
+        if ((it.second.getAllUsers().size() > 0) || (it.second.getRoomState() != 0))
+        {
+            rooms.push_back(it.second.getRoomData());
         }
-    _roomsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+    }
     return rooms;
 }
 

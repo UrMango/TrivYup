@@ -36,13 +36,6 @@ const Lobby = ({id, creator, data}) => {
 	playersList?.splice(0, 1);
 
 	useEffect(() => {
-		audio.volume = 0.2;
-		if(mute) audio.pause();
-		else {
-			audio.loop = true;
-			audio.play();
-		}
-		
 		if(!creator) {	
 			id = Number(id);
 			let toSend = JSON.stringify({ roomid: Number(id) });
@@ -57,11 +50,23 @@ const Lobby = ({id, creator, data}) => {
 		}, 2500);
 
 		return () => {
-            audio.pause();
 			clearInterval(getPlayers);
 
 			ws.send(ClientToServerCode.CLOSE_ROOM);
 			ws.send(ClientToServerCode.LEAVE_ROOM);
+        }
+	}, []);
+	
+	useEffect(() => {
+		audio.volume = 0.2;
+		if(mute) audio.pause();
+		else {
+			audio.loop = true;
+			audio.play();
+		}
+
+		return () => {
+            audio.pause();
         }
 	}, [mute]);
 
