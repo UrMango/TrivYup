@@ -75,7 +75,7 @@ const App = () => {
             dispatch({type: "CURR_ROOM", payload: msg.roomData});
           }
           else {
-            dispatch({type: "ALERT", payload: <Alert text={"Failed join room. Room is either full or already in-game."} type="Error"/>});
+            // dispatch({type: "ALERT", payload: <Alert text={"Failed join room. Room is either full or already in-game."} type="Error"/>});
             navigate("/play");
           }
           break;

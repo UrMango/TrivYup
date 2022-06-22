@@ -238,25 +238,23 @@ void Communicator::handleNewClient(tcp::socket socket) {
 						_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 							GameRequestHandler* handler = (GameRequestHandler*)(m_clients[&ws]);
 							handler->getGame().removePlayer(&handler->getUser());
-							delete(m_clients[&ws]);
 						_clientsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 					}
 					else if (m_clients[&ws]->getType() == ReqTypes::ROOM_MEMBER_REQ) {
 						_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 							RoomMemberRequestHandler* handler = (RoomMemberRequestHandler*)(m_clients[&ws]);
 							handler->leaveRoom(RequestInfo());
-							delete(m_clients[&ws]);
 						_clientsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 					}
 					else if (m_clients[&ws]->getType() == ReqTypes::ROOM_ADMIN_REQ) {
 						_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 							RoomAdminRequestHandler* handler = (RoomAdminRequestHandler*)(m_clients[&ws]);
 							handler->closeRoom(RequestInfo());
-							delete(m_clients[&ws]);
 						_clientsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 					}
 				}
 				break;
+				delete(m_clients[&ws]);
 			}
 		}
 		catch (...) {
