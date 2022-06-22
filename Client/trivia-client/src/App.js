@@ -101,8 +101,11 @@ const App = () => {
         case ResponseCode.CloseGame:
         case ResponseCode.CloseRoom:
         case ResponseCode.LeaveRoom:
+          dispatch({type: "CURR_ROOM", payload: {}});
+          dispatch({type: "EVERYONE_ANSWERED", payload: false});
           dispatch({type: "QUESTION_RES", payload: {}});
           dispatch({type: "GAME_RES", payload: []});
+          dispatch({type: "GAME_BEGUN", payload: false});
           navigate("/");
           break;
         default:
