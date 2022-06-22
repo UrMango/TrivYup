@@ -479,7 +479,7 @@ std::vector<std::pair<std::string, int>> SqliteDataBase::getHighscores()
 	}
 
 	std::sort(highscoreList.begin(), highscoreList.end(), [](auto& left, auto& right) {
-		return left.second < right.second;
+		return left.second > right.second;
 	});
 
 	return highscoreList;
