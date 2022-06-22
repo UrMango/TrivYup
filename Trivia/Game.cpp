@@ -17,6 +17,7 @@ Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions
 
 Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
 { 
+    _playersMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
     for (auto it : m_players)
     {
         if (it.first == user)
@@ -30,12 +31,17 @@ Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
             return it.second->currectQuestion;
         }
     }
+    _playersMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
+
     return nullptr;
 }
 
 std::map<LoggedUser*, GameData*> Game::getPlayers()
 {
-    return this->m_players;
+    _playersMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+        return this->m_players;
+    _playersMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
+
 }
 
 void Game::newAvg(float newTime, LoggedUser* user)
@@ -71,14 +77,18 @@ std::string Game::submitAnswer(LoggedUser* user, std::string answer)
     }
 
     bool everyoneAnswerd = true;
-    for (auto pl : m_players)
-    {
-        if (pl.second->correctAnswerCount + pl.second->wrongAnswerCount < it->second->correctAnswerCount + it->second->wrongAnswerCount)
+
+    _playersMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+        for (auto pl : m_players)
         {
-            everyoneAnswerd = false;
-            break;
+            if (pl.second->correctAnswerCount + pl.second->wrongAnswerCount < it->second->correctAnswerCount + it->second->wrongAnswerCount)
+            {
+                everyoneAnswerd = false;
+                break;
+            }
         }
-    }
+    _playersMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
+
     this->isEveryoneAnswerd = everyoneAnswerd;
     if (this->isEveryoneAnswerd && it->second->correctAnswerCount + it->second->wrongAnswerCount == this->m_questions.size()) { this->isFinished = true; }
     return it->second->currectQuestion->getCorrectAnswer();
@@ -86,14 +96,16 @@ std::string Game::submitAnswer(LoggedUser* user, std::string answer)
 
 void Game::removePlayer(LoggedUser* users)
 {
-    for (auto it : m_players)
-    {
-        if (it.first == users)
+    _playersMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+        for (auto it : m_players)
         {
-            it.second->onGame = false;
-            break;
+            if (it.first == users)
+            {
+                it.second->onGame = false;
+                break;
+            }
         }
-    }
+    _playersMtx.unlock();//if mtx locked: this thread unlocks it! if mtx unlocked: this thread waits until it is locked
 }
 
 bool Game::getIsFinished()
@@ -119,6 +131,7 @@ bool compareByScore(const PlayerResults& a, const PlayerResults& b)
 std::vector<PlayerResults> Game::getAllPlayerResults()
 {
     std::vector<PlayerResults> results;
+
     for (auto it : m_players)
     {
         PlayerResults playerResults;
