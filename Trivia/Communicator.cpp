@@ -197,7 +197,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 							for (auto i : m_clients)
 							{	
 								
-								if (!i.first->is_open()) continue;
+								if (!i.first) continue;
 
 								//cheks if the player in game handel
 								if (i.second->getType() != ReqTypes::GAME_REQ) continue;
