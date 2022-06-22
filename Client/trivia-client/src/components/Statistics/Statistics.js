@@ -19,7 +19,7 @@ const Statistics = () => {
 		<div className="statistics">
 			<h4 className="title"><img className="icon" src={GraphIcon}/>Personal Statistics</h4>
 			{statistics ? <>
-			<h6 className="statistic">Average answer time: {Number(statistics[0])} secs</h6>
+			<h6 className="statistic">Average answer time: {Number(statistics[0]).toFixed(2)} secs</h6>
 			<h6 className="statistic">Correct answers: {Number(statistics[1])}</h6>
 			<h6 className="statistic">Total answers: {Number(statistics[2])}</h6>
 			<h6 className="statistic">Games played: {Number(statistics[3])}</h6>
