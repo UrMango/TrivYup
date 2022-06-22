@@ -22,11 +22,14 @@ public:
 	RequestHandlerFactory(IDatabase* database);
 	~RequestHandlerFactory() {};
 
+	//create handels
 	LoginRequestHandler* createLoginRequestHandler()const;
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser& m_user)const;
 	RoomAdminRequestHandler* createRoomAdminRequestHandler(LoggedUser& m_user, Room& room)const;
 	RoomMemberRequestHandler* createRoomMemberRequestHandler(LoggedUser& m_user, Room& room) const;
 	GameRequestHandler* createGameRequestHandler(LoggedUser& user, Game& game, GameManager& gameManage) const;
+
+	//getters
 	LoginManager& getLoginManager() const;
 	StatisticsManager& getStatisticsManager() const;
 	IDatabase& getIDatabase() const;

@@ -18,6 +18,7 @@ public:
 
 	virtual bool isRequestRelevant(const RequestInfo& request) const override;
 	virtual RequestResult handleRequest(const RequestInfo& request) override;
+	//getters
 	LoggedUser& getUser() const;
 	virtual unsigned short getType() const override;
 

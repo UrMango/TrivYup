@@ -16,7 +16,6 @@
 #include "IRequestHandler.h"
 #include "Communicator.h"
 
-
 namespace beast = boost::beast;
 namespace http = beast::http;
 namespace websocket = beast::websocket;
@@ -31,11 +30,9 @@ public:
 
 private:
 	void run();
-
 	IDatabase* m_database;
 	Communicator* m_communicator;
 	RequestHandlerFactory* m_handlerFactory;
 	time_t _time; 
-
 };
 

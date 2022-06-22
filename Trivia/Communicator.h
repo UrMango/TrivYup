@@ -17,7 +17,6 @@
 #include "RequestHandlerFactory.h"
 #include "RoomAdminRequestHandler.h"
 
-
 namespace beast = boost::beast;
 namespace http = beast::http;
 namespace websocket = beast::websocket;
@@ -32,9 +31,13 @@ public:
 	~Communicator();
 
 private:
+	//getters
 	void getCommands();
+
+	//funcs
 	void handleNewClient(tcp::socket socket);
 	std::map<websocket::stream<tcp::socket>*, IRequestHandler*> m_clients;
+
 	RequestHandlerFactory& m_handlerFactory;
 	IDatabase& m_database;
 	time_t _time;

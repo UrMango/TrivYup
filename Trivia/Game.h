@@ -40,8 +40,10 @@ public:
     Game() {};
     Game(Room& room, std::vector<Question*> questions);
     std::string submitAnswer(LoggedUser* user, std::string answer);
-    GameData* getPlayerData(LoggedUser* user);
     void removePlayer(LoggedUser* users);
+
+    //getters
+    GameData* getPlayerData(LoggedUser* user);
     int getGameId() const;
     std::map<LoggedUser*, GameData*> getPlayers();
     Question* getQuestionForUser(LoggedUser* user, time_t time);
@@ -52,11 +54,11 @@ public:
 
 private:
     void newAvg(float newTime, LoggedUser* user);
+
     std::vector<Question*> m_questions;
     std::map<LoggedUser*, GameData*> m_players;
     bool isFinished = false;
     bool isEveryoneAnswerd = false;
     int m_gameId;
     time_t recieveTime;
-    //std::mutex* _playersMtx;
 };

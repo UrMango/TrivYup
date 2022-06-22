@@ -21,6 +21,8 @@ private:
 	IDatabase& m_database;
 	RoomManager& m_roomManager;
 	unsigned int _roomID;
+
+	//funcs
 	RequestResult signout(const RequestInfo& request);
 	RequestResult getRooms(const RequestInfo& request);
 	RequestResult getPlayersInRoom(const RequestInfo& request);
@@ -28,6 +30,8 @@ private:
 	RequestResult getHighScore(const RequestInfo& request);
 	RequestResult joinRoom(const RequestInfo& request);
 	RequestResult createRoom(const RequestInfo& request);
+
+	//getter
 	LoggedUser& getUser() const;
 
 

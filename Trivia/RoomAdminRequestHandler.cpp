@@ -1,8 +1,7 @@
 #include "RoomAdminRequestHandler.h"
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& user) : _roomUser(user.getRoom()), m_user(user), m_roomManager(handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory)
-{
-}
+{}
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& request) const
 {
