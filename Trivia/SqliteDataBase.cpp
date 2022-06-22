@@ -209,13 +209,22 @@ SqliteDataBase::~SqliteDataBase()
 	delete this->errMessage;
 }
 
+
+
 bool SqliteDataBase::doesUserExist(std::string username)
 {
 	int res;
 
 	std::string* query = new string();
 	*query = "SELECT * FROM USERS WHERE USERNAME = '" + username + "';";
-	res = sqlite3_exec(db, (*query).c_str(), countSelectCallback, nullptr, &errMessage);
+
+	try{
+		res = sqlite3_exec(db, (*query).c_str(), countSelectCallback, nullptr, &errMessage);
+	}
+	catch (...){
+		std::cout << "Catch an error" << '\n';
+	}
+
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
@@ -235,7 +244,14 @@ bool SqliteDataBase::doesPasswordMatch(std::string username, std::string pword)
 
 	std::string* query = new string();
 	*query = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + pword + "';";
-	res = sqlite3_exec(db, (*query).c_str(), countSelectCallback, nullptr, &errMessage);
+
+	try {
+		res = sqlite3_exec(db, (*query).c_str(), countSelectCallback, nullptr, &errMessage);
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
+
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
@@ -257,7 +273,12 @@ void SqliteDataBase::addNewUser(std::string username, std::string pword, std::st
 	std::string* query = new string();
 	*query = "INSERT INTO USERS (username, password, email) VALUES ('" + username + "', '" + pword + "', '" + email + "');";
 	_dataBasetx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+	try {
 		res = sqlite3_exec(db, (*query).c_str(), nullptr, nullptr, &errMessage);
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
 	_dataBasetx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 	if (res != SQLITE_OK)
 	{
@@ -266,7 +287,12 @@ void SqliteDataBase::addNewUser(std::string username, std::string pword, std::st
 	
 	*query = "INSERT INTO STATISTICS (userid, averageanswertime, numberofgamesplayed, numofcorrectanswers, numofanswers) VALUES(" + std::to_string(getUserId(username)) + ", 0.0, 0, 0, 0);";
 	_dataBasetx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+	try {
 		res = sqlite3_exec(db, (*query).c_str(), nullptr, nullptr, &errMessage);
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
 	_dataBasetx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 	if (res != SQLITE_OK)
 	{
@@ -280,7 +306,13 @@ int SqliteDataBase::getUserId(std::string username)
 
 	std::string* query = new string();
 	*query = "SELECT id from USERS WHERE username == '" + username + "';";
-	res = sqlite3_exec(db, (*query).c_str(), getID, &this->numReturn, &errMessage);
+	try {
+		res = sqlite3_exec(db, (*query).c_str(), getID, &this->numReturn, &errMessage);
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
+
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
@@ -320,7 +352,13 @@ std::vector<Question> SqliteDataBase::getQuestions(int numQuestions)
 		std::string* query = new string();
 		*query = "SELECT * FROM QUESTIONS WHERE id = " + std::to_string(randomId) + ";";
 
-		res = sqlite3_exec(db, (*query).c_str(), getQuestionCallback, &this->question, &errMessage);
+		try {
+			res = sqlite3_exec(db, (*query).c_str(), getQuestionCallback, &this->question, &errMessage);
+		}
+		catch (...) {
+			std::cout << "Catch an error" << '\n';
+		}
+
 		if (res != SQLITE_OK)
 		{
 			std::cout << errMessage << std::endl;
@@ -345,7 +383,12 @@ void SqliteDataBase::updateStatistics(std::string username, GameData playerGameD
 
 	*query2 = "UPDATE STATISTICS SET averageanswertime = " + std::to_string(averageAnswerTime) + ", numberofgamesplayed = " + std::to_string(numberOfGamesPlayed) + ", numofcorrectanswers = " + std::to_string(numberOfCorrectAnswer) + ", numofanswers = " + std::to_string(numberOfAnswers) + " WHERE userid = " + std::to_string(getUserId(username)) + ";";
 	_dataBasetx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+	try {
 		res = sqlite3_exec(db, (*query2).c_str(), nullptr, nullptr, &errMessage);
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
 	_dataBasetx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 
 	if (res != SQLITE_OK)
@@ -362,7 +405,12 @@ float SqliteDataBase::getPlayerAverageAnswerTime(std::string username)
 	std::string* query = new string();
 	*query = "SELECT AVERAGEANSWERTIME from STATISTICS WHERE userid = ";
 	*query += std::to_string(id) + ";";
-	res = sqlite3_exec(db, (*query).c_str(), getAverageAnswerTime, &this->floatReturn, &errMessage);
+	try {
+		res = sqlite3_exec(db, (*query).c_str(), getAverageAnswerTime, &this->floatReturn, &errMessage);
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
@@ -380,7 +428,12 @@ int SqliteDataBase::getNumOfCorrectAnswers(std::string username)
 	std::string* query = new string();
 	*query = "SELECT NUMOFCORRECTANSWERS from STATISTICS WHERE userid = ";
 	*query += std::to_string(id) + ";";
-	res = sqlite3_exec(db, (*query).c_str(), getNumOfCorrectAnswersCallback, &this->numReturn, &errMessage);
+	try {
+		res = sqlite3_exec(db, (*query).c_str(), getNumOfCorrectAnswersCallback, &this->numReturn, &errMessage);
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
@@ -396,7 +449,12 @@ int SqliteDataBase::getNumOfTotalAnswers(std::string username)
 
 	std::string* query = new string();
 	*query = "SELECT NUMOFANSWERS FROM STATISTICS WHERE userid = " + std::to_string(id) + ";";
-	res = sqlite3_exec(db, (*query).c_str(), getNumOfTotalAnswersCallback, &this->numReturn, &errMessage);
+	try {
+		res = sqlite3_exec(db, (*query).c_str(), getNumOfTotalAnswersCallback, &this->numReturn, &errMessage);
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
@@ -414,7 +472,12 @@ int SqliteDataBase::getNumOfPlayerGames(std::string username)
 	std::string* query = new string();
 	*query = "SELECT NUMBEROFGAMESPLAYED from STATISTICS WHERE userid = ";
 	*query += std::to_string(id) + ";";
-	res = sqlite3_exec(db, (*query).c_str(), getNumOfPlayerGamesCallback, &this->numReturn, &errMessage);
+	try {
+		res = sqlite3_exec(db, (*query).c_str(), getNumOfPlayerGamesCallback, &this->numReturn, &errMessage);
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
@@ -431,19 +494,31 @@ std::vector<std::pair<std::string, int>> SqliteDataBase::getHighscores()
 
 	std::string* query = new string();
 	*query = "SELECT * from USERS;";
-	int res = sqlite3_exec(db, (*query).c_str(), getUsersList, &usersList, &errMessage);
+	int res;
+	try {
+		res = sqlite3_exec(db, (*query).c_str(), getUsersList, &usersList, &errMessage);
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
 	if (res != SQLITE_OK)
 	{
 		std::cout << errMessage << std::endl;
 		return std::vector<std::pair<std::string, int>>();
 	}
 
+	int score;
 	for (int i = 0; i < usersList.size(); i++)
 	{
 		int correct = SqliteDataBase::getNumOfCorrectAnswers(usersList[i].second);
 		int all = SqliteDataBase::getNumOfPlayerGames(usersList[i].second);
 		float averageTime = SqliteDataBase::getPlayerAverageAnswerTime(usersList[i].second);
-		int score = 1000*(all / (correct / averageTime));
+		try {
+			score = 1000 * (all / (correct / averageTime));
+		}
+		catch (...) {
+			std::cout << "Catch an error" << '\n';
+		}
 		highscoreList.push_back(std::pair<std::string, int>(usersList[i].second, score));
 	}
 

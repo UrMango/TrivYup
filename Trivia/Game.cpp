@@ -166,7 +166,12 @@ std::vector<PlayerResults> Game::getAllPlayerResults()
         playerResults.correctAnswerCount = it.second->correctAnswerCount;
         playerResults.username = it.first->getUsername();
         playerResults.wrongAnswerCount = it.second->wrongAnswerCount;
-        playerResults.score = 1000 * ((it.second->correctAnswerCount) / (it.second->averangeAnswerTime));
+        try {
+            playerResults.score = 1000 * ((it.second->correctAnswerCount) / (it.second->averangeAnswerTime));
+        }
+        catch (...) {
+            std::cout << "Catch an error" << '\n';
+        }
         results.push_back(playerResults);
     }
     std::sort(results.begin(), results.end(), compareByScore);

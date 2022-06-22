@@ -1,5 +1,6 @@
 #pragma once
 #include "IDatabase.h"
+#include <exception>
 
 class SqliteDataBase : public IDatabase
 {

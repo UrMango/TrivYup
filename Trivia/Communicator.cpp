@@ -14,18 +14,23 @@ void Communicator::startHandleRequests()
 	auto const address = net::ip::make_address("127.0.0.1");
 	auto const port = static_cast<unsigned short>(std::atoi("8083"));
 
-	net::io_context ioc{ 1 };
-	tcp::acceptor acceptor{ ioc, {address, port} };
+	try {
+		net::io_context ioc{ 1 };
+		tcp::acceptor acceptor{ ioc, {address, port} };
 
-	///if the user enter exit </summary>
-	std::thread commands(&Communicator::getCommands, this);
+		///if the user enter exit </summary>
+		std::thread commands(&Communicator::getCommands, this);
 
-	//accept clients
-	while (true)
-	{
-		tcp::socket socket{ ioc };
-		acceptor.accept(socket);
-		std::thread(&Communicator::handleNewClient, this, std::move(socket)).detach();
+		//accept clients
+		while (true)
+		{
+			tcp::socket socket{ ioc };
+			acceptor.accept(socket);
+			std::thread(&Communicator::handleNewClient, this, std::move(socket)).detach();
+		}
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
 	}
 }
 
@@ -35,7 +40,12 @@ void Communicator::handleNewClient(tcp::socket socket) {
 	// socket will be const - mutable should be used
 	websocket::stream<tcp::socket> ws{ std::move(const_cast<tcp::socket&>(socket)) };
 	// Accept the websocket handshake
-	ws.accept();
+	try {
+		ws.accept();
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
 
 	std::cout << "Connection succesfuly made!" << std::endl;
 
@@ -46,7 +56,12 @@ void Communicator::handleNewClient(tcp::socket socket) {
 	beast::flat_buffer buffer;
 
 	//msg to client
-	ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
+	try {
+		ws.write(net::buffer(JsonResponsePacketSerializer::serializeErrorResponse(ErrorResponse("Error: you are a noob"))));
+	}
+	catch (...) {
+		std::cout << "Catch an error" << '\n';
+	}
 	ctime(&_time);
 	while (true)
 	{
