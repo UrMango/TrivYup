@@ -80,7 +80,15 @@ const Quiz = () => {
 			setTimer(prev => prev - 1);
 		}, 1000);
 
-		return () => clearInterval(interval);
+		return () => {
+			clearInterval(interval);
+
+			if(username == roomData.players[0]) {
+				ws.send(ClientToServerCode.CLOSE_GAME);
+			} else {
+				ws.send(ClientToServerCode.LEAVE_GAME);
+			}
+		}
 	}, []);
 	
 	useEffect(() => {

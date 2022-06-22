@@ -72,7 +72,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 			if (res.newHandler != nullptr)
 			{
-				if (request.msgCode != START_GAME && request.msgCode != CLOSE_GAME) {
+				if (request.msgCode != START_GAME && request.msgCode != CLOSE_ROOM && request.msgCode != CLOSE_GAME) {
 					delete(m_clients[&ws]);
 					m_clients[&ws] = res.newHandler;
 				}
@@ -80,48 +80,50 @@ void Communicator::handleNewClient(tcp::socket socket) {
 			
 			if (ws.is_open() && (request.msgCode == START_GAME || request.msgCode == CLOSE_ROOM))
 			{
-				RoomAdminRequestHandler* userRequestHandler = (RoomAdminRequestHandler*)(m_clients[&ws]);
-				RoomMemberRequestHandler* otherUserRequestHandler;
-				for (int x = 0; x < userRequestHandler->getRoomOfUser()->getAllUsers().size(); x++)
+				if (m_clients[&ws]->getType() == ReqTypes::ROOM_ADMIN_REQ)
 				{
-					if (x == 0) //admin
+					RoomAdminRequestHandler* userRequestHandler = (RoomAdminRequestHandler*)(m_clients[&ws]);
+					RoomMemberRequestHandler* otherUserRequestHandler;
+					for (int x = 0; x < userRequestHandler->getRoomOfUser()->getAllUsers().size(); x++)
 					{
-						ws.write(net::buffer(res.msg));
-					}
-					else
-					{
-						bool sendToServer = false;
-						for (auto i : m_clients)
+						if (x == 0) //admin
 						{
-							if (i.second->getType() != ReqTypes::ROOM_MEMBER_REQ) continue;
-
-							otherUserRequestHandler = (RoomMemberRequestHandler*)i.second;
-
-							if (otherUserRequestHandler->getUser().getUsername() == (userRequestHandler->getRoomOfUser()->getAllUsers())[x])
-							{								
-								if (request.msgCode == START_GAME)
-								{
-									auto handler = this->m_handlerFactory.createGameRequestHandler(otherUserRequestHandler->getUser(), *this->m_handlerFactory.getGameManager().getGame(userRequestHandler->getRoomOfUser()->getRoomData().id), this->m_handlerFactory.getGameManager());
-									delete(i.second);
-									m_clients[i.first] = handler;
-									(*(i.first)).write(net::buffer(res.msg));
-								}
-								else if (request.msgCode == CLOSE_ROOM)
-								{
-									(*(i.first)).write(net::buffer(res.msg));
-									auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
-									delete(i.second);
-									m_clients[i.first] = handler;
-								}
-							}
-
+							ws.write(net::buffer(res.msg));
 						}
-					}
+						else
+						{
+							bool sendToServer = false;
+							for (auto i : m_clients)
+							{
+								if (i.second->getType() != ReqTypes::ROOM_MEMBER_REQ) continue;
 
-				}
-				if (request.msgCode == START_GAME) {
+								otherUserRequestHandler = (RoomMemberRequestHandler*)i.second;
+
+								if (otherUserRequestHandler->getUser().getUsername() == (userRequestHandler->getRoomOfUser()->getAllUsers())[x])
+								{								
+									if (request.msgCode == START_GAME)
+									{
+										auto handler = this->m_handlerFactory.createGameRequestHandler(otherUserRequestHandler->getUser(), *this->m_handlerFactory.getGameManager().getGame(userRequestHandler->getRoomOfUser()->getRoomData().id), this->m_handlerFactory.getGameManager());
+										delete(i.second);
+										m_clients[i.first] = handler;
+										(*(i.first)).write(net::buffer(res.msg));
+									}
+									else if (request.msgCode == CLOSE_ROOM)
+									{
+										(*(i.first)).write(net::buffer(res.msg));
+										auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+										delete(i.second);
+										m_clients[i.first] = handler;
+									}
+								}
+
+							}
+						}
+
+					}
 					delete(m_clients[&ws]);
 					m_clients[&ws] = res.newHandler;
+
 				}
 			}
 			else if (request.msgCode == SUBMIT_ANSWER && ws.is_open())
@@ -156,29 +158,31 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 			}
 			else if (request.msgCode == CLOSE_GAME) {
-
 				ws.write(net::buffer(res.msg));
-				GameRequestHandler* userRequestHandler = (GameRequestHandler*)(m_clients[&ws]);
-				GameRequestHandler* otherUserRequestHandler;
-
-				for (auto x : userRequestHandler->getGame().getPlayers())
+				if (m_clients[&ws]->getType() == ReqTypes::GAME_REQ)
 				{
-					for (auto i : m_clients)
+					GameRequestHandler* userRequestHandler = (GameRequestHandler*)(m_clients[&ws]);
+					GameRequestHandler* otherUserRequestHandler;
+
+					for (auto x : userRequestHandler->getGame().getPlayers())
 					{
-						if (i.second->getType() != ReqTypes::GAME_REQ) continue;
+						for (auto i : m_clients)
+						{
+							if (i.second->getType() != ReqTypes::GAME_REQ) continue;
 
-						otherUserRequestHandler = (GameRequestHandler*)(i.second);
-						
-						(*(i.first)).write(net::buffer(res.msg));
+							otherUserRequestHandler = (GameRequestHandler*)(i.second);
 
-						auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
-						delete(i.second);
-						m_clients[i.first] = handler;
+							(*(i.first)).write(net::buffer(res.msg));
+
+							auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+							delete(i.second);
+							m_clients[i.first] = handler;
+						}
 					}
-				}
 
-				delete(m_clients[&ws]);
-				m_clients[&ws] = res.newHandler;
+					delete(m_clients[&ws]);
+					m_clients[&ws] = res.newHandler;
+				}
 			}
 			else if (ws.is_open())
 				ws.write(net::buffer(res.msg));

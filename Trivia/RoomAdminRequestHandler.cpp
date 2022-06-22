@@ -46,11 +46,11 @@ LoggedUser& RoomAdminRequestHandler::getUser() const
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& request)
 {
 	struct RequestResult result;
-	LeaveRoomResponse leaveRoomResponse;
+	CloseRoomResponse closeRoomResponse;
 	this->m_roomManager.deleteRoom(this->_roomUser->getRoomData().id);
 	m_user.removeRoom();
-	leaveRoomResponse.status = 1;
-	result.msg = JsonResponsePacketSerializer::serializeLeaveRoomResponse(leaveRoomResponse);
+	closeRoomResponse.status = 1;
+	result.msg = JsonResponsePacketSerializer::serializeCloseRoomResponse(closeRoomResponse);
 	result.newHandler = m_handlerFactory.createMenuRequestHandler(m_user); //change to menu handle
 	return result;
 }

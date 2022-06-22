@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import Logo from "../../assets/images/Logo-1150p-white.png";
 import UserIcon from "../../assets/images/user.png";
+import LeaveIcon from "../../assets/images/exit.png";
 import PlayingIcon from "../../assets/images/volume.png";
 import MutedIcon from "../../assets/images/mute.png";
 import { useEffect, useState } from "react";
@@ -58,6 +59,9 @@ const Lobby = ({id, creator, data}) => {
 		return () => {
             audio.pause();
 			clearInterval(getPlayers);
+
+			ws.send(ClientToServerCode.CLOSE_ROOM);
+			ws.send(ClientToServerCode.LEAVE_ROOM);
         }
 	}, [mute]);
 
@@ -81,6 +85,18 @@ const Lobby = ({id, creator, data}) => {
 		ws.send(ClientToServerCode.START_GAME);
 		//send to server
 	}
+	
+	const handleExitRoom = e => {
+		e.preventDefault();
+		
+		//send to server
+		if(username == players[0]) {
+			ws.send(ClientToServerCode.CLOSE_ROOM);
+		} else {
+			ws.send(ClientToServerCode.LEAVE_ROOM);
+		}
+	}
+
 	return (
 		<>
 			{!username && <Navigate to="/auth/login"/>}
@@ -88,6 +104,7 @@ const Lobby = ({id, creator, data}) => {
 			<div className="joinCode">
 				<div className="side-options">
 					<button className="muteBtn" onClick={toggle}><img src={ mute ? MutedIcon : PlayingIcon } /></button>
+					<button className="leaveRoomBtn" onClick={handleExitRoom}><img src={LeaveIcon} /></button>
 				</div>
 				<div className="joinCodePlace">
 					<h3 className="text">Game PIN:</h3>

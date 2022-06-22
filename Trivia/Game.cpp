@@ -78,6 +78,7 @@ std::string Game::submitAnswer(LoggedUser* user, std::string answer)
     bool everyoneAnswerd = true;
     for (auto pl : m_players)
     {
+        if (!pl.second->onGame) continue;
         if (pl.second->correctAnswerCount + pl.second->wrongAnswerCount < it->second->correctAnswerCount + it->second->wrongAnswerCount)
         {
             everyoneAnswerd = false;
