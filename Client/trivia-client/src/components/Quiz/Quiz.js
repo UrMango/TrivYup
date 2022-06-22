@@ -9,6 +9,8 @@ import Results from "../../components/Results/Results";
 
 import battleMusic from "../../assets/music/Battle.mp3";
 import loadingSVG from "../../assets/images/Loading.svg";
+import PlayingIcon from "../../assets/images/volume.png";
+import MutedIcon from "../../assets/images/mute.png";
 import { htmlDecode } from "../../helpers/functions";
 
 const randomAnswers = {
@@ -51,9 +53,12 @@ const Quiz = () => {
 	const isEveryoneAnswered = useSelector(state => state?.rooms?.isEveryoneAnswered);
 	
 	const [mute, setMute] = useState(false);
+	const toggle = () => setMute(!mute);
+	
 	const [qCount, setQCount] = useState(1);
 	const [endTime, setEndTime] = useState(0);
 	const [timer, setTimer] = useState(roomData?.answerTimeout);
+	
 	
 	const [questionTimeout, setQuestionTimeout] = useState(null);
 	
@@ -69,8 +74,6 @@ const Quiz = () => {
 		colorCount++;
 		return <Answer key={answer[0]} color={colors[colorCount]} text={htmlDecode(answer[1])}/>
 	});
-
-	const toggle = () => setMute(!mute);
 
 	const dispatch = useDispatch();
 
@@ -93,19 +96,21 @@ const Quiz = () => {
 	}, []);
 	
 	useEffect(() => {
-		audio.volume = 0.2;
-		if(mute) audio.pause();
-		else {
-			audio.loop = true;
-			audio.play(); 
-		}
-
 		ws.send(ClientToServerCode.GET_QUESTION);
 
 		setQuestionTimeout(setTimeout(() => {
 			let toSend = JSON.stringify({ answer: "" });
 			ws.send(ClientToServerCode.SUBMIT_ANSWER + toSend);
 		}, roomData.answerTimeout * 1000));
+	}, []);
+	
+	useEffect(() => {
+		audio.volume = 0.2;
+		if(mute) audio.pause();
+		else {
+			audio.loop = true;
+			audio.play(); 
+		}
 
 		return () => {
             audio.pause();
@@ -197,6 +202,9 @@ const Quiz = () => {
 		<>
 			{!username && <Navigate to="/auth/login"/>}
 			{ (qCount <= roomData.questionCount) ? (questionRes.status != null ? (isEveryoneAnswered ? (questionRes?.status == 1 ? <div className="question-result"><h2 className="text">Correct!</h2>{correct()}<p className="randomText">{randomAnswer}</p></div> : <div className="question-result"><h2 className="text">YOU'RE A NOOB!</h2>{incorrect()}<p className="randomText">{randomAnswer}</p></div>) : <div className="question-result"><h2 className="text">Waiting for everyone to answer...</h2><img className="loadingSVG" src={loadingSVG}></img></div>) : <div className="quiz">
+				<div className="side-options">
+					<button className="muteBtn" onClick={toggle}><img src={ mute ? MutedIcon : PlayingIcon } /></button>
+				</div>
 				<div className="questionSection">
 					<h3 className="timer">{timer}</h3>
 					<h3 className="question">{htmlDecode(question?.question)}</h3>

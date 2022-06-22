@@ -8,6 +8,26 @@
     height: calc(100vh - 3.5rem - 5vh); /*3.5rem - height of navbar*/
 }
 
+.quiz .side-options {
+    position:absolute;
+	left: 10px;
+	top: calc(3.5rem + 20px);
+	display: flex;
+	flex-direction: column;
+}
+
+.quiz .side-options .muteBtn {
+	border-radius: 100%;
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+}
+
+.quiz .side-options .muteBtn img {
+	width: 40px;
+	padding: 10px;
+}
+
 .questionSection {
     display: flex;
     align-items: center;

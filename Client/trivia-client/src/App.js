@@ -41,7 +41,6 @@ const App = () => {
     socket.onmessage = (e) => {
       
       const msg = JSON.parse(e.data);
-      
       switch (msg.id) {
         case ResponseCode.login:
           if(msg.status == LoginCode.loginSuccess) {
@@ -114,6 +113,9 @@ const App = () => {
           dispatch({type: "GAME_RES", payload: []});
           dispatch({type: "GAME_BEGUN", payload: false});
           navigate("/");
+          break;
+        case ResponseCode.logout:
+          dispatch(logout());
           break;
         default:
           break;
