@@ -19,6 +19,7 @@ const Results = ({isAdmin}) => {
 	
 	useEffect(() => {
 		audio.loop = false;
+		audio.volume = 0.4;
 		audio.play(); 
 
 		ws.send(ClientToServerCode.GET_GAME_RESULT);
