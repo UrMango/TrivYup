@@ -5,6 +5,7 @@ bool LoginManager::signup(std::string username, std::string password, std::strin
 	_loggedUsersMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 		if (!this->m_database->doesUserExist(username)) {
 			this->m_database->addNewUser(username, password, email);
+			_loggedUsersMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 			return true;
 		}
 	_loggedUsersMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
@@ -16,6 +17,7 @@ bool LoginManager::login(std::string username, std::string password)
 	_loggedUsersMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 		if (this->m_database->doesPasswordMatch(username, password)) {
 			this->m_loggedUsers.push_back(LoggedUser(username));
+			_loggedUsersMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 			return true;
 		}
 	_loggedUsersMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked

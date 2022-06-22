@@ -16,8 +16,9 @@ Game* GameManager::createGame(Room room)
     Game* game = new Game(room, questions);
     _gamesMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
         this->m_games.push_back(game);
+        Game* res = this->m_games[this->m_games.size() - 1];
     _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
-    return this->m_games[this->m_games.size() - 1];
+    return res;
 }
 
 Game* GameManager::getGame(int gameId)
@@ -26,10 +27,10 @@ Game* GameManager::getGame(int gameId)
         for (auto it : this->m_games)
         {
             if (it->getGameId() == gameId)
+                _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
                 return it;
         }
     _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
-
     return nullptr;
 }
 
@@ -53,6 +54,7 @@ void GameManager::deleteGame(int gameId)
             {
                 updateStatistics(*it);
                 this->m_games.erase(this->m_games.begin() + i);
+                _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
                 return;
             }
             i++;
