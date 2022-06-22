@@ -259,6 +259,9 @@ void Communicator::handleNewClient(tcp::socket socket) {
 				break;
 			}
 		}
+		catch (...) {
+			std::cout << "Default Exception\n";
+		}
 		//ws.close();
 	}
 }
