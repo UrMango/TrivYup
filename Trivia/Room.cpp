@@ -2,35 +2,42 @@
 
 Room::Room(LoggedUser* user, const RoomData roomData) : m_metadata(roomData)
 {
-	this->m_users.push_back(user); 
+	_roomsMtx = new std::mutex();
+	 this->m_users.push_back(user); 
 }
 
 RoomData* Room::addUser(LoggedUser* user)
 {
-	this->m_users.push_back(user);
+	_roomsMtx->lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+		this->m_users.push_back(user);
+	_roomsMtx->unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 	return &this->m_metadata;
 }
 
 void Room::removeUser(LoggedUser* user)
 {
-	for (int i = 0; i < this->m_users.size(); i++)
-	{
-		if (this->m_users[i]->getUsername() == user->getUsername())
+	_roomsMtx->lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+		for (int i = 0; i < this->m_users.size(); i++)
 		{
-			this->m_users.erase(this->m_users.begin() + i);
-			break;
+			if (this->m_users[i]->getUsername() == user->getUsername())
+			{
+				this->m_users.erase(this->m_users.begin() + i);
+				break;
+			}
 		}
-	}
+	_roomsMtx->unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 }
 
 std::vector<std::string> Room::getAllUsers()
 {
 	std::vector <std::string> allUsers;
-	for (int i = 0; i < this->m_users.size(); i++)
-	{
-		if(&this->m_users[i])
-			allUsers.push_back(this->m_users[i]->getUsername());
-	}
+	_roomsMtx->lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+		for (int i = 0; i < this->m_users.size(); i++)
+		{
+			if(&this->m_users[i])
+				allUsers.push_back(this->m_users[i]->getUsername());
+		}
+	_roomsMtx->unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked=
 	return allUsers;
 }
 
@@ -52,5 +59,7 @@ void Room::changeRoomState(const int state)
 
 std::vector<LoggedUser*>* Room::getAllLoggedUsers()
 {
-	return &this->m_users;
+	_roomsMtx->lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+		return &this->m_users;
+	_roomsMtx->unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked=
 }

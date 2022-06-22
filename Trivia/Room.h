@@ -41,4 +41,5 @@ public:
 private:
 	RoomData m_metadata; // the data of the room
 	std::vector<LoggedUser*> m_users; // the vector of the users in the room
+	std::mutex* _roomsMtx;
 };
