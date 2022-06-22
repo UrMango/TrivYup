@@ -42,6 +42,7 @@ const Results = ({isAdmin}) => {
 	return (
 		<div className="results">
 			<ReactConfetti className="confetti" style={{zIndex: 5}}/>
+			<h2 className="podiumName">Podium</h2>
 			{isAdmin && <button className="exitBtn" onClick={closeGameHandler}>Exit</button>}
 			{gameResults.length > 0 ? (<div className="users">
 				<div className="user">
