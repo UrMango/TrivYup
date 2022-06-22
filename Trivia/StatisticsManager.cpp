@@ -9,7 +9,8 @@ std::vector<std::string> StatisticsManager::getHighScore()
 
     for (int i = 0; i < LENGTH_TO_RET; i++)
     {
-        highscores.push_back(highscoresList[i].first);
+        if(highscoresList.size() > i)
+            highscores.push_back(highscoresList[i].first);
     }    
 
     return highscores;
