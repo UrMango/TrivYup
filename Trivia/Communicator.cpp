@@ -149,12 +149,13 @@ void Communicator::handleNewClient(tcp::socket socket) {
 								{
 									GetIsEveryoneAnsweredResponse getIsEveryoneAnsweredResponse;
 									getIsEveryoneAnsweredResponse.isEveryoneAnswered = true;
-									(*(i.first)).write(net::buffer(JsonResponsePacketSerializer::serializeIsEveryoneAnsweredResponse(getIsEveryoneAnsweredResponse)));
+									if(i.first->is_open())
+										(*(i.first)).write(net::buffer(JsonResponsePacketSerializer::serializeIsEveryoneAnsweredResponse(getIsEveryoneAnsweredResponse)));
 								}
 							}
 						}
 					}
-				}
+				}	
 
 			}
 			else if (request.msgCode == CLOSE_GAME) {
