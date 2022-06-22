@@ -11,7 +11,6 @@ private:
 	std::vector<Game*> m_games;
 	std::mutex _gamesMtx;
 
-
 public:
 	GameManager(IDatabase* database) : m_database(database), m_games(NULL) {};
 	~GameManager() {};

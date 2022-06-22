@@ -23,6 +23,5 @@ public:
 	virtual bool isRequestRelevant(const RequestInfo& request) const = 0;
 	virtual RequestResult handleRequest(const RequestInfo& request) = 0;
 	virtual unsigned short getType() const = 0;
-	/*virtual LoggedUser getUser() const = 0;*/
 private:
 };

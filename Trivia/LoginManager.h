@@ -10,6 +10,7 @@ class LoginManager
 private:
 	IDatabase* m_database;
 	std::vector<LoggedUser> m_loggedUsers;
+	std::mutex _loggedUsersMtx;
 public:
 	LoginManager(IDatabase* database) : m_database(database) {};
 	~LoginManager() {};
