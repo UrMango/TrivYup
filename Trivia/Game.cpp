@@ -2,6 +2,8 @@
 
 Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions), m_gameId(room.getRoomData().id)
 {
+    _playersMtx = new std::mutex();
+
     for (int i = 0; i < room.getAllLoggedUsers()->size(); i++) {
         struct GameData* gamedata = new GameData();
         gamedata->currectQuestion = questions[0];
@@ -19,6 +21,7 @@ Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions
 
 Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
 {
+    _playersMtx->lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
     for (auto it : m_players)
     {
         if (it.first == user)
@@ -33,12 +36,15 @@ Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
             return it.second->currectQuestion;
         }
     }
+    _playersMtx->unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
     return nullptr;
 }
 
 std::map<LoggedUser*, GameData*> Game::getPlayers()
 {
-    return this->m_players;
+    _playersMtx->lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+        return this->m_players;
+    _playersMtx->unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 }
 
 void Game::newAvg(float newTime, LoggedUser* user)
@@ -50,7 +56,6 @@ void Game::newAvg(float newTime, LoggedUser* user)
             it->second->averangeAnswerTime = newTime;
         else
             it->second->averangeAnswerTime = ((1 / (float)(numQuestions + 1)) * (numQuestions)*it->second->averangeAnswerTime) + (newTime * (1 / (float)(numQuestions + 1)));
-
     }
     // printf("\n new avg %f\n", it->second->averangeAnswerTime);
 }

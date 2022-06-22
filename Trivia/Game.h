@@ -58,4 +58,5 @@ private:
     bool isEveryoneAnswerd = false;
     int m_gameId;
     time_t recieveTime;
+    std::mutex* _playersMtx;
 };

@@ -18,5 +18,7 @@ public:
 	Game* getGame(int gameId);
 	void updateStatistics(Game game);
 	void deleteGame(int gameId);
+	std::mutex _gamesMtx;
+
 };
 
