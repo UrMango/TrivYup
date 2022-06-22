@@ -3,14 +3,23 @@ import { ClientToServerCode } from "../../helpers/consts";
 import { useState } from "react";
 
 import "./Register.css";
+import { useDispatch } from "react-redux";
+import Alert from "../Alert/Alert";
 
 const Register = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
 
+	const dispatch = useDispatch();
+
 	const handleRegister = (e) => {
 		e.preventDefault();
+		if(username.length == 0 || password.length == 0 || email.length == 0) {
+			dispatch({type: "ALERT", payload: <Alert text={"Fill all the inputs."} type="Error"/>});
+			return;
+		}
+
 		ws.send(ClientToServerCode.MT_CLIENT_SIGN_UP + JSON.stringify({username, password, email}));
 	}
 
