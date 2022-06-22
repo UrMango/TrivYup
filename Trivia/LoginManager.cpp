@@ -22,6 +22,12 @@ bool LoginManager::login(std::string username, std::string password)
 {
 	_loggedUsersMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 		if (this->m_database->doesPasswordMatch(username, password)) {
+			for (auto it : m_loggedUsers)
+			{
+				if (it.getUsername() == username)
+					return false;
+			}
+
 			this->m_loggedUsers.push_back(LoggedUser(username));
 			_loggedUsersMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 			return true;

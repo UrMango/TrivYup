@@ -8,6 +8,10 @@ import "./Answer.css";
 const Answer = ({text, color}) => {
 	const navigate = useNavigate();
 
+	/**
+	 * function for handling answer click
+	 * @param {Event} e 
+	 */
 	const handleAnswer = e => {
 		e.preventDefault();
 		let toSend = JSON.stringify({ answer: text });

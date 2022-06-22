@@ -17,6 +17,10 @@ const Login = () => {
 	
 	const navigate = useNavigate();
 
+	/**
+	 * Function for handling login button click
+	 * @param {Event} e 
+	 */
 	const handleLogin = (e) => {
 		e.preventDefault();
 		if(e.target.id == "yes") {

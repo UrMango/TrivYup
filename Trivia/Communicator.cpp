@@ -195,20 +195,26 @@ void Communicator::handleNewClient(tcp::socket socket) {
 					{
 						_clientsMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 							for (auto i : m_clients)
-							{
+							{	
+								
+								if (!i.first->is_open()) continue;
+
 								//cheks if the player in game handel
 								if (i.second->getType() != ReqTypes::GAME_REQ) continue;
 								otherUserRequestHandler = (GameRequestHandler*)(i.second);
 
-								//sends a msg that the room has closed
-								if (i.first->is_open()) { 
-									(*(i.first)).write(net::buffer(res.msg));
+								if (x.first->getUsername() == otherUserRequestHandler->getUser().getUsername()) {
+									//sends a msg that the room has closed
+									if (i.first->is_open()) { 
+										(*(i.first)).write(net::buffer(res.msg));
+									}
+
+									//go back to menu handler
+									auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
+									delete(i.second);
+									m_clients[i.first] = handler;
 								}
 
-								//go back to menu handler
-								auto handler = this->m_handlerFactory.createMenuRequestHandler(otherUserRequestHandler->getUser());
-								delete(i.second);
-								m_clients[i.first] = handler;
 							}
 						_clientsMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 					}

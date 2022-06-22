@@ -22,6 +22,7 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
+  /** Alert to display from redux */
 	const alert = useSelector(state => state.user.alert);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const App = () => {
     socket.onmessage = (e) => {
       
       const msg = JSON.parse(e.data);
-      console.log(msg);
+      
       switch (msg.id) {
         case ResponseCode.login:
           if(msg.status == LoginCode.loginSuccess) {
@@ -48,7 +49,6 @@ const App = () => {
           } else if(msg.status == LoginCode.loginError) {
             dispatch(logout());
             dispatch({type: "ALERT", payload: <Alert text={"Login failed."} type="Error"/>});
-            console.log("Login failed.");
           }
           break;
         case ResponseCode.signup:
@@ -57,7 +57,6 @@ const App = () => {
             window.location.reload(false);
           } else if(msg.status == RegisterCode.signupError) {
             dispatch({type: "ALERT", payload: <Alert text={"Register failed."} type="Error"/>});
-            console.log("Register failed.");
           }
           break;
         case ResponseCode.getRooms:

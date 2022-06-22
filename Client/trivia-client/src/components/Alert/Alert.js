@@ -7,6 +7,9 @@ import "./Alert.css";
 const Alert = ({text, type}) => {
     const dispatch = useDispatch();
 
+    /**
+     * Function that closes the alert with redux
+     */
     const handleCloseAlert = () => {
         dispatch({type: "ALERT", payload: null});
     };
