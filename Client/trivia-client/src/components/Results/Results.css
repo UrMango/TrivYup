@@ -8,6 +8,24 @@
 	color: white;
 }
 
+.results .podiumName {
+	position: fixed;
+	top: 10px;
+	background-color: white;
+    padding: 16px 32px;
+    box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    font-weight: 700;
+    width: fit-content;
+    max-width: 60%;
+    text-align: center;
+    letter-spacing: -0.063rem;
+    line-height: 1.25;
+    white-space: pre-wrap;
+    font-size: 4.2vmin;
+}
+
 .results .confetti {
 	opacity: 0;
 	animation-delay: 14s;
