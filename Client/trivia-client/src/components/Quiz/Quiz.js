@@ -196,7 +196,7 @@ const Quiz = () => {
 					<h3>{qCount} of {roomData.questionCount}</h3>
 					<h3>{roomData.gamePin}</h3>
 				</div>
-			</div>) : <Results isAdmin={username == roomData.players[0]} /> }
+			</div>) : roomData?.players?.length > 0 && <Results isAdmin={username == roomData.players[0]} /> }
 		</>
 	)
 }
