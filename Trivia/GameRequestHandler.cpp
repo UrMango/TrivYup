@@ -22,6 +22,9 @@ bool GameRequestHandler::isRequestRelevant(const RequestInfo& request) const
 	return (request.msgCode == LEAVE_GAME || request.msgCode == GET_QUESTION || request.msgCode == SUBMIT_ANSWER || request.msgCode == GET_GAME_RESULT || request.msgCode == CLOSE_GAME);
 }
 
+//***********************************************************************************************
+//the func return a answer for request
+//***********************************************************************************************
 RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 {
 	struct RequestResult result;
@@ -52,6 +55,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 	}
 	return result;
 }
+
 RequestResult GameRequestHandler::sumbitAns(const RequestInfo& request)const
 {
 	SubmitAnswerRequest submitAnswerRequest;
@@ -156,7 +160,9 @@ RequestResult GameRequestHandler::getRoomRes(const RequestInfo& request)const
 	return result;
 }
 
-
+//***********************************************************************************************
+//The function mixes a map
+//***********************************************************************************************
 void randomShuffleOfMap(std::map<unsigned int, std::string> &Question)
 {
 	std::vector<std::string> v;

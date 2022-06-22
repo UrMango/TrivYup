@@ -1,5 +1,8 @@
 #include "Game.h"
 
+//***********************************************************************************************
+//constructor func
+//***********************************************************************************************
 Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions), m_gameId(room.getRoomData().id)
 {
 
@@ -18,6 +21,9 @@ Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions
     }
 }
 
+//***********************************************************************************************
+//the func returns a question object for the user
+//***********************************************************************************************
 Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
 {
     for (auto it : m_players)
@@ -37,11 +43,17 @@ Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
     return nullptr;
 }
 
+//***********************************************************************************************
+//the func returns map with the players in the game
+//***********************************************************************************************
 std::map<LoggedUser*, GameData*> Game::getPlayers()
 {
        return this->m_players;
 }
 
+//***********************************************************************************************
+//the func update the anvg answer time
+//***********************************************************************************************
 void Game::newAvg(float newTime, LoggedUser* user)
 {
     auto it = m_players.find(user);
@@ -54,6 +66,9 @@ void Game::newAvg(float newTime, LoggedUser* user)
     }
 }
 
+//***********************************************************************************************
+//the func checks if the answer of the user is coorect or not
+//***********************************************************************************************
 std::string Game::submitAnswer(LoggedUser* user, std::string answer)
 {
     recieveTime = time(0);
@@ -88,6 +103,9 @@ std::string Game::submitAnswer(LoggedUser* user, std::string answer)
     return it->second->currectQuestion->getCorrectAnswer();
 }
 
+//***********************************************************************************************
+//the func returns the game data of specific player
+//***********************************************************************************************
 GameData* Game::getPlayerData(LoggedUser* user)
 {
     for (auto it : m_players)
@@ -100,6 +118,9 @@ GameData* Game::getPlayerData(LoggedUser* user)
     return nullptr;
 }
 
+//***********************************************************************************************
+//the func rremoves a player in a game
+//***********************************************************************************************
 void Game::removePlayer(LoggedUser* users)
 {
     for (auto it : m_players)
@@ -132,6 +153,9 @@ bool compareByScore(const PlayerResults& a, const PlayerResults& b)
     return a.score > b.score;
 }
 
+//***********************************************************************************************
+//the func return the game result of all players
+//***********************************************************************************************
 std::vector<PlayerResults> Game::getAllPlayerResults()
 {
     std::vector<PlayerResults> results;
@@ -150,6 +174,9 @@ std::vector<PlayerResults> Game::getAllPlayerResults()
     return results;
 }
 
+//***********************************************************************************************
+//the func return the game result of a player
+//***********************************************************************************************
 PlayerResults Game::getPlayerResults(LoggedUser* user)
 {
     auto it = m_players.find(user);

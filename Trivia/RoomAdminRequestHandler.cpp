@@ -8,6 +8,9 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& request) cons
 	return (request.msgCode == CLOSE_ROOM || request.msgCode == START_GAME || request.msgCode == GET_ROOM_STATE);
 }
 
+//***********************************************************************************************
+//the func return a answer for request
+//***********************************************************************************************
 RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& request)
 {
 	struct RequestResult result;
@@ -42,6 +45,9 @@ LoggedUser& RoomAdminRequestHandler::getUser() const
 	return this->m_user;
 }
 
+//***********************************************************************************************
+//the func close the room the admin created
+//***********************************************************************************************
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& request)
 {
 	struct RequestResult result;
@@ -54,6 +60,9 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& request)
 	return result;
 }
 
+//***********************************************************************************************
+//the func atart the game
+//***********************************************************************************************
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& request)
 {
 	struct RequestResult result;

@@ -10,6 +10,9 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& request) const
 	return (request.msgCode == CREATE_ROOM || request.msgCode == GET_ROOMS || request.msgCode == GET_PLAYERS_IN_ROOM || request.msgCode == JOIN_ROOM || request.msgCode == GET_PERSONAL_STATS || request.msgCode == HIGH_SCORE || request.msgCode == LOG_OUT);
 }
 
+//***********************************************************************************************
+//the func return a answer for request
+//***********************************************************************************************
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request) 
 {
 	std::string msg;

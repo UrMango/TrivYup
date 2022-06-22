@@ -17,6 +17,9 @@ bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& request) con
 	return (request.msgCode == LEAVE_ROOM || request.msgCode == GET_ROOM_STATE);
 }
 
+//***********************************************************************************************
+//the func return a answer for request
+//***********************************************************************************************
 RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request)
 {
 	struct RequestResult result;
@@ -61,6 +64,9 @@ RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo& request)
 	return result;
 }
 
+//***********************************************************************************************
+//the func takes the user out of the room
+//***********************************************************************************************
 RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo& request) const
 {
 	LeaveRoomResponse leaveRoomResponse;

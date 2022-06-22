@@ -1,5 +1,9 @@
 #include "GameManager.h"
 
+
+//***********************************************************************************************
+//the func create a game
+//***********************************************************************************************
 Game* GameManager::createGame(Room room)
 {
     std::vector<Question*> questions;
@@ -20,6 +24,10 @@ Game* GameManager::createGame(Room room)
     return res;
 }
 
+
+//***********************************************************************************************
+//the func return a game according id
+//***********************************************************************************************
 Game* GameManager::getGame(int gameId)
 {
         for (auto it : this->m_games)
@@ -30,6 +38,10 @@ Game* GameManager::getGame(int gameId)
     return nullptr;
 }
 
+
+//***********************************************************************************************
+//the func udate the Statistics according game result
+//***********************************************************************************************
 void GameManager::updateStatistics(Game game)
 {
     for (auto it : game.getPlayers())
@@ -38,6 +50,9 @@ void GameManager::updateStatistics(Game game)
     }
 }
 
+//***********************************************************************************************
+//the func delete a game
+//***********************************************************************************************
 void GameManager::deleteGame(int gameId)
 {
     int i = 0;

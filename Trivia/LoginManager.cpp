@@ -1,5 +1,8 @@
 #include "LoginManager.h"
 
+//***********************************************************************************************
+//The function adds a user to database
+//***********************************************************************************************
 bool LoginManager::signup(std::string username, std::string password, std::string email)
 {
 	_loggedUsersMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
@@ -12,6 +15,9 @@ bool LoginManager::signup(std::string username, std::string password, std::strin
 	return false;
 }
 
+//***********************************************************************************************
+//The function Connects the user to the system
+//***********************************************************************************************
 bool LoginManager::login(std::string username, std::string password)
 {
 	_loggedUsersMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
@@ -24,6 +30,10 @@ bool LoginManager::login(std::string username, std::string password)
 	return false;
 }
 
+
+//***********************************************************************************************
+//The function logout the user to the system
+//***********************************************************************************************
 void LoginManager::logout(std::string username)
 {
 	_loggedUsersMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
