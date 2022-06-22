@@ -16,10 +16,14 @@ const Create = () => {
 
 	const dispatch = useDispatch();
 
+	/**
+	 * Function for handling create game button click
+	 * @param {Event} e 
+	 * @returns 
+	 */
 	const handleCreateGame = (e) => {
 		e.preventDefault();
 
-		console.log("Hello");
 		if(maxUsers.length == 0 || questionCount.length == 0 || answerTimeout.length == 0) {
 			dispatch({type: "ALERT", payload: <Alert text={"Fill all the inputs."} type="Error"/>});
 			return;
@@ -44,7 +48,6 @@ const Create = () => {
 
 		const toSend = {roomName, maxUsers, questionCount, answerTimeout};
 		let toSendString = JSON.stringify(toSend);
-		console.log(toSendString);
 		ws.send(ClientToServerCode.CREATE_ROOM + toSendString);
 	}
 

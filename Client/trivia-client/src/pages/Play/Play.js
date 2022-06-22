@@ -33,6 +33,11 @@ const Play = () => {
 		ws.send(ClientToServerCode.GET_ROOMS);
 	}, []);
 
+	/**
+	 * Function for handling join game button click
+	 * @param {Event} e 
+	 * @returns 
+	 */
 	const handleJoinGame = e => {
 		e.preventDefault();
 		// console.log(e);
@@ -45,12 +50,7 @@ const Play = () => {
 		
 		console.log("Game code is: " + gamepin);
 		navigate("/play/" + gamepin);
-		
-		// ws.send(ClientToServerCode.JOIN_ROOM + JSON.stringify({roomid: Number(gamepin)}));
-
-		//send to server
 	}
-
 	
 	return (
 		<>
@@ -62,13 +62,10 @@ const Play = () => {
 					<br/>
 					<button className="enterBtn" onClick={handleJoinGame} type="submit">Enter</button>
 				</form>
-				{/* <h3 className="or">OR</h3> */}
 			</div>
 			<div className="openGames">
 				<h4 className="textupper">Games you can join:</h4>
 				<div className="games">{roomList.length > 0 ? roomList : <h4 className="nogames" >No games open :(<br/><Link to="/create">Try to make your own!</Link></h4>}
-					{/* <GameBox username="Mango" gamename="Cool game" playersLen={1} maxPlayers={20} gameCode={12023}/>
-					<GameBox username="Shirel" gamename="Hello" playersLen={2} maxPlayers={10} gameCode={40239}/> */}
 				</div>
 			</div>
 		</>

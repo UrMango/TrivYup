@@ -29,11 +29,19 @@ const Results = ({isAdmin}) => {
 		}
 	}, []);
 
+	/**
+	 * Function for handling closing (and deleting) the game.
+	 * @param {Event} e 
+	 */
 	const closeGameHandler = e => {
 		e.preventDefault();
 		ws.send(ClientToServerCode.CLOSE_GAME);
 	};
 
+	/**
+	 * Function for calculating results score basd on numbers of correct answers and average answers
+	 * @param {Object} gameResult 
+	 */
 	const calcScore = (gameResult) => {
 		const score = Math.floor(1000 * (gameResult?.correctAnswerCount / gameResult?.averageAnswerTime));
 		if(score == score) return score;

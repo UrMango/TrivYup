@@ -1,3 +1,4 @@
+/** Response code got from server */
 const ResponseCode = {
 	error: 0,
 	login: 1,
@@ -32,6 +33,7 @@ const RegisterCode = {
 	signupError: 1
 }
 
+/** Response codes to send to server */
 const ClientToServerCode = {
 	MT_CLIENT_LOG_IN: 200,
 	MT_CLIENT_SIGN_UP: 204,

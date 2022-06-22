@@ -73,9 +73,6 @@ const Lobby = ({id, creator, data}) => {
 	const handleStartGame = e => {
 		e.preventDefault();
 
-		// start - disable
-		// loadingGame - enable
-		console.log(loadingRef.current);
 		loadingRef.current.style.display = "flex";
 		loadingRef.current.style.position = "fixed";
 		loadingRef.current.style.justifyContent = "center";
@@ -88,9 +85,12 @@ const Lobby = ({id, creator, data}) => {
 		loadingRef.current.style.fontSize = "20px";
 
 		ws.send(ClientToServerCode.START_GAME);
-		//send to server
 	}
 	
+	/**
+	 * Function for handling exit room button click
+	 * @param {Event} e 
+	 */
 	const handleExitRoom = e => {
 		e.preventDefault();
 		

@@ -11,7 +11,7 @@ const Navbar = () => {
     var curHr = today.getHours();
     
     let msg = "";
-
+    // calculate time
     if (curHr >= 5 && curHr < 12) {
         msg = 'Good morning';
     } else if (curHr >= 12 && curHr < 18) {

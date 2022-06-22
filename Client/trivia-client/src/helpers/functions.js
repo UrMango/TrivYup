@@ -3,7 +3,6 @@ const htmlDecode = (input) => {
 	return doc.documentElement.textContent;
 }
 
-
 export {
 	htmlDecode
 }
