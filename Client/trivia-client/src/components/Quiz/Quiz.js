@@ -9,6 +9,7 @@ import Results from "../../components/Results/Results";
 
 import battleMusic from "../../assets/music/Battle.mp3";
 import loadingSVG from "../../assets/images/Loading.svg";
+import { htmlDecode } from "../../helpers/functions";
 
 const randomAnswers = {
 	correct: [
@@ -66,7 +67,7 @@ const Quiz = () => {
 	let colorCount = -1;
 	const answers = question?.answers?.map(answer => { 
 		colorCount++;
-		return <Answer key={answer[0]} color={colors[colorCount]} text={answer[1]}/>
+		return <Answer key={answer[0]} color={colors[colorCount]} text={htmlDecode(answer[1])}/>
 	});
 
 	const toggle = () => setMute(!mute);
@@ -127,6 +128,8 @@ const Quiz = () => {
 			setQCount(qCount + 1);
 			if(qCount < roomData.questionCount){
 				ws.send(ClientToServerCode.GET_QUESTION);
+			} else {
+				audio.pause();
 			}
 			dispatch({type: "QUESTION", payload: {}});
 		}, 6000);
@@ -187,7 +190,7 @@ const Quiz = () => {
 			{ (qCount <= roomData.questionCount) ? (questionRes.status != null ? (isEveryoneAnswered ? (questionRes?.status == 1 ? <div className="question-result"><h2 className="text">Correct!</h2>{correct()}<p className="randomText">{randomAnswer}</p></div> : <div className="question-result"><h2 className="text">YOU'RE A NOOB!</h2>{incorrect()}<p className="randomText">{randomAnswer}</p></div>) : <div className="question-result"><h2 className="text">Waiting for everyone to answer...</h2><img className="loadingSVG" src={loadingSVG}></img></div>) : <div className="quiz">
 				<div className="questionSection">
 					<h3 className="timer">{timer}</h3>
-					<h3 className="question">{question?.question}</h3>
+					<h3 className="question">{htmlDecode(question?.question)}</h3>
 					<div></div>
 				</div>
 				<div className="answers">{answers}</div>

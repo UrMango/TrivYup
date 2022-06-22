@@ -165,7 +165,7 @@ void Communicator::handleNewClient(tcp::socket socket) {
 
 						}
 					}
-				}
+				}	
 
 			}
 			else if (request.msgCode == CLOSE_GAME) {
