@@ -44,7 +44,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& request)
 			return getQuestion(request);
 			break;
 		case SUBMIT_ANSWER:
-			sumbitAns(request);
+			return sumbitAns(request);
 			break;
 		case GET_GAME_RESULT:
 			return getRoomRes(request);
