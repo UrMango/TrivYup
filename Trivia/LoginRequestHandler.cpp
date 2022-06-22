@@ -2,9 +2,7 @@
 
 
 LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory, LoginManager& loginManager) : m_handlerRequest(handlerFactory), m_loginManager(loginManager)
-{
-	
-}
+{}
 
 LoginRequestHandler::~LoginRequestHandler(){}
 

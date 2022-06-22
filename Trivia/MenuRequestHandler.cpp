@@ -78,7 +78,6 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& request)
 				found = true;
 		}
 	}
-
 	//put data
 	roomD.id = randomId;
 	roomD.isActive = 0;

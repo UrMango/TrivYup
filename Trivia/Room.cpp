@@ -49,7 +49,7 @@ RoomData Room::getRoomData()const
 	return m_metadata;
 }
 
- 
+
 void Room::changeRoomState(const int state)
 {
 	this->m_metadata.isActive = state;

@@ -149,7 +149,6 @@ int getNumOfPlayerGamesCallback(void* data, int argc, char** argv, char** azColN
 int getUsersList(void* data, int argc, char** argv, char** azColName)
 {
 	std::vector<std::pair<int, std::string>>* usersList = ((std::vector<std::pair<int, std::string>>*)data);
-
 	int id;
 	std::string username;
 
@@ -207,7 +206,6 @@ SqliteDataBase::~SqliteDataBase()
 {
 	sqlite3_close(this->db);
 	db = nullptr;
-
 	delete this->errMessage;
 }
 
@@ -227,7 +225,6 @@ bool SqliteDataBase::doesUserExist(std::string username)
 	{
 		bool res = boolCallbackRes == BOOL_CB_TRUE;
 		boolCallbackRes = BOOL_CB_NORES;
-
 		return res;
 	}
 }
@@ -267,7 +264,6 @@ void SqliteDataBase::addNewUser(std::string username, std::string pword, std::st
 		std::cout << errMessage << std::endl;
 	}
 	
-	
 	*query = "INSERT INTO STATISTICS (userid, averageanswertime, numberofgamesplayed, numofcorrectanswers, numofanswers) VALUES(" + std::to_string(getUserId(username)) + ", 0.0, 0, 0, 0);";
 	_dataBasetx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 		res = sqlite3_exec(db, (*query).c_str(), nullptr, nullptr, &errMessage);
@@ -280,8 +276,7 @@ void SqliteDataBase::addNewUser(std::string username, std::string pword, std::st
 
 int SqliteDataBase::getUserId(std::string username)
 {
-	int res;
-	int id;
+	int res, id;
 
 	std::string* query = new string();
 	*query = "SELECT id from USERS WHERE username == '" + username + "';";
@@ -302,7 +297,6 @@ std::vector<Question> SqliteDataBase::getQuestions(int numQuestions)
 	bool ifAvailable = false;
 	int randomId = -1;
 	const int QUESTION_COUNT = 400;
-
 	std::vector<Question> questionsList;
 
 	for (int i = 0; i < numQuestions; i++)
@@ -362,9 +356,7 @@ void SqliteDataBase::updateStatistics(std::string username, GameData playerGameD
 
 float SqliteDataBase::getPlayerAverageAnswerTime(std::string username)
 {
-	int res;
-	int id;
-
+	int res, id;
 	id = getUserId(username);
 
 	std::string* query = new string();
@@ -382,9 +374,7 @@ float SqliteDataBase::getPlayerAverageAnswerTime(std::string username)
 
 int SqliteDataBase::getNumOfCorrectAnswers(std::string username)
 {
-	int res = -1;
-	int id;
-
+	int res = -1, id;
 	id = getUserId(username);
 
 	std::string* query = new string();
@@ -396,15 +386,12 @@ int SqliteDataBase::getNumOfCorrectAnswers(std::string username)
 		std::cout << errMessage << std::endl;
 		return -1;
 	}
-
 	return this->numReturn;
 }
 
 int SqliteDataBase::getNumOfTotalAnswers(std::string username)
 {
-	int res = -1;
-	int id;
-
+	int res = -1, id;
 	id = getUserId(username);
 
 	std::string* query = new string();
@@ -421,9 +408,7 @@ int SqliteDataBase::getNumOfTotalAnswers(std::string username)
 
 int SqliteDataBase::getNumOfPlayerGames(std::string username)
 {
-	int res = -1;
-	int id;
-
+	int res = -1, id;
 	id = this->getUserId(username);
 
 	std::string* query = new string();
@@ -441,14 +426,8 @@ int SqliteDataBase::getNumOfPlayerGames(std::string username)
 
 std::vector<std::pair<std::string, int>> SqliteDataBase::getHighscores()
 {
-
 	std::vector<std::pair<int, std::string>> usersList;
-
 	std::vector<std::pair<std::string, int>> highscoreList;
-
-	/*std::pair<std::string, int> first;
-	std::pair<std::string, int> second;
-	std::pair<std::string, int> third;*/
 
 	std::string* query = new string();
 	*query = "SELECT * from USERS;";
@@ -461,20 +440,15 @@ std::vector<std::pair<std::string, int>> SqliteDataBase::getHighscores()
 
 	for (int i = 0; i < usersList.size(); i++)
 	{
-		/*int total = SqliteDataBase::getNumOfTotalAnswers(usersList[i].second);*/
 		int correct = SqliteDataBase::getNumOfCorrectAnswers(usersList[i].second);
 		int all = SqliteDataBase::getNumOfPlayerGames(usersList[i].second);
 		float averageTime = SqliteDataBase::getPlayerAverageAnswerTime(usersList[i].second);
-
-		// function: Total / (Wrong * average answer time)
 		int score = 1000*(all / (correct / averageTime));
-
 		highscoreList.push_back(std::pair<std::string, int>(usersList[i].second, score));
 	}
 
 	std::sort(highscoreList.begin(), highscoreList.end(), [](auto& left, auto& right) {
 		return left.second > right.second;
 	});
-
 	return highscoreList;
 }

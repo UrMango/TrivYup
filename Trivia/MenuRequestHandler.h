@@ -34,7 +34,6 @@ private:
 	//getter
 	LoggedUser& getUser() const;
 
-
 public:
 	MenuRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser& m_user);
 	~MenuRequestHandler();
