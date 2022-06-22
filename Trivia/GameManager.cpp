@@ -36,7 +36,7 @@ void GameManager::updateStatistics(Game game)
         this->m_database->updateStatistics(it.first->getUsername(), *it.second);
     }
 }
-/*
+
 void GameManager::deleteGame(int gameId)
 {
     int i = 0;
@@ -51,4 +51,3 @@ void GameManager::deleteGame(int gameId)
         i++;
     }
 }
-*/
