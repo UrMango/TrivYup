@@ -14,40 +14,48 @@ Game* GameManager::createGame(Room room)
 
 
     Game* game = new Game(room, questions);
-    this->m_games.push_back(game);
-
-    return this->m_games[this->m_games.size() - 1];
+    _gamesMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+        this->m_games.push_back(game);
+        return this->m_games[this->m_games.size() - 1];
+    _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 }
 
 Game* GameManager::getGame(int gameId)
 {
-    for (auto it : this->m_games)
-    {
-        if (it->getGameId() == gameId)
-            return it;
-    }
+    _gamesMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+        for (auto it : this->m_games)
+        {
+            if (it->getGameId() == gameId)
+                return it;
+        }
+    _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+
     return nullptr;
 }
 
 void GameManager::updateStatistics(Game game)
 {
-    for (auto it : game.getPlayers())
-    {
-        this->m_database->updateStatistics(it.first->getUsername(), *it.second);
-    }
+    _gamesMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+        for (auto it : game.getPlayers())
+        {
+            this->m_database->updateStatistics(it.first->getUsername(), *it.second);
+        }
+    _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 }
 
 void GameManager::deleteGame(int gameId)
 {
     int i = 0;
-    for (auto it : this->m_games)
-    {
-        if (it->getGameId() == gameId)
+    _gamesMtx.lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+        for (auto it : this->m_games)
         {
-            updateStatistics(*it);
-            this->m_games.erase(this->m_games.begin() + i);
-            return;
+            if (it->getGameId() == gameId)
+            {
+                updateStatistics(*it);
+                this->m_games.erase(this->m_games.begin() + i);
+                return;
+            }
+            i++;
         }
-        i++;
-    }
+    _gamesMtx.unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
 }

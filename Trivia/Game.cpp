@@ -2,7 +2,7 @@
 
 Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions), m_gameId(room.getRoomData().id)
 {
-    _playersMtx = new std::mutex();
+   // _playersMtx = new std::mutex();
 
     for (int i = 0; i < room.getAllLoggedUsers()->size(); i++) {
         struct GameData* gamedata = new GameData();
@@ -21,7 +21,6 @@ Game::Game(Room& room, std::vector<Question*> questions) : m_questions(questions
 
 Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
 {
-    _playersMtx->lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
     for (auto it : m_players)
     {
         if (it.first == user)
@@ -36,15 +35,12 @@ Question* Game::getQuestionForUser(LoggedUser* user, time_t time)
             return it.second->currectQuestion;
         }
     }
-    _playersMtx->unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
     return nullptr;
 }
 
 std::map<LoggedUser*, GameData*> Game::getPlayers()
 {
-    _playersMtx->lock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
-        return this->m_players;
-    _playersMtx->unlock();//if mtx unlocked: this thread locks it! if mtx locked: this thread waits until unlocked
+       return this->m_players;
 }
 
 void Game::newAvg(float newTime, LoggedUser* user)

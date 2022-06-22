@@ -9,6 +9,8 @@ class GameManager
 private:
 	IDatabase* m_database;
 	std::vector<Game*> m_games;
+	std::mutex _gamesMtx;
+
 
 public:
 	GameManager(IDatabase* database) : m_database(database), m_games(NULL) {};
@@ -18,7 +20,6 @@ public:
 	Game* getGame(int gameId);
 	void updateStatistics(Game game);
 	void deleteGame(int gameId);
-	std::mutex _gamesMtx;
 
 };
 
