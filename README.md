@@ -1,4 +1,5 @@
-# Trivia_Shirel_Noam_2022
+# TrivYup
+### A Kahoot-like quiz website with React & C++ Server made as an educational project.
 
 ## Setup Server
 - Download beast boost library: https://www.boost.org/users/history/version_1_79_0.html
